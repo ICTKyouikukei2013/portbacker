@@ -1,0 +1,15 @@
+language: python
+
+python:
+  - "2.7"
+
+services:
+  - mongodb
+
+install:
+  - pip install flask --use-mirrors
+  - pip install pymongo --use-mirrors
+
+script:
+  - test test/top_page_test.py
+
