@@ -93,6 +93,10 @@ def mongo_post():
 def new():
     return render_template("new.html")
 
+@app.route('/new', methods=['POST'])
+def new_post():
+    return render_template("portfolio.html", ispost=True)
+
 @app.route('/goal', methods=['POST'])
 def new_portfolio():
     new_text = request.form['new_text']

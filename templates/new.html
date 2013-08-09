@@ -17,10 +17,11 @@
 
       ポートフォリオ作成<br>
 
-      <textarea name="new_text" rows="5" cols="120" Class="new"></textarea><br>
-		<input type="button" value="作成" class="btn btn-primary" style="width:100px; height:40px">
-		<a href="portfolio"><input type="button" value="戻る" 
-		class="btn btn-secondry"	style="width:100px; height:40px">
+      <form action="new" method="post">
+        <textarea name="new_text" rows="5" cols="120" Class="new"></textarea><br>
+  		  <input type="submit" value="作成" class="btn btn-primary" style="width:100px; height:40px">
+    		<a href="portfolio"><input type="button" value="戻る" class="btn btn-secondry"	style="width:100px; height:40px">
+      </form>
 
 
 {% endblock %}
