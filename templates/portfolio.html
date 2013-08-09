@@ -1,8 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
-<input type="button" value="新規作成" style="width:100px; height:40px"><br><br>
+<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<div Class="style">
+	<div id="tabnavi">
+		<div Class="size">
+			<div id="move_tab">
+				<ul>
+					<li><a href="/">トップ</a></li>
+					<li><a href="portfolio">ポートフォリオ</a></li>
+					<li><a href="artifact">成果物管理</a></li>
+					<li><a href="goal">ゴール設定</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+<a href="new"><input type="button" value="新規" class="btn btn-primary" ></a><br><br>
 <img src="static/img/testimage1.png" width=100 height=200>
 <img src="static/img/testimage2.png" width=100 height=200>
-
-
 {% endblock %}

@@ -88,6 +88,16 @@ def mongo_post():
     
     return render_template("mongo_post.html")
 
+# portfolioの新規作成ページ
+@app.route('/new', methods=['GET'])
+def new():
+    return render_template("new.html")
+
+@app.route('/goal', methods=['POST'])
+def new_portfolio():
+    new_text = request.form['new_text']
+    return render_template("new.html", new_text=new_text)
+
 # print "========find_one========"
 # print col.find_one()
 
