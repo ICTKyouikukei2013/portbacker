@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-  <h2>エラー</h2>
-  <p>アップロードしようとしたファイル {{filename}} は許可されていない形式です。</p>
-  <form>
-    <input type="submit" value="戻る" formaction="/artifact" formnovalidate>
-  </form>
+<h2>エラー</h2>
+<p>
+	アップロードしようとしたファイル {{filename}} は許可されていない形式です。
+</p>
+<input type="button" class="btn btn-primary" value="戻る" onclick="location.href='/artifact'">
 {% endblock %}
 

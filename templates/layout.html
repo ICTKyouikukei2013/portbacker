@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-    <title>E-portfolio</title>
-  </head>
-  
-  <body>
-    <a href="/"><img src="static/img/logo.png"></a>
-    
-    <!-- ここのblock body-end blockまでの位置づけがよくわからん -->
-    {% block body %}
-      <img src="static/img/testimage1.png">
-      <img src="static/img/testimage2.png">
-    {% endblock %}
+<head>
+	<meta charset="UTF-8">
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<title>E-portfolio</title>
+</head>
 
-    </div>
-  </body>
+<body>
+	<a href="/"><img src="static/img/logo.png"></a>
+
+	<!-- ここのblock body-end blockまでの位置づけがよくわからん -->
+	{% block body %}
+	<img src="static/img/testimage1.png">
+	<img src="static/img/testimage2.png">
+	{% endblock %}
+
+</body>
+
 </html>
