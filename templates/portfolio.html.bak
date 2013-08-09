@@ -1,0 +1,4 @@
+{% extends "layout.html" %}
+{% block body %}
+<input type="button" class="btn btn" value="TOPに戻る" onclick="location.href='/'">
+{% endblock %}

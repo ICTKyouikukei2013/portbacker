@@ -1,0 +1,9 @@
+﻿{% extends "layout.html" %}
+{% block body %}
+<h3>ゴール：{{goal_text}}</h3><br><br>
+<form method="post" action="/goal">
+	<textarea name="goal_text" rows="5" cols="40"></textarea><br>
+	<input type="submit" class="btn btn-primary" value="設定">
+	<input type="button" class="btn btn" value="TOPに戻る" onclick="location.href='/'">
+</form>
+{% endblock %}

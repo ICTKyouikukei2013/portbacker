@@ -19,24 +19,22 @@ body{
 
 #move_tab{
 	position:relative;
-	/*float: right;*/
-	margin-top: 0;
-	/*margin-left: auto;*/
+	margin-left: 100px;
 
 }
 
 /*.style{
-	background-color: #ffffe0;
+	background-color: yellow;
 }*/
 
 
-/*.size{
+.size{
 	margin: 0 auto;
 	width: 800px;
 	height: 100px;
-	position: relative;
-	background-color:#d3d3d3;
-}*/
+	position: fixed;
+	background-color: #eee;
+}
 
 #tabnavi ul{
 	position: relative;
@@ -49,7 +47,7 @@ body{
 
 #tabnavi li a{
 	display:inline-block;
-	background:black;
+	background:#405dca;
 	color:#fff;
 	padding:5px;
 	border-radius:5px 5px 0 0;

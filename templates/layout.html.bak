@@ -9,10 +9,10 @@
   </head>
   
   <body>
-          <a href="/"><img src="static/img/logo.png"></a>
-
     <div Class="style">
-             <div id="tabnavi">
+      <a href="/"><img src="static/img/logo.png"></a>
+    <!-- {% block body %}{% endblock %} -->
+      <div id="tabnavi">
         <div Class="size">
           <div id="move_tab">
             <ul>
@@ -24,14 +24,6 @@
           </div>
         </div>
       </div>
-
-
-{% block body %}
-<img src="static/img/testimage1.png">
-<img src="static/img/testimage2.png">
-
-{% endblock %}
-
     </div>
   </body>
 </html>
