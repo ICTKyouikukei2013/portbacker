@@ -41,13 +41,16 @@ def index_page():
 # goal.htmlにリンク
 @app.route('/goal', methods=['GET'])
 def goal_get():
-    return render_template("goal.html")
+    col = db.portfolios
+    return render_template("goal.html", col=col)
 
-# goal_textの内容を受け取ってgoal.htmlに渡す
+# goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal', methods=['POST'])
 def goal_post():
     goal_text = request.form['goal_text']
-    return render_template("goal.html", goal_text=goal_text)
+    col = db.portfolios
+    col.insert({"goal_text":goal_text})
+    return render_template("goal.html", col=col)
 
 @app.route('/portfolio')
 def portfolio():
