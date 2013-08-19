@@ -1,35 +1,34 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="style">
-	<div id="tabnavi">
-		<div class="size">
-			<div id="move_tab">
-				<ul>
-					<li>
-						<a href="/">トップ</a>
-					</li>
-					<li>
-						<a href="portfolio">ポートフォリオ</a>
-					</li>
-					<li>
-						<a href="artifact">成果物管理</a>
-					</li>
-					<li>
-						<a href="goal">ゴール設定</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
-      ポートフォリオ作成<br><br>
-
-      <form action="new" method="post">
-	タイトル<br>
-	<input type="text"><br>
-	内容<br>
-        <textarea name="new_text" rows="5" cols="120" Class="new"></textarea><br>
-  		  <input type="submit" value="作成" class="btn btn-primary" style="width:100px; height:40px">
-    		<a href="portfolio"><input type="button" value="戻る" class="btn btn-secondry"	style="width:100px; height:40px">
-      </form>
+  <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <div Class="style">
+    <div id="tabnavi">
+      <div Class="size">
+        <div id="move_tab">
+          <ul>
+            <li><a href="/">トップ</a></li>
+            <li><a href="portfolio">ポートフォリオ</a></li>
+            <li><a href="artifact">成果物管理</a></li>
+            <li><a href="goal">ゴール設定</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="box">
+        ポートフォリオ作成<br>
+            <textarea name="new_text" rows="5" cols="120" Class="new"></textarea><br>
+        公開範囲設定<br>
+          <form method="post"> 
+            <input type="radio" name="button" value="in" checked>学内
+            <input type="radio" name="button" value="out">学外
+          </form>
+        <input type="button" value="作成" class="btn btn-primary" style="width:80px; height:30px">
+        <!--
+        下書きのボタンはどこかにリンクするんですかね
+        するとしたら、保存してからポートフォリオ一覧に戻るとかかなぁ
+        -->
+        <input type="button" value="下書き" class="btn btn-secondry" style="width:80px; height:30px">
+        <a href="portfolio"><input type="button" value="キャンセル" class="btn btn-secondry"	style="width:80px; height:30px">
+    </div>
+  </div>
 {% endblock %}
