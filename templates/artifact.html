@@ -15,14 +15,12 @@
       </div>
     </div>
     <div class="box">
-      <!-- <<<<<<< Updated upstream -->
       <p><input type="file" name=file>
       <input type=submit value=Upload class="btn btn-secondry">
-        {% for file in ls %}
-          <p>{{file}}</p>
-        {% endfor %}
-      <!-- ======= -->
-      <!-- >>>>>>> Stashed changes -->
+      {% for file in ls %}
+        <br/>
+        <a href={{"./view_file/"+file}}>{{file}}</a>
+      {% endfor %}
     </div>
 </div>
 {% endblock %}

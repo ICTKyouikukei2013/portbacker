@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import sys, os
-from flask import Flask, request, redirect, url_for, render_template
+from flask import Flask, request, redirect, url_for, render_template , send_from_directory
 from pymongo import Connection
 from werkzeug import secure_filename
 
@@ -69,6 +69,10 @@ def artifact():
                 return render_template("upload_error.html", filename=file.filename)
     filelist = os.listdir(UPLOAD_FOLDER)
     return render_template("artifact.html",ls=filelist)
+
+@app.route('/view_file/<path:filename>')
+def view_file(filename):
+    return send_from_directory(UPLOAD_FOLDER,filename)
 
 @app.route('/mongo', methods=['GET'])
 def mongo_get():
