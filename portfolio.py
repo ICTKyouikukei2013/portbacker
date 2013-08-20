@@ -56,19 +56,48 @@ def goal_post():
 def portfolio():
     return render_template("portfolio.html")
 
+@app.route('/artifact/<path:dirpath>', methods=['GET', 'POST'])
+def artifact_dir(dirpath):
+    if request.method == 'POST':
+        makedir = request.form['directoryname']
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER+"/"+dirpath, filename))
+        elif makedir:
+            os.mkdir(UPLOAD_FOLDER+"/"+dirpath+"/"+makedir)
+
+    filelist = os.listdir(UPLOAD_FOLDER+"/"+dirpath)
+    dirlist = []
+    filelist2 = []
+    for name in filelist:
+        if os.path.isdir(UPLOAD_FOLDER+"/"+dirpath+"/"+name):
+            dirlist.append(name)
+        else:
+            filelist2.append(name)
+    return render_template("artifact.html",ls=filelist2,dir=dirlist,dirpath=dirpath+"/")
+
 @app.route('/artifact', methods=['GET', 'POST'])
 def artifact():
     if request.method == 'POST':
- 
+        makedir = request.form['directoryname']
         file = request.files['file']
-        if file:
-            if allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            else:
-                return render_template("upload_error.html", filename=file.filename)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        elif makedir:
+            os.mkdir("./data/"+makedir)
+
     filelist = os.listdir(UPLOAD_FOLDER)
-    return render_template("artifact.html",ls=filelist)
+    dirlist = []
+    filelist2 = []
+    for name in filelist:
+        if os.path.isdir("./data/"+name):
+            dirlist.append(name)
+        else:
+            filelist2.append(name)
+    return render_template("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
+
 
 @app.route('/view_file/<path:filename>')
 def view_file(filename):

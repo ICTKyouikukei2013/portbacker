@@ -1,25 +1,33 @@
 {% extends "layout.html" %}
 {% block body %}
- <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+ <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <div Class="style">
     <div id="tabnavi">
       <div Class="size">
         <div id="move_tab">
           <ul>
             <li><a href="/">トップ</a></li>
-            <li><a href="portfolio">ポートフォリオ</a></li>
-            <li><a href="artifact">成果物管理</a></li>
-            <li><a href="goal">ゴール設定</a></li>
+            <li><a href="/portfolio">ポートフォリオ</a></li>
+            <li><a href="/artifact">成果物管理</a></li>
+            <li><a href="/goal">ゴール設定</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="box">
-      <p><input type="file" name=file>
-      <input type=submit value=Upload class="btn btn-secondry">
+      <form action="" method=post enctype=multipart/form-data>
+	<p><input type="text" name=directoryname>
+	   <input type=submit value=フォルダ作成 class="btn btn-secondry">
+	<p><input type="file" name=file>
+	   <input type=submit value=Upload class="btn btn-secondry">
+      </form>
+      {% for dirname in dir %}
+      <br/>
+      <a href={{"/artifact/"+dirpath+dirname}}>{{dirname}}</a>
+	{% endfor %}
       {% for file in ls %}
         <br/>
-        <a href={{"./view_file/"+file}}>{{file}}</a>
+        <a href={{"/view_file/"+dirpath+file}} target="_blank">{{file}}</a>
       {% endfor %}
     </div>
 </div>
