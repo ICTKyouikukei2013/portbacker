@@ -21,9 +21,9 @@
 	<input type="submit" class="btn btn-primary" value="Upload">
 </form>
 {% for file in ls %}
-<p>
+<a href={{"./view_file/"+file}}>
 	{{file}}
-</p>
+</a><br/>
 {% endfor %}
 
 {% endblock %}
