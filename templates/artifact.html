@@ -22,12 +22,12 @@
 	   <input type=submit value=Upload class="btn btn-secondry">
       </form>
       {% for dirname in dir %}
-      <br/>
-      <a href={{"/artifact/"+dirpath+dirname}}>{{dirname}}</a>
-	{% endfor %}
+        <br/>
+        <i class="icon-folder-close"></i><a href={{"/artifact/"+dirpath+dirname}}>{{dirname}}</a>
+	    {% endfor %}
       {% for file in ls %}
         <br/>
-        <a href={{"/view_file/"+dirpath+file}} target="_blank">{{file}}</a>
+        <i class="icon-file"></i><a href={{"/view_file/"+dirpath+file}} target="_blank">{{file}}</a>
       {% endfor %}
     </div>
 </div>
