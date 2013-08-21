@@ -7,6 +7,7 @@ from werkzeug import secure_filename
 
 UPLOAD_FOLDER = './data'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -27,8 +28,7 @@ db = con.portbacker
 # col = db['foo']
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 @app.route('/uploaded_file')
 def uploaded_file():
@@ -129,11 +129,34 @@ def mongo_post():
 # portfolioの新規作成ページ
 @app.route('/new', methods=['GET'])
 def new():
-    return render_template("new.html")
+    filelist = os.listdir(UPLOAD_FOLDER)
+    imglist = []
+    for filename in filelist:
+        if '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS:
+            imglist.append(filename)
+
+    return render_template("new.html", imglist=imglist)
 
 @app.route('/new', methods=['POST'])
 def new_post():
-    return render_template("portfolio.html", ispost=True)
+    filelist = os.listdir(UPLOAD_FOLDER)
+    filelist.sort()
+    nonexist_i = None
+    for i in range(1, 100):
+        if ("portfolio%d.html" % i) not in filelist:
+            nonexist_i = i
+            break
+    else:
+        assert False, "too many portfolios"
+    i = nonexist_i
+    with open(os.path.join(UPLOAD_FOLDER, "portfolio%d.html" % i), "wb") as f:
+        f.write(request.form["textarea"])
+    return render_template("portfolio.html")
+
+
+@app.route('/preview', methods=['POST'])
+def preview():
+    return request.form['textarea']
 
 @app.route('/goal', methods=['POST'])
 def new_portfolio():
