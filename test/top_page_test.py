@@ -2,7 +2,8 @@
 import sys
 import unittest
 
-sys.path.insert(0, "..")  # portfolio.pyにパスを通す
+import os.path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import portfolio
 
 class TopPageTest(unittest.TestCase):
