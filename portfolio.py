@@ -32,7 +32,7 @@ def allowed_file(filename):
 
 @app.route('/uploaded_file')
 def uploaded_file():
-  return 'success upload %s!' % request.args["filename"]
+    return 'success upload %s!' % request.args["filename"]
 
 @app.route('/', methods=['GET'])
 def index_page():
@@ -110,8 +110,6 @@ def view_file(filename):
 @app.route('/mongo', methods=['GET'])
 def mongo_get():
     # testデータベースからfooコレクションを取得
-    col = db.portfolios
-
     return render_template("mongo.html", db=db)
 
 @app.route('/mongo', methods=['POST'])
