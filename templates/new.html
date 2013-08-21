@@ -1,13 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
   <style>
-    img {
+    .seikaimg {
        width: 20%;
        height: 20%;
-    }
-    body {
-      font-family: Verdana;
-      font-size: 11px;
     }
     
     h2 {
@@ -32,17 +28,12 @@
     }
     
     #toolbar [data-wysihtml5-action] {
-      float: right;
     }
     
     #toolbar,
     textarea {
       width: 850px;
       padding: 5px;
-      -webkit-box-sizing: border-box;
-      -ms-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
     }
     
     textarea {
@@ -85,7 +76,7 @@
       <div Class="size">
         <div id="move_tab">
           <ul>
-            <li><a href="/">トップ</a></li>
+            <li><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
             <li><a href="portfolio">ポートフォリオ</a></li>
             <li><a href="artifact">成果物管理</a></li>
             <li><a href="goal">ゴール設定</a></li>
@@ -103,12 +94,12 @@
             <a data-wysihtml5-command="insertImage">insert image</a> |
             <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
             <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
-            <a data-wysihtml5-command="insertUnorderedList">insertUnorderedList</a> |
-            <a data-wysihtml5-command="insertOrderedList">insertOrderedList</a> |
+            <a data-wysihtml5-command="insertUnorderedList">箇条書き</a> |
+            <a data-wysihtml5-command="insertOrderedList">連番</a> |
             <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a> |
             <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a> |
             <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a> |
-            <a data-wysihtml5-command="insertSpeech">speech</a>
+            <a data-wysihtml5-command="insertSpeech">speech</a>  ||
             <a data-wysihtml5-action="change_view">switch to html view</a>
             
             <div data-wysihtml5-dialog="createLink" style="display: none;">
@@ -139,7 +130,7 @@
           <textarea id="textarea" name="textarea"></textarea>
           <small align="right">powered by <a href="https://github.com/xing/wysihtml5" target="_blank">wysihtml5</a>.</small>
         {% for imgname in imglist %}
-          <img src="/view_file/{{imgname}}">
+          <img src="/view_file/{{imgname}}" class="seikaimg">
         {% endfor %}
         <br>  
         <input type="submit" name="button" value="保存" class="btn btn-primary" style="width:80px; height:30px" onClick="sendSave()">

@@ -13,7 +13,7 @@
 
 .box{
 	background-color: #dcdcdc;
-	width: 740px;
+	width: 796px;
 	height: 600px;
 	margin-top: -1.2%
 }
@@ -81,7 +81,7 @@ body{
 }
 
 textarea{
-	width: 740px;
+	width: 780px;
 	height:500px;
 	resize:none;
 }
