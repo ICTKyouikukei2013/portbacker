@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ICTKyouikukei2013/portbacker.png?branch=tos-kamiya/refactoring)](https://travis-ci.org/ICTKyouikukei2013/portbacker)
+
 # portbacker
 
 ## 必要なもの
@@ -36,13 +38,13 @@ $ python portfolio.py
 collection名 portfolios
 
 ```javascript
-{"public":boolean,"owner"="string","text"="string"}
+{"public": boolean, "owner": "string", "text": "string"}
 ```
 
 ### ゴール
 collection名 goals
 
 ```javascript
-{"owner"="string","goal"="string"}
+{"owner": "string", "goal": "string"}
 ```
 
