@@ -86,6 +86,8 @@ textarea{
 	resize:none;
 }
 
-#name{
-	background-color: black;
+/*ポートフォリオページの日付ごと制作物の境界線*/
+hr{
+	margin-top: -1%;
+	margin-bottom: -1%;
 }

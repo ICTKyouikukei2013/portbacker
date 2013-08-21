@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-import sys, os
+import sys, os, datetime, itertools
 from flask import Flask, request, redirect, url_for, render_template , send_from_directory
 from pymongo import Connection
 from werkzeug import secure_filename
@@ -58,7 +58,29 @@ def goal_post():
 
 @app.route('/portfolio')
 def portfolio():
-    return render_template("portfolio.html")
+    portlists = []
+    datelist = []
+    portfolio_filelist = []
+    filelist = os.listdir(UPLOAD_FOLDER)
+    for filename in filelist:
+        if 'portfolio' in filename and '.html' in filename:
+            portfolio_filelist.append(filename)
+    
+    portfolio_filelist.sort(key=get_date, reverse=True)
+
+    for k, g in itertools.groupby(portfolio_filelist, key=get_date):
+        portlists.append(list(g))      # Store group iterator as a list
+        datelist.append(k)
+
+    zipped = zip(datelist, portlists)
+
+    return render_template("portfolio.html", zipped=zipped)
+
+def get_date(filename):
+    stat = os.stat(UPLOAD_FOLDER + "/" + filename)
+    last_modified = stat.st_mtime
+    dt = datetime.datetime.fromtimestamp(last_modified)
+    return dt.strftime("%Y/%m/%d")
 
 @app.route('/artifact/<path:dirpath>', methods=['GET', 'POST'])
 def artifact_dir(dirpath):
