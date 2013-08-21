@@ -2,7 +2,8 @@
 import sys
 import unittest
 
-sys.path.insert(0, "..")  # portfolio.pyにパスを通す
+import os.path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import portfolio
 
 class TopPageTest(unittest.TestCase):
@@ -15,9 +16,10 @@ class TopPageTest(unittest.TestCase):
 
     def test_top_page_inclues_links_to_pages(self):
         rv = self.app.get('/')
-        self.assertTrue(u'<h1>TOPページ</h1>' in rv.data)
-        self.assertTrue(u'href = "portfolio"' in rv.data)
-        self.assertTrue(u'href = "goal"' in rv.data)
+        text = rv.data.decode('utf-8')
+        self.assertTrue(u'ここはトップページです' in text)
+        self.assertTrue(u'href="portfolio"' in text)
+        self.assertTrue(u'href="goal"' in text)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
