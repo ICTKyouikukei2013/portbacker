@@ -2,13 +2,12 @@
 
 from flask import Request
 
-import os
-import shutil
 import sys
 from cStringIO import StringIO
 import unittest
 
-sys.path.insert(0, "..")  # portfolio.pyにパスを通す
+import os.path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 import portfolio
 
@@ -23,6 +22,10 @@ class ArtifactPageTest(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_get_page(self):
+        rv = self.client.get('/artifact')
+        assert rv.status_code == 200
+        
     def test_uploading(self):
         data_dir = portfolio.UPLOAD_FOLDER
         if not os.path.exists(data_dir):
@@ -35,8 +38,9 @@ class ArtifactPageTest(unittest.TestCase):
         rv = self.client.post('/artifact',
             data={
                   'file': (StringIO('hello world!'), file_name),
+                  'directoryname': None
             })
-
+        assert rv.status_code == 200
         self.assertTrue(file_name in rv.data)
         self.assertTrue(os.path.exists(file_path))
 
