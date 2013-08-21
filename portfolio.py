@@ -47,9 +47,13 @@ def goal_get():
 # goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal', methods=['POST'])
 def goal_post():
-    goal_text = request.form['goal_text']
     col = db.portfolios
-    col.insert({"goal_text":goal_text})
+    if request.form["button"] == u"設定":
+        goal_text = request.form['goal_text']
+        col.insert({"goal_text":goal_text})
+    elif request.form["button"] == u"削除":
+        rmgoal = request.form['rmgoal']
+        col.remove({"goal_text":rmgoal})
     return render_template("goal.html", col=col)
 
 @app.route('/portfolio')
