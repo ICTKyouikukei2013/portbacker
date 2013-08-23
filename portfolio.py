@@ -180,10 +180,6 @@ def new_post():
 def preview():
     return request.form['textarea']
 
-@app.route('/goal', methods=['POST'])
-def new_portfolio():
-    new_text = request.form['new_text']
-    return render_template("new.html", new_text=new_text)
 
 # print "========find_one========"
 # print col.find_one()
