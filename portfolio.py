@@ -172,9 +172,9 @@ def new_post():
         assert False, "too many portfolios"
     i = nonexist_i
     with open(os.path.join(UPLOAD_FOLDER, "portfolio%d.html" % i), "wb") as f:
-        f.write(request.form["textarea"])
+        text = request.form["textarea"].encode('utf-8')
+        f.write(text)
     return portfolio()
-
 
 @app.route('/preview', methods=['POST'])
 def preview():
