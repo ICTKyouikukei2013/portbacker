@@ -153,11 +153,14 @@ def mongo_post():
 def new():
     filelist = os.listdir(UPLOAD_FOLDER)
     imglist = []
+    artifact_list = []
     for filename in filelist:
         if '.' in filename and filename.rsplit('.', 1)[1] in IMAGE_EXTENSIONS:
             imglist.append(filename)
+        else:
+            artifact_list.append(filename)
 
-    return render_template("new.html", imglist=imglist)
+    return render_template("new.html", imglist=imglist, artifact_list=artifact_list)
 
 @app.route('/new', methods=['POST'])
 def new_post():

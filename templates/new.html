@@ -132,6 +132,9 @@
         {% for imgname in imglist %}
           <img src="/view_file/{{imgname}}" class="seikaimg">
         {% endfor %}
+        {% for art_name in artifact_list %}
+          <p><a href="/view_file/{{art_name}}" target = '_blank'>{{art_name}}</a></p>
+        {% endfor %}
         <br>  
         <input type="submit" name="button" value="保存" class="btn btn-primary" style="width:80px; height:30px" onClick="sendSave()">
         <!--
