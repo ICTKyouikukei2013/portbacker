@@ -21,13 +21,13 @@
 	<p><input type="file" name=file>
 	   <input type=submit value=Upload class="btn btn-secondry">
       </form>
-      {% for dirname in dir %}
+      {% for dirdisplay, dirurl in dir %}
         <br/>
-        <i class="icon-folder-close"></i><a href={{"/artifact/"+dirpath+dirname}}>{{dirname}}</a>
+        <i class="icon-folder-close"></i><a href={{"/artifact/"+dirpath+dirurl}}>{{dirdisplay}}</a>
 	    {% endfor %}
-      {% for file in ls %}
+      {% for filedisplay, fileurl in ls %}
         <br/>
-        <i class="icon-file"></i><a href={{"/view_file/"+dirpath+file}} target="_blank">{{file}}</a>
+        <i class="icon-file"></i><a href={{"/view_file/"+dirpath+fileurl}} target="_blank">{{filedisplay}}</a>
       {% endfor %}
     </div>
 </div>

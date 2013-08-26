@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
 
+import urllib
 import sys, os, datetime, itertools
 from flask import Flask, request, redirect, url_for, render_template , send_from_directory
 from pymongo import Connection
 from werkzeug import secure_filename
 
-UPLOAD_FOLDER = './data'
+UPLOAD_FOLDER = u'./data'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -77,57 +78,80 @@ def portfolio():
     return render_template("portfolio.html", zipped=zipped)
 
 def get_date(filename):
-    stat = os.stat(UPLOAD_FOLDER + "/" + filename)
+    stat = os.stat(os.path.join(UPLOAD_FOLDER, filename))
     last_modified = stat.st_mtime
     dt = datetime.datetime.fromtimestamp(last_modified)
     return dt.strftime("%Y/%m/%d")
 
+def unquote(s):
+    if isinstance(s, unicode):
+        s = s.encode('utf-8')
+    return urllib.unquote(s).decode('utf-8')
+
+def quote(s):
+    if isinstance(s, unicode):
+        s = s.encode('utf-8')
+    return urllib.quote(s)
+
+def list_files_and_dirs(dirpath):
+    filelist = os.listdir(dirpath)
+    dirlist = []  # list of (display, url)
+    filelist2 = []  # list of (display, url)
+    def to_display_and_url(name):
+        return (name, quote('utf-8'))
+    for name in filelist:
+        if os.path.isdir(os.path.join(dirpath, name)):
+            dirlist.append((name, quote(name)))
+        else:
+            filelist2.append((name, quote(name)))
+    return filelist2, dirlist
+
+def check_filename(filename):
+    unpermitted_chars = '&:;"' + "'"
+    for c in unpermitted_chars:
+        if c in filename:
+            return False
+    for c in filename:
+        if ord(c) < 0x20:  # ctrl chars
+            return False
+    return True
+
 @app.route('/artifact/<path:dirpath>', methods=['GET', 'POST'])
 def artifact_dir(dirpath):
     if request.method == 'POST':
-        makedir = request.form['directoryname']
+        makedir = unquote(request.form['directoryname'])
         file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(UPLOAD_FOLDER+"/"+dirpath, filename))
+        if file:
+            if allowed_file(file.filename) and check_filename(file.filename):
+                file.save(os.path.join(UPLOAD_FOLDER, dirpath, file.filename))
+            else:
+                sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
         elif makedir:
-            os.mkdir(UPLOAD_FOLDER+"/"+dirpath+"/"+makedir)
+            os.mkdir(os.path.join(UPLOAD_FOLDER, dirpath, makedir))
 
-    filelist = os.listdir(UPLOAD_FOLDER+"/"+dirpath)
-    dirlist = []
-    filelist2 = []
-    for name in filelist:
-        if os.path.isdir(UPLOAD_FOLDER+"/"+dirpath+"/"+name):
-            dirlist.append(name)
-        else:
-            filelist2.append(name)
-    return render_template("artifact.html",ls=filelist2,dir=dirlist,dirpath=dirpath+"/")
+    filelist2, dirlist = list_files_and_dirs(os.path.join(UPLOAD_FOLDER, dirpath))
+    return render_template("artifact.html",ls=filelist2,dir=dirlist,
+            dirpath=quote(dirpath) + "/")
 
 @app.route('/artifact', methods=['GET', 'POST'])
 def artifact():
     if request.method == 'POST':
-        makedir = request.form['directoryname']
+        makedir = unquote(request.form['directoryname'])
         file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if file:
+            if allowed_file(file.filename) and check_filename(file.filename):
+                file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+            else:
+                sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
         elif makedir:
-            os.mkdir("./data/"+makedir)
+            os.mkdir(os.path.join(UPLOAD_FOLDER, makedir))
 
-    filelist = os.listdir(UPLOAD_FOLDER)
-    dirlist = []
-    filelist2 = []
-    for name in filelist:
-        if os.path.isdir("./data/"+name):
-            dirlist.append(name)
-        else:
-            filelist2.append(name)
+    filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
     return render_template("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
-
 
 @app.route('/view_file/<path:filename>')
 def view_file(filename):
-    return send_from_directory(UPLOAD_FOLDER,filename)
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 @app.route('/mongo', methods=['GET'])
 def mongo_get():
