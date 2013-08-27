@@ -13,11 +13,10 @@
 
 .box{
 	background-color: #dcdcdc;
-	width: 796px;
+	width: 764px;
 	height: 600px;
-	margin-top: -1.2%
+	margin-top: -1.2%;
 }
-
 
 body{
 	width: 800px;
@@ -43,25 +42,17 @@ body{
 #tabnavi li a{
 	display:inline-block;
 	background:#dcdcdc;
-	color:#000;
+	color:#666;
+	border-radius: 5px 5px 0 0;
 	padding:5px;
-	border-radius:5px 5px 0 0;
 	text-decoration:none;
 }
 
-#tabnavi li :hover,
-
+#tabnavi li a:hover,
 #tabnavi li a.active{
-	background:#aaa;
-	color:white;
+	background:#888;
+	color:#fff;
 }
-
-#tabnavi li a.active{
-	background:#aaa;
-	color:white;
-}
-
-
 
 #tabcontent{
 	position: relative;
@@ -81,8 +72,8 @@ body{
 }
 
 textarea{
-	width: 780px;
-	height:500px;
+	width: 400px;
+	height:600px;
 	resize:none;
 }
 
@@ -90,4 +81,16 @@ textarea{
 hr{
 	margin-top: -1%;
 	margin-bottom: -1%;
+}
+
+.portfolio_kanri{
+	width: 30%;
+	margin-top: -80%;
+	margin-left: 60%;
+	margin-bottom: 1%;
+}
+
+small{
+	margin-top: -1%;
+	 
 }
