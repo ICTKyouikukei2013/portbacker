@@ -40,12 +40,22 @@ def befor_request():
         return
     return redirect('/login')
 
+def is_exist_directory(dirname):
+    filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
+    dirlist2 = []
+    for i in range(len(dirlist)):
+        dirlist2.append(dirlist[i][1])
+    return dirname in dirlist2
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if session.get('username') is not None:
         return redirect('/')
     if request.method == 'POST':
-        session['username'] = request.form['username']
+        username = request.form['username']
+        session['username'] = username
+        if(not is_exist_directory(username)):
+            os.mkdir(get_sessionuser_directory_path("", ""))
         return redirect('/')
     return render_template('login.html')
 
@@ -97,7 +107,7 @@ def portfolio():
     portlists = []
     datelist = []
     portfolio_filelist = []
-    filelist = os.listdir(UPLOAD_FOLDER)
+    filelist = os.listdir(get_sessionuser_directory_path("", ""))
     for filename in filelist:
         if 'portfolio' in filename and '.html' in filename:
             portfolio_filelist.append(filename)
@@ -113,7 +123,7 @@ def portfolio():
     return render_template_with_username("portfolio.html", zipped=zipped)
 
 def get_date(filename):
-    stat = os.stat(os.path.join(UPLOAD_FOLDER, filename))
+    stat = os.stat(get_sessionuser_directory_path("", filename))
     last_modified = stat.st_mtime
     dt = datetime.datetime.fromtimestamp(last_modified)
     return dt.strftime("%Y/%m/%d")
@@ -151,20 +161,24 @@ def check_filename(filename):
             return False
     return True
 
+def get_sessionuser_directory_path(dirpath, filename):
+    return os.path.join(UPLOAD_FOLDER, session['username'], dirpath, filename)
+
 @app.route('/artifact/<path:dirpath>', methods=['GET', 'POST'])
 def artifact_dir(dirpath):
+    username = session['username']
     if request.method == 'POST':
         makedir = unquote(request.form['directoryname'])
         file = request.files['file']
         if file:
             if allowed_file(file.filename) and check_filename(file.filename):
-                file.save(os.path.join(UPLOAD_FOLDER, dirpath, file.filename))
+                file.save(get_sessionuser_directory_path(dirpath, file.filename))
             else:
                 sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
         elif makedir:
-            os.mkdir(os.path.join(UPLOAD_FOLDER, dirpath, makedir))
+            os.mkdir(get_sessionuser_directory_path(dirpath, makedir))
 
-    filelist2, dirlist = list_files_and_dirs(os.path.join(UPLOAD_FOLDER, dirpath))
+    filelist2, dirlist = list_files_and_dirs(get_sessionuser_directory_path(dirpath, ""))
     return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
             dirpath=quote(dirpath) + "/")
 
@@ -175,23 +189,23 @@ def artifact():
         file = request.files['file']
         if file:
             if allowed_file(file.filename) and check_filename(file.filename):
-                file.save(os.path.join(UPLOAD_FOLDER, file.filename))
+                file.save(get_sessionuser_directory_path("", file.filename))
             else:
                 sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
         elif makedir:
-            os.mkdir(os.path.join(UPLOAD_FOLDER, makedir))
+            os.mkdir(get_sessionuser_directory_path("", makedir))
 
-    filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
+    filelist2, dirlist = list_files_and_dirs(get_sessionuser_directory_path("", ""))
     return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
 
 @app.route('/view_file/<path:filename>')
 def view_file(filename):
-    return send_from_directory(UPLOAD_FOLDER, filename)
+    return send_from_directory(get_sessionuser_directory_path("", ""), filename)
 
 # portfolioの新規作成ページ
 @app.route('/new', methods=['GET'])
 def new():
-    filelist = os.listdir(UPLOAD_FOLDER)
+    filelist = os.listdir(get_sessionuser_directory_path("", ""))
     imglist = []
     artifact_list = []
     for filename in filelist:
@@ -204,7 +218,7 @@ def new():
 
 @app.route('/new', methods=['POST'])
 def new_post():
-    filelist = os.listdir(UPLOAD_FOLDER)
+    filelist = os.listdir(get_sessionuser_directory_path("", ""))
     filelist.sort()
     nonexist_i = None
     for i in range(1, 100):
@@ -214,7 +228,7 @@ def new_post():
     else:
         assert False, "too many portfolios"
     i = nonexist_i
-    with open(os.path.join(UPLOAD_FOLDER, "portfolio%d.html" % i), "wb") as f:
+    with open(os.path.join(get_sessionuser_directory_path("", ""), "portfolio%d.html" % i), "wb") as f:
         text = request.form["textarea"].encode('utf-8')
         f.write(text)
     return portfolio()
