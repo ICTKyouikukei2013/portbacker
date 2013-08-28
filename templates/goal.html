@@ -21,10 +21,10 @@
 	<input type="submit" name="button" class="btn btn-primary" value="設定">
       </form>
 
-      {% for data in col.find({"goal_text":{"$exists":True}}) %}
+      {% for doc in docs %}
       <form method="post" action="/goal">
-	{{data["goal_text"]}}
-	<input type="hidden" name="rmgoal" value={{data["goal_text"]}}>
+	{{doc["goal_text"]}}
+	<input type="hidden" name="rmgoal" value={{doc["goal_text"]}}>
 	<input type="submit" name="button" class="btn btn-secondly" value="削除"/>
       </form>
       {% endfor %}
