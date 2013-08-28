@@ -82,9 +82,10 @@ def goal_get():
 def goal_post():
     username = session['username']
     col = db.goals
-    if request.form["button"] == u"設定":
+    if request.form["button"] == u"新規作成":
         goal_text = request.form['goal_text']
-        col.insert({"username": username, "goal_text": goal_text})
+        if goal_text != "":
+            col.insert({"username": username, "goal_text": goal_text})
     elif request.form["button"] == u"削除":
         rmgoal = request.form['rmgoal']
         col.remove({"username": username, "goal_text": rmgoal})
