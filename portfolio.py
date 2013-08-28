@@ -153,25 +153,6 @@ def artifact():
 def view_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
-@app.route('/mongo', methods=['GET'])
-def mongo_get():
-    # testデータベースからfooコレクションを取得
-    return render_template("mongo.html", db=db)
-
-@app.route('/mongo', methods=['POST'])
-def mongo_post():
-    col = db.portfolios
-    if request.form['button'] == u"設定":
-        public = request.form['public'] == "true"
-        owner = request.form['owner']
-        text = request.form['text']
-
-        col.insert({"public":public, "owner":owner, "text":text})
-    else:
-        col.remove({"owner":request.form['owner']})
-    
-    return render_template("mongo_post.html")
-
 # portfolioの新規作成ページ
 @app.route('/new', methods=['GET'])
 def new():
@@ -206,14 +187,6 @@ def new_post():
 @app.route('/preview', methods=['POST'])
 def preview():
     return request.form['textarea']
-
-
-# print "========find_one========"
-# print col.find_one()
-
-# print "========find========"
-# for data in col.find():
-#     print data
 
 if __name__ == '__main__':
     app.debug = True
