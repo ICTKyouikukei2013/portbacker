@@ -16,11 +16,11 @@
     </div>
     <div class="box">
       <form method="post" action="/goal">
-	<h3>ゴール</h3>
-	<textarea name="goal_text"></textarea><br />
+	<h3>ゴール設定</h3>
+	<input type="text" name="goal_text" style="width:500px;"/><br />
 	<input type="submit" name="button" class="btn btn-primary" value="設定">
       </form>
-
+  <h3>ゴール</h3>
       {% for doc in docs %}
       <form method="post" action="/goal">
 	{{doc["goal_text"]}}
