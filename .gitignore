@@ -4,4 +4,6 @@
 ..
 *.bak
 *~
-
+.pydevproject
+data/
+*.pyc
