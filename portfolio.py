@@ -27,6 +27,11 @@ db = con.portbacker
 
 # 以下のように記載することも可能
 # col = db['foo']
+
+def render_template_with_username(url,**keywordargs):
+    username = session.get('username')
+    return render_template(url,username=username,**keywordargs)
+
 @app.before_request
 def befor_request():
     if session.get('username') is not None:
@@ -62,7 +67,7 @@ def uploaded_file():
 
 @app.route('/', methods=['GET'])
 def index_page():
-    return render_template("top.html")
+    return render_template_with_username("top.html")
 
 # goal.htmlにリンク
 @app.route('/goal', methods=['GET'])
@@ -70,7 +75,7 @@ def goal_get():
     username = session['username']
     col = db.goals
     docs = col.find({"username": username})
-    return render_template("goal.html", docs=docs)
+    return render_template_with_username("goal.html", docs=docs)
 
 # goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal', methods=['POST'])
@@ -84,7 +89,7 @@ def goal_post():
         rmgoal = request.form['rmgoal']
         col.remove({"username": username, "goal_text": rmgoal})
     docs = col.find({"username": username})
-    return render_template("goal.html", docs=docs ,col=col)
+    return render_template_with_username("goal.html", docs=docs)
 
 @app.route('/portfolio')
 def portfolio():
@@ -104,7 +109,7 @@ def portfolio():
 
     zipped = zip(datelist, portlists)
 
-    return render_template("portfolio.html", zipped=zipped)
+    return render_template_with_username("portfolio.html", zipped=zipped)
 
 def get_date(filename):
     stat = os.stat(os.path.join(UPLOAD_FOLDER, filename))
@@ -159,7 +164,7 @@ def artifact_dir(dirpath):
             os.mkdir(os.path.join(UPLOAD_FOLDER, dirpath, makedir))
 
     filelist2, dirlist = list_files_and_dirs(os.path.join(UPLOAD_FOLDER, dirpath))
-    return render_template("artifact.html",ls=filelist2,dir=dirlist,
+    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
             dirpath=quote(dirpath) + "/")
 
 @app.route('/artifact', methods=['GET', 'POST'])
@@ -176,7 +181,7 @@ def artifact():
             os.mkdir(os.path.join(UPLOAD_FOLDER, makedir))
 
     filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
-    return render_template("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
+    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
 
 @app.route('/view_file/<path:filename>')
 def view_file(filename):
@@ -194,7 +199,7 @@ def new():
         else:
             artifact_list.append(filename)
 
-    return render_template("new.html", imglist=imglist, artifact_list=artifact_list)
+    return render_template_with_username("new.html", imglist=imglist, artifact_list=artifact_list)
 
 @app.route('/new', methods=['POST'])
 def new_post():

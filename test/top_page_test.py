@@ -1,4 +1,5 @@
 #coding: utf-8
+
 import sys
 import unittest
 
@@ -10,6 +11,8 @@ class TopPageTest(unittest.TestCase):
 
     def setUp(self):
         self.app = portfolio.app.test_client()
+        with self.app.session_transaction() as sess:
+            sess['username'] = 'kamiya'
 
     def tearDown(self):
         pass
