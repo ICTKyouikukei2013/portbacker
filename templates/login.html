@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
   <form method="post">
-      <p><input type='text' name='username'></p>
+      <p>username:<input type='text' name='username' pattern="^[0-9a-z]+" required></p>
+      <p>password:<input type='password' name='password' required></p>
       <p><input type='submit' value='Login'></p>
   </form>
 {% endblock %}

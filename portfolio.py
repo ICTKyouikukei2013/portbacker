@@ -42,7 +42,12 @@ def befor_request():
 
 def is_exist_directory(dirname):
     filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
+    if not dirlist:
+        return False
     return dirname in zip(*dirlist)[1]
+
+def instance_of_ldap(username, password):
+    return True
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -50,6 +55,9 @@ def login():
         return redirect('/')
     if request.method == 'POST':
         username = request.form['username']
+        password = request.form['password']
+        if not instance_of_ldap(username, password):
+            return redirect('/login')
         session['username'] = username
         if(not is_exist_directory(username)):
             os.mkdir(get_sessionuser_directory_path("", ""))
