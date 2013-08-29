@@ -4,18 +4,18 @@ import urllib
 import sys, os, datetime, itertools
 from flask import Flask, session, request, redirect, url_for, render_template , send_from_directory, escape
 from pymongo import Connection
-from werkzeug import secure_filename
 
 UPLOAD_FOLDER = u'./data'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+DOCUMENT_EXTENSIONS = frozenset(['txt', 'pdf', 'md'])
+IMAGE_EXTENSIONS = frozenset(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = DOCUMENT_EXTENSIONS.union(IMAGE_EXTENSIONS)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
-# コネクションからportbackerデータベースを取得
 db = Connection('localhost', 27017).portbacker
 
 def render_template_with_username(url,**keywordargs):
@@ -45,26 +45,20 @@ def quote(s):
     return urllib.quote(s)
 
 def list_files_and_dirs(dirpath):
-    filelist = os.listdir(dirpath)
-    dirlist = []  # list of (display, url)
-    filelist2 = []  # list of (display, url)
-    def to_display_and_url(name):
-        return (name, quote('utf-8'))
-    for name in filelist:
-        if os.path.isdir(os.path.join(dirpath, name)):
-            dirlist.append((name, quote(name)))
-        else:
-            filelist2.append((name, quote(name)))
-    return filelist2, dirlist
+    dirs_and_files = os.listdir(dirpath)
+    dirlist = []
+    filelist = []
+    for name in dirs_and_files:
+        (dirlist if os.path.isdir(os.path.join(dirpath, name)) else filelist) \
+        .append(name)
+    return filelist, dirlist
 
 def check_filename(filename):
     unpermitted_chars = '&:;"' + "'"
-    for c in unpermitted_chars:
-        if c in filename:
-            return False
-    for c in filename:
-        if ord(c) < 0x20:  # ctrl chars
-            return False
+    if any((c in filename) for c in unpermitted_chars):
+        return False
+    if any((ord(c) < 0x20) for c in filename):  # including control chars?
+        return False
     return True
 
 def path_from_sessionuser_root(*p):
@@ -119,7 +113,6 @@ def goal_get():
     docs = col.find({"username": username})
     return render_template_with_username("goal.html", docs=docs)
 
-# goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal', methods=['POST'])
 def goal_post():
     username = session['username']
@@ -157,8 +150,10 @@ def portfolio():
 @app.route('/artifact/<path:dirpath>', methods=['GET'])
 def artifact_dir(dirpath):
     username = session['username']
-    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
-    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
+    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
+    return render_template_with_username("artifact.html", 
+            ls=[(n, quote(n)) for n in filelist],
+            dir=[(n, quote(n)) for n in dirlist],
             dirpath=quote(dirpath) + "/")
 
 @app.route('/artifact/<path:dirpath>', methods=['POST'])
@@ -173,14 +168,19 @@ def artifact_dir_post(dirpath):
     elif makedir:
         os.mkdir(path_from_sessionuser_root(dirpath, makedir))
 
-    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
-    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
+    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
+    return render_template_with_username("artifact.html", 
+            ls=[(n, quote(n)) for n in filelist],
+            dir=[(n, quote(n)) for n in dirlist],
             dirpath=quote(dirpath) + "/")
 
 @app.route('/artifact', methods=['GET'])
 def artifact_get():
-    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root())
-    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
+    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root())
+    return render_template_with_username("artifact.html",
+            ls=[(n, quote(n)) for n in filelist],
+            dir=[(n, quote(n)) for n in dirlist],
+            dirpath="")
 
 @app.route('/artifact', methods=['POST'])
 def artifact_post():
@@ -194,8 +194,11 @@ def artifact_post():
     elif makedir:
         os.mkdir(path_from_sessionuser_root(makedir))
 
-    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root())
-    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
+    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root())
+    return render_template_with_username("artifact.html",
+            ls=[(n, quote(n)) for n in filelist],
+            dir=[(n, quote(n)) for n in dirlist],
+            dirpath="")
 
 @app.route('/view_file/<path:filename>', methods=['GET'])
 def view_file(filename):
