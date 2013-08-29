@@ -17,11 +17,12 @@ class ArtifactPageTest(unittest.TestCase):
     def setUp(self):
         self.app = app = portfolio.app
         app.debug = True
+        username = 'kamiya'
         self.client = app.test_client()
         with self.client.session_transaction() as sess:
-            sess['username'] = 'kamiya'
+            sess['username'] = username
 
-        data_dir = portfolio.UPLOAD_FOLDER
+        data_dir = os.path.join(portfolio.UPLOAD_FOLDER, username)
         if not os.path.exists(data_dir):
             os.mkdir(data_dir)
         self.data_dir = data_dir
