@@ -42,10 +42,7 @@ def befor_request():
 
 def is_exist_directory(dirname):
     filelist2, dirlist = list_files_and_dirs(UPLOAD_FOLDER)
-    dirlist2 = []
-    for i in range(len(dirlist)):
-        dirlist2.append(dirlist[i][1])
-    return dirname in dirlist2
+    return dirname in zip(*dirlist)[1]
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
