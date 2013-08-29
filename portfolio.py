@@ -12,114 +12,21 @@ IMAGE_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# set the secret key.  keep this really secret:
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
-# コネクション作成
-con = Connection('localhost', 27017)
-
-# コネクションからtestデータベースを取得
-db = con.portbacker
-
-# 以下のように記載することも可能
-# db = con['test']
-
-# testデータベースからfooコレクションを取得
-# col = db.portfolios
-
-# 以下のように記載することも可能
-# col = db['foo']
+# コネクションからportbackerデータベースを取得
+db = Connection('localhost', 27017).portbacker
 
 def render_template_with_username(url,**keywordargs):
     username = session.get('username')
     return render_template(url,username=username,**keywordargs)
 
-@app.before_request
-def befor_request():
-    if session.get('username') is not None:
-        return
-    if request.path == '/login':
-        return
-    return redirect('/login')
-
 def instance_of_ldap(username, password):
     return True
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if session.get('username') is not None:
-        return redirect('/')
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        if not instance_of_ldap(username, password):
-            return redirect('/login')
-        session['username'] = username
-        if not os.path.isdir(os.path.join(UPLOAD_FOLDER, username)):
-            os.mkdir(path_from_sessionuser_root())
-        return redirect('/')
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    # remove the username from the session if its there
-    session.pop('username', None)
-    return redirect('/login')
-
-# set the secret key.  keep this really secret:
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-@app.route('/uploaded_file')
-def uploaded_file():
-    return 'success upload %s!' % request.args["filename"]
-
-@app.route('/', methods=['GET'])
-def index_page():
-    return render_template_with_username("top.html")
-
-# goal.htmlにリンク
-@app.route('/goal', methods=['GET'])
-def goal_get():
-    username = session['username']
-    col = db.goals
-    docs = col.find({"username": username})
-    return render_template_with_username("goal.html", docs=docs)
-
-# goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
-@app.route('/goal', methods=['POST'])
-def goal_post():
-    username = session['username']
-    col = db.goals
-    if request.form["button"] == u"新規作成":
-        goal_text = request.form['goal_text']
-        if goal_text != "":
-            col.insert({"username": username, "goal_text": goal_text})
-    elif request.form["button"] == u"削除":
-        rmgoal = request.form['rmgoal']
-        col.remove({"username": username, "goal_text": rmgoal})
-    docs = col.find({"username": username})
-    return render_template_with_username("goal.html", docs=docs)
-
-@app.route('/portfolio')
-def portfolio():
-    portlists = []
-    datelist = []
-    portfolio_filelist = []
-    filelist = os.listdir(path_from_sessionuser_root())
-    for filename in filelist:
-        if 'portfolio' in filename and '.html' in filename:
-            portfolio_filelist.append(filename)
-    
-    portfolio_filelist.sort(key=get_date, reverse=True)
-
-    for k, g in itertools.groupby(portfolio_filelist, key=get_date):
-        portlists.append(list(g))      # Store group iterator as a list
-        datelist.append(k)
-
-    zipped = zip(datelist, portlists)
-
-    return render_template_with_username("portfolio.html", zipped=zipped)
 
 def get_date(filename):
     stat = os.stat(path_from_sessionuser_root(filename))
@@ -165,41 +72,132 @@ def path_from_sessionuser_root(*p):
     s.extend(p)
     return os.path.join(*s)
 
-@app.route('/artifact/<path:dirpath>', methods=['GET', 'POST'])
+@app.before_request
+def befor_request():
+    if session.get('username') is not None:
+        return
+    if request.path == '/login':
+        return
+    return redirect('/login')
+
+@app.route('/login', methods=['GET'])
+def login_get():
+    if session.get('username') is not None:
+        return redirect('/')
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    username = request.form['username']
+    password = request.form['password']
+    if not instance_of_ldap(username, password):
+        return redirect('/login')
+    session['username'] = username
+    if not os.path.isdir(os.path.join(UPLOAD_FOLDER, username)):
+        os.mkdir(path_from_sessionuser_root())
+    return redirect('/')
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    # remove the username from the session if its there
+    session.pop('username', None)
+    return redirect('/login')
+
+@app.route('/uploaded_file', methods=['GET'])
+def uploaded_file():
+    return 'success upload %s!' % request.args["filename"]
+
+@app.route('/', methods=['GET'])
+def index_page():
+    return render_template_with_username("top.html")
+
+# goal.htmlにリンク
+@app.route('/goal', methods=['GET'])
+def goal_get():
+    username = session['username']
+    col = db.goals
+    docs = col.find({"username": username})
+    return render_template_with_username("goal.html", docs=docs)
+
+# goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
+@app.route('/goal', methods=['POST'])
+def goal_post():
+    username = session['username']
+    col = db.goals
+    if request.form["button"] == u"新規作成":
+        goal_text = request.form['goal_text']
+        if goal_text != "":
+            col.insert({"username": username, "goal_text": goal_text})
+    elif request.form["button"] == u"削除":
+        rmgoal = request.form['rmgoal']
+        col.remove({"username": username, "goal_text": rmgoal})
+    docs = col.find({"username": username})
+    return render_template_with_username("goal.html", docs=docs)
+
+@app.route('/portfolio', methods=['GET'])
+def portfolio():
+    portlists = []
+    datelist = []
+    portfolio_filelist = []
+    filelist = os.listdir(path_from_sessionuser_root())
+    for filename in filelist:
+        if 'portfolio' in filename and '.html' in filename:
+            portfolio_filelist.append(filename)
+    
+    portfolio_filelist.sort(key=get_date, reverse=True)
+
+    for k, g in itertools.groupby(portfolio_filelist, key=get_date):
+        portlists.append(list(g))      # Store group iterator as a list
+        datelist.append(k)
+
+    zipped = zip(datelist, portlists)
+
+    return render_template_with_username("portfolio.html", zipped=zipped)
+
+@app.route('/artifact/<path:dirpath>', methods=['GET'])
 def artifact_dir(dirpath):
     username = session['username']
-    if request.method == 'POST':
-        makedir = unquote(request.form['directoryname'])
-        file = request.files['file']
-        if file:
-            if allowed_file(file.filename) and check_filename(file.filename):
-                file.save(path_from_sessionuser_root(dirpath, file.filename))
-            else:
-                sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
-        elif makedir:
-            os.mkdir(path_from_sessionuser_root(dirpath, makedir))
+    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
+    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
+            dirpath=quote(dirpath) + "/")
+
+@app.route('/artifact/<path:dirpath>', methods=['POST'])
+def artifact_dir_post(dirpath):
+    makedir = unquote(request.form['directoryname'])
+    file = request.files['file']
+    if file:
+        if allowed_file(file.filename) and check_filename(file.filename):
+            file.save(path_from_sessionuser_root(dirpath, file.filename))
+        else:
+            sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
+    elif makedir:
+        os.mkdir(path_from_sessionuser_root(dirpath, makedir))
 
     filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
     return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,
             dirpath=quote(dirpath) + "/")
 
-@app.route('/artifact', methods=['GET', 'POST'])
-def artifact():
-    if request.method == 'POST':
-        makedir = unquote(request.form['directoryname'])
-        file = request.files['file']
-        if file:
-            if allowed_file(file.filename) and check_filename(file.filename):
-                file.save(path_from_sessionuser_root(file.filename))
-            else:
-                sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
-        elif makedir:
-            os.mkdir(path_from_sessionuser_root(makedir))
+@app.route('/artifact', methods=['GET'])
+def artifact_get():
+    filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root())
+    return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
+
+@app.route('/artifact', methods=['POST'])
+def artifact_post():
+    makedir = unquote(request.form['directoryname'])
+    file = request.files['file']
+    if file:
+        if allowed_file(file.filename) and check_filename(file.filename):
+            file.save(path_from_sessionuser_root(file.filename))
+        else:
+            sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
+    elif makedir:
+        os.mkdir(path_from_sessionuser_root(makedir))
 
     filelist2, dirlist = list_files_and_dirs(path_from_sessionuser_root())
     return render_template_with_username("artifact.html",ls=filelist2,dir=dirlist,dirpath="")
 
-@app.route('/view_file/<path:filename>')
+@app.route('/view_file/<path:filename>', methods=['GET'])
 def view_file(filename):
     return send_from_directory(path_from_sessionuser_root(), filename)
 
