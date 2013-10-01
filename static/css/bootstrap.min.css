@@ -11,14 +11,19 @@
 
 /*---------↓ここからcssの記述↓---------*/
 
+.login{
+	margin: 0 auto;
+}
+
 .box{
 	background-color: #dcdcdc;
-	width: 764px;
+	width: 800px;
 	height: 600px;
 	margin-top: -1.2%;
 }
 
 body{
+	font-family: "Meiryo";
 	width: 800px;
 	height: 600px;
 	margin: auto;
@@ -31,7 +36,7 @@ body{
 
 #tabnavi ul{
 	position: relative;
-	margin-left:55%;
+	margin-left: 54.35%;
 	padding:0;
 }
 
@@ -91,6 +96,28 @@ hr{
 }
 
 small{
-	margin-top: -1%;
-	 
+	margin-top: -1%;	 
+}
+
+#username{
+	margin-top: -70px;
+	float: right;
+}
+
+#top{
+	padding: 20px 0 0 20px;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.info{
+	padding: 10px 0 0 20px;
+}
+
+#hako{
+	margin:  10px 20px 0 20px;
+	background-color: #c0c0c0;
+	width: 758px;
+	height: 150px;
+	border: 1px dotted #ccc;
 }
