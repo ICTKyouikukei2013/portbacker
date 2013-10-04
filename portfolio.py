@@ -110,9 +110,11 @@ def index_page():
 @app.route('/goal', methods=['GET'])
 def goal_get():
     username = session['username']
-    col = db.goals
-    docs = col.find({"username": username})
-    return render_template_with_username("goal.html", docs=docs)
+    goals_col = db.goals
+    logs_col = db.personallogs
+    goal_texts = get_text_by_user_table_coumn(username, "goals", "goal_text")
+    log_texts = get_text_by_user_table_coumn(username, "personallogs", "personallog_text")
+    return render_template_with_username("goal.html", goal_texts= goal_texts, log_texts=log_texts)
 
 def get_text_by_user_table_coumn(username, table, column):
     col = db[table]
@@ -134,7 +136,7 @@ def goal_post():
         rmgoal = request.form['rmgoal']
         col.remove({"username": username, "goal_text": rmgoal})
     goal_texts = get_text_by_user_table_coumn(username, "goals", "goal_text")
-    log_texts = get_text_by_user_table_coumn(username, "personallogs", "goal_text")
+    log_texts = get_text_by_user_table_coumn(username, "personallogs", "personallog_text")
     return render_template_with_username("goal.html", 
             goal_texts=goal_texts, log_texts=log_texts)
 
