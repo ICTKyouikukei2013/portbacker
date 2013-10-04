@@ -11,17 +11,26 @@
 
 /*---------↓ここからcssの記述↓---------*/
 
+.login{
+	margin: 0 auto;
+}
+
+/*背景の色*/
 .box{
 	background-color: #dcdcdc;
-	width: 764px;
+	width: 800px;
 	height: 600px;
 	margin-top: -1.2%;
 }
 
+/*使用するフォントの設定*/
+/*bodyの大きさの設定*/
+/*余白の設定*/
 body{
+	font-family: "Meiryo";
 	width: 800px;
 	height: 600px;
-	margin: auto;
+	margin: 0 auto;
 }
 
 #move_tab{
@@ -31,7 +40,9 @@ body{
 
 #tabnavi ul{
 	position: relative;
-	margin-left:55%;
+	/*ここのmargin-leftでタブを左詰めに*/
+	/*ブラウザ次第でずれそうな気がする。要検証*/
+	margin-left: 54.35%;
 	padding:0;
 }
 
@@ -39,6 +50,7 @@ body{
 	display:inline;
 }
 
+/*タブ*/
 #tabnavi li a{
 	display:inline-block;
 	background:#dcdcdc;
@@ -48,6 +60,7 @@ body{
 	text-decoration:none;
 }
 
+/*マウスオーバーした時の処理*/
 #tabnavi li a:hover,
 #tabnavi li a.active{
 	background:#888;
@@ -71,9 +84,11 @@ body{
 	margin-left: 720px; 
 }
 
+/*new.htmlで使うテキストエリアの範囲*/
 textarea{
 	width: 400px;
-	height:600px;
+	height:400px;
+	/*サイズを変更できないようにする*/
 	resize:none;
 }
 
@@ -91,6 +106,30 @@ hr{
 }
 
 small{
-	margin-top: -1%;
-	 
+	margin-top: -1%;	 
+}
+
+/*画面の上にあるUserNameの位置の設定*/
+#username{
+	margin-top: -70px;
+	float: right;
+}
+
+#top{
+	padding: 20px 0 0 20px;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.info{
+	padding: 10px 0 0 20px;
+}
+
+/*top.htmlの更新情報のところの四角形*/
+#hako{
+	margin:  10px 45px 0 45px;
+	background-color: #c0c0c0;
+	width: 705px;
+	height: 150px;
+	border: 1px dotted #ccc;
 }

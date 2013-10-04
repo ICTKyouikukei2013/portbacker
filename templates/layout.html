@@ -4,18 +4,15 @@
   <meta charset="UTF-8">
   <script src="/static/js/jquery.js"></script>
   <script src="/static/js/bootstrap.min.js"></script>
-  <title>E-portfolio</title>
+  <title>Eportfolio</title>
 </head>
   
 <body>
   <a href="/"><img src="/static/img/logo.png"></a>
-  ユーザネーム：{{username}}
-  <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn btn-secondly"/>
-  <!-- <div id="uname">User Name</div> -->
-  <!-- ここのblock body-end blockまでの位置づけがよくわからん -->
+  <div id="username">ユーザネーム：{{username}}
+    <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn btn-secondly"/ style="width:90px;height:25px">
+  </div>
   {% block body %}
-    <img src="/static/img/testimage1.png">
-    <img src="/static/img/testimage2.png">
   {% endblock %}
 </body>
 </html>
