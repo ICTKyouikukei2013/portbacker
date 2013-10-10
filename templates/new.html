@@ -15,10 +15,10 @@ $(function(){
 $("#move_tab").css("float", "right");
 
 /*タブの文字の色*/
-$("#topcolor").css("color", "#666");
-$("#portcolor").css("color", "#fff");
-$("#artcolor").css("color", "#666");
-$("#goalcolor").css("color", "#666");
+$("#topcolor").css("color", "#fff");
+$("#portcolor").css("color", "#666");
+$("#artcolor").css("color", "#fff");
+$("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
   /*トップ*/
@@ -28,7 +28,7 @@ $("#goalcolor").css("color", "#666");
   });
   $("li#Top").mouseout(function(){
     $("#Top").css("backgroundColor","#888");
-    $("#topcolor").css("color", "#666");
+    $("#topcolor").css("color", "#fff");
   });
 
   /*成果物管理*/
@@ -38,7 +38,7 @@ $("#goalcolor").css("color", "#666");
   });
   $("li#Artifact").mouseout(function(){
     $("#Artifact").css("backgroundColor","#888");
-    $("#artcolor").css("color", "#666");
+    $("#artcolor").css("color", "#fff");
   });
 
   /*ゴール*/
@@ -48,7 +48,7 @@ $("#goalcolor").css("color", "#666");
   });
   $("li#Goal").mouseout(function(){
     $("#Goal").css("backgroundColor","#888");
-    $("#goalcolor").css("color", "#666");
+    $("#goalcolor").css("color", "#fff");
   });
 
 
@@ -151,7 +151,7 @@ $("#goalcolor").css("color", "#666");
     </div>
 
     <div class="box">
-      ポートフォリオ作成<br>
+      <h3>ポートフォリオ作成</h3><br>
       <form id='form' name='form' method="post" action="new" target="">
         <div id="toolbar" style="display: none;">
           <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |

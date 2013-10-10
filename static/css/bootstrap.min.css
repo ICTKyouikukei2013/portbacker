@@ -93,6 +93,7 @@ small{
 	font-weight: bold;
 }
 
+/*top.htmlで使ってるよ*/
 .info{
 	padding: 10px 0 0 20px;
 }
@@ -101,7 +102,7 @@ small{
 #hako{
 	margin:  10px 45px 0 45px;
 	background-color: #c0c0c0;
-	width: 705px;
+	width: 400px;
 	height: 150px;
 	border: 1px dotted #ccc;
 }

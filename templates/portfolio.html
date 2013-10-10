@@ -15,40 +15,40 @@ $(function(){
 $("#move_tab").css("float", "right");
 
 /*タブの文字の色*/
-$("#topcolor").css("color", "#666");
-$("#portcolor").css("color", "#fff");
-$("#artcolor").css("color", "#666");
-$("#goalcolor").css("color", "#666");
+$("#topcolor").css("color", "#fff");
+$("#portcolor").css("color", "#666");
+$("#artcolor").css("color", "#fff");
+$("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
   /*トップ*/
   $("li#Top").mouseover(function(){
     $("#Top").css("backgroundColor","#dcdcdc");
-    $("#topcolor").css("color", "#fff");
+    $("#topcolor").css("color", "#666");
   });
   $("li#Top").mouseout(function(){
     $("#Top").css("backgroundColor","#888");
-    $("#topcolor").css("color", "#666");
+    $("#topcolor").css("color", "#fff");
   });
 
   /*成果物管理*/
   $("li#Artifact").mouseover(function(){
     $("#Artifact").css("backgroundColor","#dcdcdc");
-    $("#artcolor").css("color", "#fff");
+    $("#artcolor").css("color", "#666");
   });
   $("li#Artifact").mouseout(function(){
     $("#Artifact").css("backgroundColor","#888");
-    $("#artcolor").css("color", "#666");
+    $("#artcolor").css("color", "#fff");
   });
 
   /*ゴール*/
   $("li#Goal").mouseover(function(){
     $("#Goal").css("backgroundColor","#dcdcdc");
-    $("#goalcolor").css("color", "#fff");
+    $("#goalcolor").css("color", "#666");
   });
   $("li#Goal").mouseout(function(){
     $("#Goal").css("backgroundColor","#888");
-    $("#goalcolor").css("color", "#666");
+    $("#goalcolor").css("color", "#fff");
   });
 
 
@@ -80,6 +80,7 @@ $("#goalcolor").css("color", "#666");
       </div>
     </div>
     <div class="box">
+      <h3>ポートフォリオ</h3>
       <a href="new"><input type="button" value="新規" class="btn btn-primary" ></a><br><br>
         {% for date, portlist in zipped %}
         <h4>

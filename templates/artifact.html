@@ -15,40 +15,40 @@ $(function(){
 $("#move_tab").css("float", "right");
 
 /*タブの文字の色*/
-$("#topcolor").css("color", "#666");
-$("#portcolor").css("color", "#666");
-$("#artcolor").css("color", "#fff");
-$("#goalcolor").css("color", "#666");
+$("#topcolor").css("color", "#fff");
+$("#portcolor").css("color", "#fff");
+$("#artcolor").css("color", "#666");
+$("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
   /*トップ*/
   $("li#Top").mouseover(function(){
     $("#Top").css("backgroundColor","#dcdcdc");
-    $("#topcolor").css("color", "#fff");
+    $("#topcolor").css("color", "#666");
   });
   $("li#Top").mouseout(function(){
     $("#Top").css("backgroundColor","#888");
-    $("#topcolor").css("color", "#666");
+    $("#topcolor").css("color", "#fff");
   });
 
   /*成果物管理*/
   $("li#Portfolio").mouseover(function(){
     $("#Portfolio").css("backgroundColor","#dcdcdc");
-    $("#portcolor").css("color", "#fff");
+    $("#portcolor").css("color", "#666");
   });
   $("li#Portfolio").mouseout(function(){
     $("#Portfolio").css("backgroundColor","#888");
-    $("#portcolor").css("color", "#666");
+    $("#portcolor").css("color", "#fff");
   });
 
   /*ゴール*/
   $("li#Goal").mouseover(function(){
     $("#Goal").css("backgroundColor","#dcdcdc");
-    $("#goalcolor").css("color", "#fff");
+    $("#goalcolor").css("color", "#666");
   });
   $("li#Goal").mouseout(function(){
     $("#Goal").css("backgroundColor","#888");
-    $("#goalcolor").css("color", "#666");
+    $("#goalcolor").css("color", "#fff");
   });
 
 
@@ -80,9 +80,11 @@ $("#goalcolor").css("color", "#666");
       </div>
     </div>
     <div class="box">
+      <h3>フォルダ作成</h3>
       <form action="" method=post enctype=multipart/form-data>
 	<p><input type="text" name=directoryname>
-	   <input type=submit value=フォルダ作成 class="btn btn-secondry">
+	   <input type=submit value=作成 class="btn btn-secondry">
+     <h3>ファイルのアップロード</h3>
 	<p><input type="file" name=file>
 	   <input type=submit value=Upload class="btn btn-secondry">
       </form>
