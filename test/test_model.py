@@ -61,7 +61,6 @@ class UserTest(unittest.TestCase):
     def test_find_user_ids_by_joining_group(self):
         db = Connection('localhost', 27017).testdata
         model.User.delete_all(db)
-        e = model.User.find_user_ids(db)
         u1 = model.User("morohara", "b1012187", ["高度ICT演習教育系"], "情報システム", "B2")
         u1.insert(db)
         u2 = model.User("okawara", "b1012555", ["高度ICT演習教育系"], "知能システム", "B3")
