@@ -3,9 +3,9 @@
 <script type="text/javascript">
 $(function(){
   var Top = document.getElementById('Top');
-   Top.style.backgroundColor = "#dcdcdc";
+   Top.style.backgroundColor = "#888";
   var Portfolio = document.getElementById('Portfolio');
-    Portfolio.style.backgroundColor = "#888";
+    Portfolio.style.backgroundColor = "#dcdcdc";
   var Artifact = document.getElementById('Artifact');
     Artifact.style.backgroundColor = "#888";
   var Goal = document.getElementById('Goal');
@@ -17,20 +17,20 @@ $(function(){
 $("#move_tab").css("margin-left", "235px");
 
 /*タブの文字の色*/
-$("#topcolor").css("color", "#666");
-$("#portcolor").css("color", "#fff");
+$("#topcolor").css("color", "#fff");
+$("#portcolor").css("color", "#666");
 $("#artcolor").css("color", "#fff");
 $("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
   /*ポートフォリオ*/
-  $("li#Portfolio").mouseover(function(){
-    $("#Portfolio").css("backgroundColor","#dcdcdc");
-    $("#portcolor").css("color", "#666");
+  $("li#Top").mouseover(function(){
+    $("#Top").css("backgroundColor","#dcdcdc");
+    $("#topcolor").css("color", "#666");
   });
-  $("li#Portfolio").mouseout(function(){
-    $("#Portfolio").css("backgroundColor","#888");
-    $("#portcolor").css("color", "#fff");
+  $("li#Top").mouseout(function(){
+    $("#Top").css("backgroundColor","#888");
+    $("#topcolor").css("color", "#fff");
   });
 
   /*成果物管理*/

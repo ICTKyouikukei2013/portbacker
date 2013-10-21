@@ -3,11 +3,11 @@
 <script type="text/javascript">
 $(function(){
   var Top = document.getElementById('Top');
-   Top.style.backgroundColor = "#dcdcdc";
+   Top.style.backgroundColor = "#888";
   var Portfolio = document.getElementById('Portfolio');
     Portfolio.style.backgroundColor = "#888";
   var Artifact = document.getElementById('Artifact');
-    Artifact.style.backgroundColor = "#888";
+    Artifact.style.backgroundColor = "#dcdcdc";
   var Goal = document.getElementById('Goal');
     Goal.style.backgroundColor = "#888";
 
@@ -17,12 +17,22 @@ $(function(){
 $("#move_tab").css("margin-left", "235px");
 
 /*タブの文字の色*/
-$("#topcolor").css("color", "#666");
+$("#topcolor").css("color", "#fff");
 $("#portcolor").css("color", "#fff");
-$("#artcolor").css("color", "#fff");
+$("#artcolor").css("color", "#666");
 $("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
+  /*トップ*/
+  $("li#Top").mouseover(function(){
+    $("#Top").css("backgroundColor","#dcdcdc");
+    $("#topcolor").css("color", "#666");
+  });
+  $("li#Top").mouseout(function(){
+    $("#Top").css("backgroundColor","#888");
+    $("#topcolor").css("color", "#fff");
+  });
+
   /*ポートフォリオ*/
   $("li#Portfolio").mouseover(function(){
     $("#Portfolio").css("backgroundColor","#dcdcdc");
@@ -32,17 +42,7 @@ $("#goalcolor").css("color", "#fff");
     $("#Portfolio").css("backgroundColor","#888");
     $("#portcolor").css("color", "#fff");
   });
-
-  /*成果物管理*/
-  $("li#Artifact").mouseover(function(){
-    $("#Artifact").css("backgroundColor","#dcdcdc");
-    $("#artcolor").css("color", "#666");
-  });
-  $("li#Artifact").mouseout(function(){
-    $("#Artifact").css("backgroundColor","#888");
-    $("#artcolor").css("color", "#fff");
-  });
-
+  
   /*ゴール*/
   $("li#Goal").mouseover(function(){
     $("#Goal").css("backgroundColor","#dcdcdc");

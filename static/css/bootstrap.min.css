@@ -128,3 +128,26 @@ small{
 	margin-top: -20px;
 	margin-left: 315px;
 }
+
+.user{
+	margin: 50px 0 0 50px;
+}
+
+.border{
+	border-bottom: 1px solid red;
+}
+
+.userinfo{
+	float: right;
+	text-align: right;
+}
+
+.probox{
+	background-color: #dcdcdc;
+	width: 320px;
+	height: 529px;
+	margin-left: 230px;
+}
+.password{
+	float: right;
+}
