@@ -3,8 +3,8 @@
 from pymongo import Connection
 
 class User(object):
-    def __init__(self, display_name, student_id, joining_groups, course, grade):
-        self.display_name = display_name
+    def __init__(self, name, student_id, joining_groups, course, grade):
+        self.name = name
         self.student_id = student_id
         self.joining_groups = joining_groups
         self.course = course
@@ -13,7 +13,7 @@ class User(object):
     def insert(self, db):
         col = db.portpolio_users
         col.insert({
-            "display_name": self.display_name,
+            "name": self.name,
             "student_id":self.student_id,
             "joining_groups":self.joining_groups,
             "course":self.course,
@@ -27,7 +27,7 @@ class User(object):
         if len(docs) == 0:
             return None
         doc = docs[0]
-        return User(doc["display_name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])
+        return User(doc["name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])
 
     @classmethod
     def find_user_ids(clz, db):
