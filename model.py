@@ -40,7 +40,18 @@ class User(object):
 
     @classmethod
     def delete_all(clz, db):
-        db.portpfolio_users.drop()
+        db.drop_collection("portfolio_users")
+
+    @classmethod
+    def find_user_ids_by_joining_group(clz, db, group_id):
+        col = db.portfolio_users
+        docs = col.find()
+        store = []
+        for doc in docs:
+            joining_groups = doc["joining_groups"]
+            if group_id in joining_groups:
+                store.append(doc["student_id"])
+        return store        
 
 db = Connection('localhost', 27017).portbacker
 
