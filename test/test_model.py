@@ -27,7 +27,7 @@ class ModelTest(unittest.TestCase):
         model.insert_goal_text(u, gt)
         goal_texts = model.get_goal_texts(u)
         self.assertTrue(gt in goal_texts)
-
+        
     def test_remove_goal_text(self):
         u = "morohara"
         gt = u"PHPマスターする"
