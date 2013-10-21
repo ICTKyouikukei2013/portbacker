@@ -75,6 +75,29 @@ class UserTest(unittest.TestCase):
         act3 = model.User.find_user_ids_by_joining_group(db, u"高度ICT演習海洋系")
         self.assertTrue(act3 == [])                
 
+
+class GroupTest(unittest.TestCase):
+	    def test_init(self):
+			g1 = model.Group("tos_kamiya FanClub", "Kamiya")
+
+		def test_insert(self):
+			db = Connection('localhost', 27017).testdata
+			model.User.delete_all(db)
+			g1 = model.Group("tos_kamiya FanClub","Kamiya")
+			g1.insert(db)
+
+		def test_find(self):
+			db = Connection('localhost', 27017).testdata
+			model.User.delete_all(db)
+			g1 = model.Group("tos_kamiya FanClub", "Kamiya")
+			g2 = model.Group("ObaClub", "Oba")
+			g1.insert(db)
+			g2.insert(db)
+			act1 = model.Group.find(db, "Kamiya")
+			act2 = model.Group.find(db, "Oba")
+			self.assertTrue(act1 != None)
+			self.assertTrue(act2 != None)                                                                       
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
