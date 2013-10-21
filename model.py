@@ -3,10 +3,10 @@
 from pymongo import Connection
 
 class User(object):
-    def __init__(self, display_name, student_id, group_ids, course, grade):
+    def __init__(self, display_name, student_id, joining_groups, course, grade):
         self.display_name = display_name
         self.student_id = student_id
-        self.group_ids = group_ids
+        self.joining_groups = joining_groups
         self.course = course
         self.grade = grade
 
@@ -15,7 +15,7 @@ class User(object):
         col.insert({
             "display_name": self.display_name,
             "student_id":self.student_id,
-            "group_ids":self.group_ids,
+            "joining_groups":self.joining_groups,
             "course":self.course,
             "grade":self.grade})
 
@@ -27,7 +27,7 @@ class User(object):
         if len(docs) == 0:
             return None
         doc = docs[0]
-        return User(doc["display_name"], doc["student_id"], doc["group_ids"], doc["course"], doc["grade"])
+        return User(doc["display_name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])
 
     @classmethod
     def find_user_ids(clz, db):
