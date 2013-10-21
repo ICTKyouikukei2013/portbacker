@@ -27,7 +27,7 @@ class User(object):
         if len(docs) == 0:
             return None
         doc = docs[0]
-        return User(doc["name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])
+        return User(doc["name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])38
 
     @classmethod
     def find_user_ids(clz, db):
