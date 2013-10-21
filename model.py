@@ -28,35 +28,35 @@ class Group(object):
 		db.portfolio.gruops_drop()
 
 class User(object):
-    def __init__(self, display_name, student_id, group_id, course, grade):
-        self.display_name = display_name
+    def __init__(self, name, student_id, joining_groups, course, grade):
+        self.name = name
         self.student_id = student_id
-        self.group_id = group_id
+        self.joining_groups = joining_groups
         self.course = course
         self.grade = grade
 
     def insert(self, db):
-        col = db.portpolio_users
+        col = db.portfolio_users
         col.insert({
-            "display_name": self.display_name,
+            "name": self.name,
             "student_id":self.student_id,
-            "group_id":self.group_id,
+            "joining_groups":self.joining_groups,
             "course":self.course,
             "grade":self.grade})
 
     @classmethod
     def find(clz, db, student_id):
-        col = db.portpolio_users
+        col = db.portfolio_users
         docs = col.find({"student_id": student_id})
         docs = list(docs)
         if len(docs) == 0:
             return None
         doc = docs[0]
-        return User(doc["display_name"], doc["student_id"], doc["group_id"], doc["course"], doc["grade"])
+        return User(doc["name"], doc["student_id"], doc["joining_groups"], doc["course"], doc["grade"])
 
     @classmethod
     def find_user_ids(clz, db):
-        col = db.portpolio_users
+        col = db.portfolio_users
         docs = col.find()
         store = []
         for doc in docs:
@@ -65,7 +65,18 @@ class User(object):
 
     @classmethod
     def delete_all(clz, db):
-        db.portpolio_users.drop()
+        db.drop_collection("portfolio_users")
+
+    @classmethod
+    def find_user_ids_by_joining_group(clz, db, group_id):
+        col = db.portfolio_users
+        docs = col.find()
+        store = []
+        for doc in docs:
+            joining_groups = doc["joining_groups"]
+            if group_id in joining_groups:
+                store.append(doc["student_id"])
+        return store        
 
 db = Connection('localhost', 27017).portbacker
 
