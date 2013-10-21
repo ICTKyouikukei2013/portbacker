@@ -11,7 +11,7 @@ class User(object):
         self.grade = grade
 
     def insert(self, db):
-        col = db.portpolio_users
+        col = db.portfolio_users
         col.insert({
             "name": self.name,
             "student_id":self.student_id,
@@ -21,7 +21,7 @@ class User(object):
 
     @classmethod
     def find(clz, db, student_id):
-        col = db.portpolio_users
+        col = db.portfolio_users
         docs = col.find({"student_id": student_id})
         docs = list(docs)
         if len(docs) == 0:
@@ -31,7 +31,7 @@ class User(object):
 
     @classmethod
     def find_user_ids(clz, db):
-        col = db.portpolio_users
+        col = db.portfolio_users
         docs = col.find()
         store = []
         for doc in docs:
@@ -40,7 +40,7 @@ class User(object):
 
     @classmethod
     def delete_all(clz, db):
-        db.portpolio_users.drop()
+        db.portpfolio_users.drop()
 
 db = Connection('localhost', 27017).portbacker
 
