@@ -2,6 +2,31 @@
 
 from pymongo import Connection
 
+class Group(object):
+	def __init__(self, name, group_id):
+		self.name = name
+		self.group_id = group_id
+		
+	def insert(self, db):
+		col = db.portfolio_groups
+		col.insert({
+			"name": self.name,
+			"group_id": self.group_id})
+			
+	@classmethod
+	def find(clz , db, group_id):
+		col = db.portfolio_groups
+		docs = col.find({"group_id": group_id})
+		docs = list(docs)
+		if len(docs) == 0;
+			return None
+		doc = docs[0]
+		return Group(doc["name"], doc["gruop_id"])
+		
+	@classmethod
+	def delete_all(clz, db):
+		db.portfolio.gruops_drop()
+
 class User(object):
     def __init__(self, display_name, student_id, group_id, course, grade):
         self.display_name = display_name
