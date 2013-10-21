@@ -42,18 +42,18 @@ class ModelTest(unittest.TestCase):
 
 class UserTest(unittest.TestCase):
     def test_init(self):
-        u = model.User("morohara", "b1012187", "高度ICT演習教育系", "情報システム", "B2")
+        u = model.User("morohara", "b1012187", ["高度ICT演習教育系"], "情報システム", "B2")
 
     def test_insert(self):
         db = Connection('localhost', 27017).testdata
         model.User.delete_all(db)        
-        u = model.User("morohara", "b1012187", "高度ICT演習教育系", "情報システム", "B2")
+        u = model.User("morohara", "b1012187", ["高度ICT演習教育系"], "情報システム", "B2")
         u.insert(db)
 
     def test_find(self):
         db = Connection('localhost', 27017).testdata
         model.User.delete_all(db)
-        u = model.User("morohara", "b1012187", "高度ICT演習教育系", "情報システム", "B2")
+        u = model.User("morohara", "b1012187", ["高度ICT演習教育系"], "情報システム", "B2")
         u.insert(db)
         act = model.User.find(db, "b1012187")
         self.assertTrue(act != None)
