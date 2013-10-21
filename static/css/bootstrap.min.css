@@ -19,19 +19,16 @@
 .box{
 	background-color: #dcdcdc;
 	width: 960px;
-	height: 640px;
-	/*そのばしのぎです*/
-	margin-top: -5px;
-	
-}
-
+	height: 600px;
+	position: fixed;
 /*使用するフォントの設定*/
 /*bodyの大きさの設定*/
 /*余白の設定*/
+}
 body{
 	font-family: "Meiryo";
 	width: 960px;
-	height: 640px;
+	height: 500px;
 	margin: 0 auto;
 }
 
@@ -105,4 +102,27 @@ small{
 	width: 400px;
 	height: 150px;
 	border: 1px dotted #ccc;
+}
+
+.user{
+	margin: 50px 0 0 50px;
+}
+
+.border{
+	border-bottom: 1px solid red;
+}
+
+.userinfo{
+	float: right;
+	text-align: right;
+}
+
+.probox{
+	background-color: #dcdcdc;
+	width: 320px;
+	height: 529px;
+	margin-left: 230px;
+}
+.password{
+	float: right;
 }
