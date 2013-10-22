@@ -18,14 +18,15 @@
 /*背景の色*/
 .box{
 	background-color: #dcdcdc;
-	width: 700px;
+	width: 820px;
 	height: 640px;
+	margin-top: -140px;
 	/*そのばしのぎです*/
-	margin-top: -115px;
 	float: right;	
 }
 
 .prof{
+	margin-top: 30px;
 	background-color: #dcdcdc;
 	width: 250px;
 	height: 100px;
@@ -40,6 +41,15 @@
 /*ログアウトボタンの位置なんとか変更したい*/
 .prof #logoutbtn{
 	float: right;
+	margin-top: -80px;
+}
+
+#logoutbtn:after{/*魔法の言葉さ.float解除しちゃうよ*/
+	content: "."; /*floatの要素が終わったら.をうつよ*/
+	display: block;/*この.はblockなんだよって*/
+	height: 0;/*だけど高さは0なんだよ*/
+	clear: both;/*clear:bothでfloat解除しちゃうよ*/
+	visibility: hidden;/*.みえなくしちゃうよ～～～*/
 }
 
 /*使用するフォントの設定*/
@@ -47,7 +57,7 @@
 /*余白の設定*/
 body{
 	font-family: "Meiryo";
-	width: 960px;
+	width: 1080px;
 	height: 640px;
 	margin: 0 auto;
 }
@@ -127,27 +137,4 @@ small{
 #prebtn{
 	margin-top: -20px;
 	margin-left: 315px;
-}
-
-.user{
-	margin: 50px 0 0 50px;
-}
-
-.border{
-	border-bottom: 1px solid red;
-}
-
-.userinfo{
-	float: right;
-	text-align: right;
-}
-
-.probox{
-	background-color: #dcdcdc;
-	width: 320px;
-	height: 529px;
-	margin-left: 230px;
-}
-.password{
-	float: right;
 }

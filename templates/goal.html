@@ -15,6 +15,7 @@ $(function(){
 /*タブの移動*/
 /*その場しのぎしてます*/
 $("#move_tab").css("margin-left", "235px");
+$("#move_tab").css("margin-top", "-125px");
 
 /*タブの文字の色*/
 $("#topcolor").css("color", "#fff");
@@ -74,25 +75,16 @@ $("#goalcolor").css("color", "#666");
           <ul>
             <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
             <li id="Portfolio"><a id="portcolor" href="portfolio">ポートフォリオ</a></li>
-            <li id="Artifact"><a id="artcolor" href="artifact">成果物管理</a></li>
+            <li id="Artifact"><a id="artcolor" href="artifact">個人日誌</a></li>
            <li id="Goal"><a id="goalcolor" href="goal">ゴール設定</a></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="prof">
-      <div id="usrname">
-        {{username}}
-        <input type="button" onclick="location.href='/logout'" value="設定" class="btn btn-secondly">
-        <div id="logoutbtn">
-          <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn btn-secondly">
-        </div>
-      </div>   
-    </div>
     <div class="box">
       <form method="post" action="/goal">
 	<h3>ゴール設定</h3>
-	<input type="text" name="goal_text" style="width:500px;"/>
+	<input type="text" name="goal_text" style="width:250px;"/>
 	<input type="submit" name="button" class="btn btn-primary" value="新規作成">
       </form>
   <h3>ゴール</h3>

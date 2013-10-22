@@ -6,14 +6,20 @@
   <script src="/static/js/bootstrap.min.js"></script>
   <link href="/static/css/base.css" rel="stylesheet">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <title>Eportfolio</title>
+  <title>E-portfolio</title>
 </head>
   
 <body>
   <a href="/"><img src="/static/img/logo.png"></a>
-  <!-- <div id="username">ユーザネーム：{{username}}
-    <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn btn-secondly"/ style="width:90px;height:25px">
-  </div> -->
+  <div class="prof">
+      <div id="usrname">
+        {{username}}
+        <input type="button" onclick="location.href='/logout'" value="設定" class="btn btn-inverse">
+        <div id="logoutbtn">
+          <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn-mini btn-info">
+        </div>
+      </div>   
+    </div>
   {% block body %}
   {% endblock %}
 </body>

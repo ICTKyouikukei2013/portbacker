@@ -1,8 +1,19 @@
-{% extends "layout.html" %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <script src="/static/js/jquery.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <link href="/static/css/base.css" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <title>E-portfolio</title>
+</head>
+  
+<body>
   <form method="post">
       <p>username:<input type='text' name='username' pattern="^[0-9a-z]+" required></p>
       <p>password:<input type='password' name='password' required></p>
       <p><input type='submit' value='Login'></p>
   </form>
-{% endblock %}
+</body>
+</html>
