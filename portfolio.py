@@ -4,7 +4,6 @@ import urllib
 import sys, os, datetime, itertools
 from flask import Flask, session, request, redirect, url_for, render_template , send_from_directory, escape
 #gfrom werkzeug import secure_filename
-import model
 
 UPLOAD_FOLDER = u'./data'
 DOCUMENT_EXTENSIONS = frozenset(['txt', 'pdf', 'md'])
@@ -70,6 +69,8 @@ def befor_request():
     if session.get('username') is not None:
         return
     if request.path == '/login':
+        return
+    if 'static' in request.path.split('/'):
         return
     return redirect('/login')
 
