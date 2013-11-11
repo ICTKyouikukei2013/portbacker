@@ -118,13 +118,12 @@ def goal_get():
 @app.route('/goal', methods=['POST'])
 def goal_post():
     username = session['username']
-    if request.form["button"] == u"新規作成":
+    if request.form["goal"] == u"新規作成":
         goal_text = request.form['goal_text']
-        if goal_text != "":
-            model.insert_goal_text(username, goal_text)
-    elif request.form["button"] == u"削除":
-        rmgoal = request.form['rmgoal']
-        model.remove_goal_text(username, rmgoal)
+        return goal_text + u"：ゴール"
+    if request.form["goal_item"] == u"新規作成":
+        goal_item_text = request.form["goal_item_text"]
+        return goal_item_text + u"：ゴールアイテム"
     return redirect('/goal')
 
 @app.route('/personallog_post', methods=['POST'])
