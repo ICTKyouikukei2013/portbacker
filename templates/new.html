@@ -57,7 +57,7 @@ $("#goalcolor").css("color", "#fff");
 
   /*border- riadius*/
   $("#Top").css("border-radius","5px 5px 0px 0px");
-  $("#Portfolio").css("border-radius","5px 5px 0px 0px");
+  $("#Prtfolio").css("border-radius","5px 5px 0px 0px");
   $("#Artifact").css("border-radius","5px 5px 0px 0px");
   $("#Goal").css("border-radius","5px 5px 0px 0px");
  
@@ -66,6 +66,8 @@ $("#goalcolor").css("color", "#fff");
   $("#Portfolio").css("padding","5px");
   $("#Artifact").css("padding","5px");
   $("#Goal").css("padding","5px");
+
+
 });
 </script>
   <style>
@@ -138,6 +140,9 @@ $("#goalcolor").css("color", "#fff");
       color: blue;
     }*/
   </style>
+   <script type="text/javascript" src="static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="static/css/bootstrap-colorpalette.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="static/css/example.css" />
   <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <div Class="style">
     <div id="tabnavi">
@@ -156,6 +161,21 @@ $("#goalcolor").css("color", "#fff");
       <h3>ポートフォリオ作成</h3><br>
       <form id='form' name='form' method="post" action="new" target="">
         <div id="toolbar" style="display: none;">
+          <div class="btn-group">
+  <input id="selected-color1" style="width:65px;">
+
+  <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">Color</a>
+  <ul class="dropdown-menu">
+    <li><div id="colorpalette1"></div></li>
+  </ul>
+</div> 
+
+<script>
+   $('#colorpalette1').colorPalette()
+  .on('selectColor', function(e) {
+    $('#selected-color1').val(e.color);
+  });
+</script> |
           <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |
           <a data-wysihtml5-command="italic" title="CTRL+I">italic</a> |
           <!-- <a data-wysihtml5-command="createLink">insert link</a> | -->
