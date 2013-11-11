@@ -79,59 +79,64 @@ class User(object):
         return store        
 
 class Goal(object):
-    def __init__(self, title):
+    def __init__(self, username, title):
+        self.username = username
         self.title = title
-		
+        
     def insert(self, db):
         col = db.portfolio_goals
         col.insert({
+            "username": self.username,
             "title": self.title})
-			
+            
     @classmethod
-    def find(clz , db, title):
+    def find(clz , db, username, title):
         col = db.portfolio_goals
-        docs = col.find({"title": title})
+        docs = col.find({"username": username, "title": title})
         docs = list(docs)
         if len(docs) == 0:
             return None
         doc = docs[0]
-        return Goal(doc["title"])
+        return Goal(doc["username"], doc["title"])
         
     @classmethod
     def delete_all(clz, db):
         db.drop_collection("portfolio_goals")
-	
-class Goal_item(object):
-	def __init__(self, title, change_data, link_to_goal, visibility):
-		self.title = title
-		self.change_data = change_data 
-		self.link_to_goal = link_to_goal
-		self.visibility = visibility 
-	
-	def insert(self, db):
-		col = db.portfolio_goal_items
-		col.insert({
-			"title": self.title,
-			"change_data": self.change_data,
-			"link_to_goal": self.link_to_goal,
-			"visibility": self.visibility})
-	
-	@classmethod
-	def find(clz , db, title, link_to_goal):
-		col = db.portfolio_goal_items
-		docs = col.find({
-			"title": title,
-			"link_to_goal": link_to_goal})
-		docs = list(docs)
-		if len(docs) == 0:
-			return None
-		doc = docs[0]
-		return Goal_item(doc["title"], doc["change_data"], doc["link_to_goal"], doc["visibility"])
-	
-	@classmethod
-	def delete_all(clz, db):
-		db.drop_collection("portfolio_goal_items")
-	
+    
+class GoalItem(object):
+    def __init__(self, username, link_to_goal, title, change_data, visibility):
+        self.username = username
+        self.link_to_goal = link_to_goal
+        self.title = title
+        self.change_data = change_data 
+        self.visibility = visibility 
+    
+    def insert(self, db):
+        col = db.portfolio_goal_items
+        col.insert({
+            "username": self.username,
+            "link_to_goal": self.link_to_goal,
+            "title": self.title,
+            "change_data": self.change_data,
+            "visibility": self.visibility})
+    
+    @classmethod
+    def find(clz , db, username, link_to_goal, title):
+        col = db.portfolio_goal_items
+        docs = col.find({
+            "username": username, 
+            "link_to_goal": link_to_goal,
+            "title": title})
+        docs = list(docs)
+        if len(docs) == 0:
+            return None
+        doc = docs[0]
+        return GoalItem(doc["username"], doc["link_to_goal"], doc["title"], doc["change_data"], doc["visibility"])
+    
+    @classmethod
+    def delete_all(clz, db):
+        db.drop_collection("portfolio_goal_items")
+    
 db = Connection('localhost', 27017).portbacker
 
 COL_GOALS = "goals"
@@ -167,4 +172,3 @@ def remove_log_text(username, log_text):
 def insert_log_text(username, log_text):
     col = db[COL_PERSONALLOGS]
     col.insert({"username": username, "personallog_text": log_text})
-
