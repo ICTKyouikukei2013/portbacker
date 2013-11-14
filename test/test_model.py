@@ -8,7 +8,7 @@ import unittest
 from pymongo import Connection
 
 import model
-		
+        
 class UserTest(unittest.TestCase):
     def test_init(self):
         u = model.User("morohara", "b1012187", ["高度ICT演習教育系"], "情報システム", "B2")
@@ -47,72 +47,192 @@ class UserTest(unittest.TestCase):
 
 
 class GroupTest(unittest.TestCase):
-	def test_init(self):
-		g1 = model.Group("tos_kamiya FanClub", "Kamiya")
+    def test_init(self):
+        g1 = model.Group("tos_kamiya FanClub", "Kamiya")
 
-	def test_insert(self):
-		db = Connection('localhost', 27017).testdata
-		model.Group.delete_all(db)
-		g1 = model.Group("tos_kamiya FanClub","Kamiya")
-		g1.insert(db)
+    def test_insert(self):
+        db = Connection('localhost', 27017).testdata
+        model.Group.delete_all(db)
+        g1 = model.Group("tos_kamiya FanClub","Kamiya")
+        g1.insert(db)
 
-	def test_find(self):
-		db = Connection('localhost', 27017).testdata
-		model.Group.delete_all(db)
-		g1 = model.Group("tos_kamiya FanClub", "Kamiya")
-		g2 = model.Group("ObaClub", "Oba")
-		g1.insert(db)
-		g2.insert(db)
-		act1 = model.Group.find(db, "Kamiya")
-		act2 = model.Group.find(db, "Oba")
-		self.assertTrue(act1 != None)
-		self.assertTrue(act2 != None)                                                                       
+    def test_find(self):
+        db = Connection('localhost', 27017).testdata
+        model.Group.delete_all(db)
+        g1 = model.Group("tos_kamiya FanClub", "Kamiya")
+        g2 = model.Group("ObaClub", "Oba")
+        g1.insert(db)
+        g2.insert(db)
+        act1 = model.Group.find(db, "Kamiya")
+        act2 = model.Group.find(db, "Oba")
+        self.assertTrue(act1 != None)
+        self.assertTrue(act2 != None)                                                                       
+
 
 class GoalTest(unittest.TestCase):
-	def test_init(self):
-		t1 = model.Goal("test title")
+    def test_init(self):
+        t1 = model.Goal("b1012100", "test title")
 
-	def test_insert(self):
-		db = Connection('localhost', 27017).testdata
-		model.Goal.delete_all(db)
-		t1 = model.Goal("test title")
-		t1.insert(db)
+    def test_insert(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        t1 = model.Goal("b1012100", "test title")
+        t1.insert(db)
 
-	def test_find(self):
-		db = Connection('localhost', 27017).testdata
-		model.Goal.delete_all(db)
-		t1 = model.Goal("test title")
-		t2 = model.Goal("test title1")
-		t1.insert(db)
-		t2.insert(db)
-		act1 = model.Goal.find(db, "test title")
-		act2 = model.Goal.find(db, "test title1")
-		self.assertTrue(act1 != None)
-		self.assertTrue(act2 != None)    
-		
-		
-class Goal_itemTest(unittest.TestCase):
-	def test_init(self):
-		i1 = model.Goal_item("test title","testdata","test goal", False)
+    def test_insert_duplication(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        t2 = model.Goal("b1012100", "test title")
+        t2.insert(db)
+        with self.assertRaises(model.GoalDuplicationError):
+            t2.insert(db)
 
-	def test_insert(self):
-		db = Connection('localhost', 27017).testdata
-		model.Goal_item.delete_all(db)
-		i1 = model.Goal_item("test title", "testdata", "test goal", False)
-		i1.insert(db)
+    def test_find(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        t1 = model.Goal("b1012100", "test title")
+        t2 = model.Goal("b1012100", "test title1")
+        t1.insert(db)
+        t2.insert(db)
+        act1 = model.Goal.find(db, "b1012100", "test title")
+        act2 = model.Goal.find(db, "b1012100", "test title1")
+        self.assertTrue(act1 != None)
+        self.assertTrue(act2 != None)
 
-	def test_find(self):
-		db = Connection('localhost', 27017).testdata
-		model.Goal_item.delete_all(db)
-		i1 = model.Goal_item("test title" , "testdata" , "test goal" , False)
-		i2 = model.Goal_item("test title1" , "testdata1" , "test goal1" , False)
-		i1.insert(db)
-		i2.insert(db)
-		act1 = model.Goal_item.find(db, "test title", "test goal")
-		act2 = model.Goal_item.find(db, "test title1" , "test goal1")
-		self.assertTrue(act1 != None)
-		self.assertTrue(act2 != None) 
-		
+    def test_get(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        g1 = model.Goal("b1012100", "text title")
+        g1.insert(db)
+        act = model.Goal.get(db, "b1012100")
+        self.assertTrue(act != None)
+        for goal in act:
+            self.assertTrue(goal.student_id == "b1012100")
+
+    def test_get_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        g1 = model.Goal("b1012100", "text title")
+        g1.insert(db)
+        act = model.Goal.get(db, "b1012101")
+        self.assertTrue(act == None)
+
+    def test_remove(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        r1 = model.Goal("b1012100", "test title")
+        r1.insert(db)
+        model.Goal.remove(db, "b1012100", "test title")
+        act = model.Goal.find(db, "b1012100", "test title")
+        self.assertTrue(act == None)
+
+    def test_remove_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        r1 = model.Goal("b1012100", "test title")
+        r1.insert(db)
+        model.Goal.remove(db, "b1012101", "test title")
+        model.Goal.remove(db, "b1012100", "test title1")
+        act = model.Goal.find(db, "b1012100", "test title")
+        self.assertTrue(act != None)
+
+
+class GoalItemTest(unittest.TestCase):
+    def test_init(self):
+        i1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+
+    def test_insert(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        i1.insert(db)
+
+    def test_insert_duplication(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        i1.insert(db)
+        with self.assertRaises(model.GoalItemDuplicationError):
+            i1.insert(db)
+
+
+    def test_find(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        i2 = model.GoalItem("b1012100", "test goal1", "test title1", "testdata1",False)
+        i1.insert(db)
+        i2.insert(db)
+        act1 = model.GoalItem.find(db, "b1012100", "test goal", "test title")
+        act2 = model.GoalItem.find(db, "b1012100", "test goal1", "test title1")
+        self.assertTrue(act1 != None)
+        self.assertTrue(act2 != None) 
+
+
+class ItemLogTest(unittest.TestCase):
+    def test_init(self):
+        i1 = model.ItemLog("b1012100", "test goal", "test goal_item", "2013/11/11", "hogehoge")
+
+    def test_insert(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        i1 = model.ItemLog("b1012100", "test goal", "test goal_item", "2013/11/11", "hogehoge")
+        number = i1.insert(db)
+        self.assertTrue(number >= 1)
+
+    def test_find(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        i1 = model.ItemLog("b1012100", "test goal", "test goal_item","2013/11/11", "hogehoge")
+        i2 = model.ItemLog("b1012100", "test goal1", "test goal_item1","2013/11/11", "hogehoge1")
+        number1 = i1.insert(db)
+        self.assertTrue(number1 == 1)
+        number2 = i2.insert(db)
+        self.assertTrue(number2 == 2)
+        act1 = model.ItemLog.find(db, "b1012100", number1)
+        act2 = model.ItemLog.find(db, "b1012100", number2)
+        self.assertTrue(act1 != None)
+        self.assertTrue(act2 != None) 
+
+    def test_get(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        i1 = model.ItemLog("b1012100", "test goal", "test goal_item","2013/11/11", "hogehoge")
+        i1.insert(db)
+        act = model.ItemLog.get(db, "b1012100")
+        self.assertTrue(act != None)
+        for itemlog in act:
+            self.assertTrue(itemlog.student_id == "b1012100")
+
+    def test_get_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        i1 = model.ItemLog("b1012100", "test goal", "test goal_item","2013/11/11", "hogehoge")
+        i1.insert(db)
+        act = model.ItemLog.get(db, "b1012101")
+        self.assertTrue(act == None)
+
+    def test_remove(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        r1 = model.ItemLog("b1012100", "test goal", "test goal_item","2013/11/11", "hogehoge")
+        number1 = r1.insert(db)
+        model.ItemLog.remove(db, "b1012100", number1)
+        act = model.ItemLog.find(db, "b1012100", number1)
+        self.assertTrue(act == None)
+
+    def test_remove_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.ItemLog.delete_all(db)
+        r1 = model.ItemLog("b1012100", "test goal", "test goal_item","2013/11/11", "hogehoge")
+        number1 = r1.insert(db)
+        number2 = 2 
+        model.ItemLog.remove(db, "b1012101", number1)
+        model.ItemLog.remove(db, "b1012100", number2)
+        act = model.ItemLog.find(db, "b1012100", number1)
+        self.assertTrue(act != None)
+
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
