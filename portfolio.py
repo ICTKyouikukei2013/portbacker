@@ -108,23 +108,29 @@ def index_page():
 
 # goal.htmlにリンク
 @app.route('/goal', methods=['GET'])
-def goal_get():
+def get_goal():
     username = session['username']
     goal_texts = model.get_goal_texts(username)
     log_texts = model.get_log_texts(username)
     return render_template_with_username("goal.html", goal_texts= goal_texts, log_texts=log_texts)
 
 # goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
-@app.route('/goal', methods=['POST'])
-def goal_post():
+@app.route('/goal_post_goal', methods=['POST'])
+def post_goal():
     username = session['username']
-    if request.form["button"] == u"新規作成":
-        goal_text = request.form['goal_text']
-        if goal_text != "":
-            model.insert_goal_text(username, goal_text)
-    elif request.form["button"] == u"削除":
-        rmgoal = request.form['rmgoal']
-        model.remove_goal_text(username, rmgoal)
+    if request.form["button_name"] == "make":
+        goal_title = request.form['goal_title']
+        g = model.Goal(goal_title)
+        g.insert(model.db)
+    return redirect('/goal')
+
+@app.route('/goal_post_goal_item', methods=['POST'])
+def post_goal_item():
+    username = session['username']
+    if request.form["button_name"] == "make":
+        goal_item_text = request.form["goal_item_title"]
+        goal_title = request.form['goal_title']
+        gi = model.Goal_item(goal_item_title, get_date(), goal_title, True)
     return redirect('/goal')
 
 @app.route('/personallog_post', methods=['POST'])
