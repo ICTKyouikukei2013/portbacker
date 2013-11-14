@@ -8,6 +8,8 @@ $(function(){
     Portfolio.style.backgroundColor = "#dcdcdc";
   var Artifact = document.getElementById('Artifact');
     Artifact.style.backgroundColor = "#888";
+  var Personal = document.getElementById('Personal');
+    Personal.style.backgroundColor = "#888";
   var Goal = document.getElementById('Goal');
     Goal.style.backgroundColor = "#888";
 
@@ -17,17 +19,17 @@ $(function(){
 $("#move_tab").css("margin-left", "235px");
 $("#move_tab").css("margin-top", "-125px");
 
-
 /*タブの文字の色*/
 $("#topcolor").css("color", "#fff");
 $("#portcolor").css("color", "#666");
 $("#artcolor").css("color", "#fff");
+$("#perscolor").css("color", "#fff");
 $("#goalcolor").css("color", "#fff");
 
 /*mouseover*/
-  /*トップ*/
+  /*ポートフォリオ*/
   $("li#Top").mouseover(function(){
-    $("#Top").css("backgroundColor","#dcdcdc");
+    $("#Top").css("backgroundColor","#c0c0c0");
     $("#topcolor").css("color", "#666");
   });
   $("li#Top").mouseout(function(){
@@ -37,7 +39,7 @@ $("#goalcolor").css("color", "#fff");
 
   /*成果物管理*/
   $("li#Artifact").mouseover(function(){
-    $("#Artifact").css("backgroundColor","#dcdcdc");
+    $("#Artifact").css("backgroundColor","#c0c0c0");
     $("#artcolor").css("color", "#666");
   });
   $("li#Artifact").mouseout(function(){
@@ -45,9 +47,19 @@ $("#goalcolor").css("color", "#fff");
     $("#artcolor").css("color", "#fff");
   });
 
+  /*個人日誌*/
+  $("li#Personal").mouseover(function(){
+    $("#Personal").css("backgroundColor","#c0c0c0");
+    $("#perscolor").css("color", "#666");
+  });
+  $("li#Personal").mouseout(function(){
+    $("#Personal").css("backgroundColor","#888");
+    $("#perscolor").css("color", "#fff");
+  });
+
   /*ゴール*/
   $("li#Goal").mouseover(function(){
-    $("#Goal").css("backgroundColor","#dcdcdc");
+    $("#Goal").css("backgroundColor","#c0c0c0");
     $("#goalcolor").css("color", "#666");
   });
   $("li#Goal").mouseout(function(){
@@ -59,12 +71,15 @@ $("#goalcolor").css("color", "#fff");
   $("#Top").css("border-radius","5px 5px 0px 0px");
   $("#Portfolio").css("border-radius","5px 5px 0px 0px");
   $("#Artifact").css("border-radius","5px 5px 0px 0px");
+  $("#Personal").css("border-radius","5px 5px 0px 0px");
   $("#Goal").css("border-radius","5px 5px 0px 0px");
  
+
   /*padding*/
   $("#Top").css("padding","5px");
   $("#Portfolio").css("padding","5px");
   $("#Artifact").css("padding","5px");
+  $("#Personal").css("padding","5px");
   $("#Goal").css("padding","5px");
 });
 </script>
@@ -147,54 +162,55 @@ $("#goalcolor").css("color", "#fff");
       <div Class="size">
         <div id="move_tab">
           <ul>
-            <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+           <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
             <li id="Portfolio"><a id="portcolor" href="portfolio">ポートフォリオ</a></li>
-            <li id="Artifact"><a id="artcolor" href="artifact">個人日誌</a></li>
+            <li id="Artifact"><a id="artcolor" href="artifact">成果物管理</a></li>
+            <li id="Personal"><a id="perscolor" href="person">個人日誌</a></li>
            <li id="Goal"><a id="goalcolor" href="goal">ゴール設定</a></li>
+          </ul>
           </ul>
         </div>
       </div>
     </div>
     <div class="box">
-      <h3>ポートフォリオ作成</h3><br>
-      <form id='form' name='form' method="post" action="new" target="">
-        <div id="toolbar" style="display: none;">
-          <div class="btn-group">
-  <input id="selected-color1" style="width:65px;">
+    	<div class="new_headline">
+     	 <h3>ポートフォリオ作成</h3><br>
+     	 <form id='form' name='form' method="post" action="new" target="">
+       	 <div id="toolbar" style="display: none;">
+        	  <div class="btn-group">
+  				<input id="selected-color1" style="width:65px;">
+			  <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">Color</a>
+				  <ul class="dropdown-menu">
+    				<li><div id="colorpalette1"></div></li>
+  				</ul>
+			</div> 
 
-  <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">Color</a>
-  <ul class="dropdown-menu">
-    <li><div id="colorpalette1"></div></li>
-  </ul>
-</div> 
-
-<script>
-   $('#colorpalette1').colorPalette()
-  .on('selectColor', function(e) {
-    $('#selected-color1').val(e.color);
-  });
-</script> |
-          <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |
-          <a data-wysihtml5-command="italic" title="CTRL+I">italic</a> |
-          <!-- <a data-wysihtml5-command="createLink">insert link</a> | -->
-          <!-- <a data-wysihtml5-command="insertImage">insert image</a> | -->
-          <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
-          <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
-          <a data-wysihtml5-command="insertUnorderedList">箇条書き</a>
-          <!-- <a data-wysihtml5-command="insertOrderedList">連番</a> | -->
-          <!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a> | -->
-          <!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a> | -->
-          <!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a> | -->
-          <!-- <a data-wysihtml5-command="insertSpeech">speech</a>-->  ||
-          <a data-wysihtml5-action="change_view">switch to html view</a>
+		<script>
+   			$('#colorpalette1').colorPalette().on('selectColor', function(e) {
+    				$('#selected-color1').val(e.color);
+ 			 });
+		</script> |
+        	  <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |
+          	<a data-wysihtml5-command="italic" title="CTRL+I">italic</a> |
+          	<!-- <a data-wysihtml5-command="createLink">insert link</a> | -->
+          	<!-- <a data-wysihtml5-command="insertImage">insert image</a> | -->
+          	<a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
+          	<a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
+          	<a data-wysihtml5-command="insertUnorderedList">箇条書き</a>
+          	<!-- <a data-wysihtml5-command="insertOrderedList">連番</a> | -->
+         	 <!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a> | -->
+          	<!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a> | -->
+          	<!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a> | -->
+          	<!-- <a data-wysihtml5-command="insertSpeech">speech</a>-->  ||
+          	<a data-wysihtml5-action="change_view">switch to html view</a>
           
-          <div data-wysihtml5-dialog="createLink" style="display: none;">
-            <label>
-              Link:
-              <input data-wysihtml5-dialog-field="href" value="http://">
-            </label>
-            <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
-          </div>
+        	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+            	<label>
+             		 Link:
+              		<input data-wysihtml5-dialog-field="href" value="http://">
+            	</label>
+            	<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+          	</div>
           
           <div data-wysihtml5-dialog="insertImage" style="display: none;">
             <label>
@@ -235,6 +251,7 @@ $("#goalcolor").css("color", "#fff");
         </div>
       </form>
     </div>
+	</div>
   </div>
 
 <script language="JavaScript"><!--
