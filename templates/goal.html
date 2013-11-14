@@ -102,10 +102,10 @@ $("#goalcolor").css("color", "#666");
       <div class="goal-set">
         <h3>ゴール設定</h3>
         <div class="goal-set-input">
-          <form method="post" action="/goal">
+          <form method="post" action="/goal_post_goal">
             <h4>達成したい目標を設定</h4>
-            <input type="text" name="goal_text" style="width:250px; margin-top:10px; margin-right: 7px;" required>
-            <input type="submit" name="goal" class="btn btn-primary" value="新規作成">
+            <input type="text" name="goal_title" style="width:250px; margin-top:10px; margin-right: 7px;" required>
+            <input type="submit" name="goal" class="btn btn-primary" value="新規作成" id="make_goal">
           </form>
 
           <h4>ゴール</h4>
@@ -120,9 +120,10 @@ $("#goalcolor").css("color", "#666");
                 <div id="collapseOne" class="accordion-body collapse in">
                 <div class="accordion-inner">
                   <ul>
-                    <form method="post" action="/goal">
-                      <input type="text" name="goal_item_text" style="width:250px; margin-top:10px; margin-right: 7px;" required>
-                      <input type="submit" name="goal_item" class="btn btn-primary" value="新規作成">
+                    <form method="post" action="/goal_post_goal_item">
+                      <input type="hidden" name="goal_title" value="Gitをマスターする">
+                      <input type="text" name="goal_item_title" style="width:250px; margin-top:10px; margin-right: 7px;" required>
+                      <input type="submit" name="goal_item" class="btn btn-primary" value="新規作成" id = "make_goal_item">
 <!--
                       <input type="text" name="goal-text" style="width:100; margin-top:10px;" required>
                       <input type="submit" name="goal" class="btn btn-primary" value="新規作成">
