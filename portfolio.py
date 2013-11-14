@@ -118,9 +118,8 @@ def get_goal():
 @app.route('/goal_post_goal', methods=['POST'])
 def post_goal():
     username = session['username']
-    if request.form["goal"] == u"新規作成":
+    if request.form["button_name"] == "make":
         goal_title = request.form['goal_title']
-        return goal_title
         g = model.Goal(goal_title)
         g.insert(model.db)
     return redirect('/goal')
@@ -128,7 +127,7 @@ def post_goal():
 @app.route('/goal_post_goal_item', methods=['POST'])
 def post_goal_item():
     username = session['username']
-    if request.form["goal_item"] == u"新規作成":
+    if request.form["button_name"] == "make":
         goal_item_text = request.form["goal_item_title"]
         goal_title = request.form['goal_title']
         gi = model.Goal_item(goal_item_title, get_date(), goal_title, True)
