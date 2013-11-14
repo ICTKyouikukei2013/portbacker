@@ -100,11 +100,13 @@ $("#goalcolor").css("color", "#666");
     </div>
     <div class="box">
       <form method="post" action="/goal">
-	<div class="headline">ゴール設定<br>
-	<input type="text" name="goal_text" style="width:250px;"/>
+	<div class="headline">ゴール設定<br><br>
+    <h4>達成したいゴール書いてね♡</h4><br>
+	<textarea type="text" name="goal_text"></textarea>
 	<input type="submit" name="button" class="btn btn-primary" value="新規作成">
       </form>
   <h3>ゴール</h3>
+
       {% for goal_text in goal_texts %}
       <form method="post" action="/goal">
 	{{goal_text}}

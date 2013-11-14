@@ -80,6 +80,7 @@ body{
 /*タブ*/
 #tabnavi li a, #goal, #date{
 	text-decoration:none;
+	margin: 0 10px 0 0;
 }
 
 #tabnavi:after{/*魔法の言葉さ.float解除しちゃうよ*/
@@ -125,19 +126,32 @@ small{
 	font-weight: bold;
 }
 
-/*top.htmlで使ってるよ*/
-.info{
-	padding: 10px 0 0 20px;
+.new_headline{
+	padding: 20px 0 0 20px;
+	font-size: 12px;
+}
+
+.headline textarea{
+	width: 250px;
+	height: 20px;
+	margin-top: -20px;
+	resize: none;
 }
 
 /*top.htmlの更新情報のところの四角形*/
-#hako{
+.hako{
 	margin:  10px 45px 0 45px;
 	background-color: #c0c0c0;
 	width: 400px;
 	height: 150px;
 	border: 1px dotted #ccc;
 }
+
+/*top.htmlで使ってるよ*/
+.hako #info{
+	padding: 10px 0 0 20px;
+}
+
 
 #prebtn{
 	margin-top: -20px;
