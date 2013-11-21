@@ -74,7 +74,6 @@ $("#goalcolor").css("color", "#fff");
   $("#Personal").css("border-radius","5px 5px 0px 0px");
   $("#Goal").css("border-radius","5px 5px 0px 0px");
  
-
   /*padding*/
   $("#Top").css("padding","5px");
   $("#Portfolio").css("padding","5px");
@@ -141,76 +140,162 @@ $("#goalcolor").css("color", "#fff");
       border: 1px solid #666;
     }
     
-    /*a[data-wysihtml5-command-value="red"] {
-      color: red;
+    a[data-wysihtml5-command-value="black"] {
+      color: black;
     }
     
+    a[data-wysihtml5-command-value="silver"] {
+      color: silver;
+    }
+    
+    a[data-wysihtml5-command-value="gray"] {
+      color: gray;
+    }
+
+    a[data-wysihtml5-command-value="white"] {
+      color: white;
+    }
+
+    a[data-wysihtml5-command-value="maroon"] {
+      color: maroon;
+    }
+
+    a[data-wysihtml5-command-value="red"] {
+      color: red;
+    }
+
+    a[data-wysihtml5-command-value="purple"] {
+      color: purple;
+    }
+
+    a[data-wysihtml5-command-value="fuchisa"] {
+      color: fuchsia;
+    }
+
     a[data-wysihtml5-command-value="green"] {
       color: green;
     }
-    
+
+    a[data-wysihtml5-command-value="lime"] {
+      color: lime;
+    }
+
+    a[data-wysihtml5-command-value="olive"] {
+      color: olive;
+    }
+
+    a[data-wysihtml5-command-value="yellow"] {
+      color: yellow;
+    }
+
+    a[data-wysihtml5-command-value="navy"] {
+      color: navy;
+    }
+
     a[data-wysihtml5-command-value="blue"] {
       color: blue;
-    }*/
+    }
+
+    a[data-wysihtml5-command-value="teal"] {
+      color: teal;
+    }
+
+    a[data-wysihtml5-command-value="aqua"] {
+      color: aqua;
+    }
+
+    }
   </style>
    <script type="text/javascript" src="static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
   <link rel="stylesheet" type="text/css" media="all" href="static/css/bootstrap-colorpalette.css" />
   <link rel="stylesheet" type="text/css" media="all" href="static/css/example.css" />
   <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="static/css/wysihtml5.css" rel="stylesheet" media="screen">
   <div Class="style">
     <div id="tabnavi">
       <div Class="size">
         <div id="move_tab">
           <ul>
-           <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+            <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
             <li id="Portfolio"><a id="portcolor" href="portfolio">ポートフォリオ</a></li>
             <li id="Artifact"><a id="artcolor" href="artifact">成果物管理</a></li>
             <li id="Personal"><a id="perscolor" href="person">個人日誌</a></li>
            <li id="Goal"><a id="goalcolor" href="goal">ゴール設定</a></li>
           </ul>
-          </ul>
         </div>
       </div>
     </div>
     <div class="box">
-    	<div class="new_headline">
-     	 <h3>ポートフォリオ作成</h3><br>
-     	 <form id='form' name='form' method="post" action="new" target="">
-       	 <div id="toolbar" style="display: none;">
-        	  <div class="btn-group">
-  				<input id="selected-color1" style="width:65px;">
-			  <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown">Color</a>
-				  <ul class="dropdown-menu">
-    				<li><div id="colorpalette1"></div></li>
-  				</ul>
-			</div> 
+      <div class="new_headline">
+        <h3>ポートフォリオ作成</h3><br>
+        <form id='form' name='form' method="post" action="new" target="">
+          <div id="toolbar" style="display: none;">
+            
+            <div class="bg">
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black">
+                <div class="black"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver">
+                <div class="silver"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray">
+                <div class="gray"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="white">
+                <div class="white"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon">
+                <div class="maroon"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">
+                <div class="red"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple">
+                <div class="purple"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="fuchsia">
+                <div class="fuchsia"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">
+                <div class="green"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="lime">
+                <div class="lime"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="olive">
+                <div class="olive"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="yellow">
+                <div class="yellow"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="navy">
+                <div class="navy"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">
+                <div class="blue"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="teal">
+                <div class="teal"></div>
+              </a>
+              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="aqua">
+                <div class="aqua"></div>
+              </a>
+            </div>
 
-		<script>
-   			$('#colorpalette1').colorPalette().on('selectColor', function(e) {
-    				$('#selected-color1').val(e.color);
- 			 });
-		</script> |
-        	  <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |
-          	<a data-wysihtml5-command="italic" title="CTRL+I">italic</a> |
-          	<!-- <a data-wysihtml5-command="createLink">insert link</a> | -->
-          	<!-- <a data-wysihtml5-command="insertImage">insert image</a> | -->
-          	<a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
-          	<a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
-          	<a data-wysihtml5-command="insertUnorderedList">箇条書き</a>
-          	<!-- <a data-wysihtml5-command="insertOrderedList">連番</a> | -->
-         	 <!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">red</a> | -->
-          	<!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">green</a> | -->
-          	<!-- <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">blue</a> | -->
-          	<!-- <a data-wysihtml5-command="insertSpeech">speech</a>-->  ||
-          	<a data-wysihtml5-action="change_view">switch to html view</a>
+            <a data-wysihtml5-command="bold" title="CTRL+B">太字</a> |
+            <a data-wysihtml5-command="italic" title="CTRL+I">斜体</a>|
+            <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
+            <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
+            <a data-wysihtml5-command=" insertUnorderedList">箇条書き</a>||
+            <a data-wysihtml5-action="change_view">switch to html view</a>
           
-        	  <div data-wysihtml5-dialog="createLink" style="display: none;">
-            	<label>
-             		 Link:
-              		<input data-wysihtml5-dialog-field="href" value="http://">
-            	</label>
-            	<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
-          	</div>
+         	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+				<label>
+               		 Link:
+					<input data-wysihtml5-dialog-field="href" value="http://">
+				</label>
+				<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+			</div>
           
           <div data-wysihtml5-dialog="insertImage" style="display: none;">
             <label>
@@ -251,7 +336,7 @@ $("#goalcolor").css("color", "#fff");
         </div>
       </form>
     </div>
-	</div>
+  </div>
   </div>
 
 <script language="JavaScript"><!--
