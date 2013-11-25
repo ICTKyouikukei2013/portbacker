@@ -82,7 +82,6 @@ $("#goalcolor").css("color", "#fff");
   $("#Goal").css("padding","5px");
 });
 </script>
-  
   <style>
     .seikaimg {
        width: 100%;
@@ -207,6 +206,9 @@ $("#goalcolor").css("color", "#fff");
 
     }
   </style>
+   <script type="text/javascript" src="static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="static/css/bootstrap-colorpalette.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="static/css/example.css" />
   <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="static/css/wysihtml5.css" rel="stylesheet" media="screen">
   <div Class="style">
@@ -280,20 +282,20 @@ $("#goalcolor").css("color", "#fff");
               </a>
             </div>
 
-            <a data-wysihtml5-command="bold" title="CTRL+B">bold</a> |
-            <a data-wysihtml5-command="italic" title="CTRL+I">italic</a> |
+            <a data-wysihtml5-command="bold" title="CTRL+B">太字</a> |
+            <a data-wysihtml5-command="italic" title="CTRL+I">斜体</a>|
             <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
             <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
             <a data-wysihtml5-command=" insertUnorderedList">箇条書き</a>||
             <a data-wysihtml5-action="change_view">switch to html view</a>
           
-            <div data-wysihtml5-dialog="createLink" style="display: none;">
-              <label>
-                Link:
-                <input data-wysihtml5-dialog-field="href" value="http://">
-             </label>
-              <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
-          </div>
+         	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+				<label>
+               		 Link:
+					<input data-wysihtml5-dialog-field="href" value="http://">
+				</label>
+				<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+			</div>
           
           <div data-wysihtml5-dialog="insertImage" style="display: none;">
             <label>
