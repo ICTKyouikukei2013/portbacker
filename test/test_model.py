@@ -155,7 +155,6 @@ class GoalItemTest(unittest.TestCase):
         with self.assertRaises(model.GoalItemDuplicationError):
             i1.insert(db)
 
-
     def test_find(self):
         db = Connection('localhost', 27017).testdata
         model.GoalItem.delete_all(db)
@@ -167,6 +166,44 @@ class GoalItemTest(unittest.TestCase):
         act2 = model.GoalItem.find(db, "b1012100", "test goal1", "test title1")
         self.assertTrue(act1 != None)
         self.assertTrue(act2 != None) 
+
+    def test_get(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        g1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        g1.insert(db)
+        act = model.GoalItem.get(db, "b1012100", "test goal")
+        self.assertTrue(act != None)
+        for goal in act:
+            self.assertTrue(goal.student_id == "b1012100")
+
+    def test_get_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        g1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        g1.insert(db)
+        act1 = model.GoalItem.get(db, "b1012101", "test goal")
+        self.assertTrue(act1 == None)
+
+    def test_remove(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        r1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        r1.insert(db)
+        model.GoalItem.remove(db, "b1012100", "test goal", "test title")
+        act = model.GoalItem.find(db, "b1012100", "test goal", "test title")
+        self.assertTrue(act == None)
+
+    def test_remove_false(self):
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        r1 = model.GoalItem("b1012100", "test goal", "test title", "testdata",False)
+        r1.insert(db)
+        model.GoalItem.remove(db, "b1012101", "test goal","test title")
+        model.GoalItem.remove(db, "b1012100", "test goal1","test title1")
+        act = model.GoalItem.find(db, "b1012100", "test goal","test title")
+        self.assertTrue(act != None)
+
 
 
 class ItemLogTest(unittest.TestCase):
