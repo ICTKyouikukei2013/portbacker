@@ -155,6 +155,7 @@ class GoalItemTest(unittest.TestCase):
         with self.assertRaises(model.GoalItemDuplicationError):
             i1.insert(db)
 
+
     def test_find(self):
         db = Connection('localhost', 27017).testdata
         model.GoalItem.delete_all(db)
@@ -203,8 +204,6 @@ class GoalItemTest(unittest.TestCase):
         model.GoalItem.remove(db, "b1012100", "test goal1","test title1")
         act = model.GoalItem.find(db, "b1012100", "test goal","test title")
         self.assertTrue(act != None)
-
-
 
 class ItemLogTest(unittest.TestCase):
     def test_init(self):
