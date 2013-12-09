@@ -286,5 +286,5 @@ if __name__ == '__main__':
 
     app.debug = True
     # app.run(host='49.212.234.134')
-	app.run() 
+    app.run() 
 
