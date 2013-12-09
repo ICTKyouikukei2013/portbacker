@@ -35,28 +35,26 @@
 .prof #usrname{
 	font-weight: bold;
 	margin-left: 15px;
-	line-height: 110px;
+	line-height: 80px;
 }
 
-/*ログアウトボタンの位置なんとか変更したい*/
-.prof #logoutbtn{
-	margin-left: 170px; 
-	margin-top: -80px; 
+.prof #logoutbtncontainer {
+	position: relative;
+	bottom: 5px;
+	height: 20px;
 }
-
-#logoutbtn:after{/*魔法の言葉さ.float解除しちゃうよ*/
-	content: "."; /*floatの要素が終わったら.をうつよ*/
-	display: block;/*この.はblockなんだよって*/
-	height: 0;/*だけど高さは0なんだよ*/
-	clear: both;/*clear:bothでfloat解除しちゃうよ*/
-	visibility: hidden;/*.みえなくしちゃうよ～～～*/
+.prof #logoutbtn {
+	position: absolute;
+	right: 5px;
+	bottom: 0;
 }
 
 .group{
+	position: absolute;
 	width: 250px;
 	height: 75px;
 	background-color: #dcdcdc;
-	margin-top: -30px;
+	margin-top: 30px;
 }
 
 .group input{
@@ -311,13 +309,17 @@ form{
 
 .bg{
   background-color: #ccc;
-  width: 130px;
-  height: 130px;
+  width: 160px;
+  height: 160px;
   position: absolute;
   margin-left: 450px;
 }
 
-.black{
+.picker{
+	border: solid;
+}
+
+#black{
 	background-color: black;
 	width: 20px;
 	height: 20px;
@@ -325,7 +327,7 @@ form{
 	float: left;
 }
 
-.silver{
+#silver{
 	background-color: silver;
 	width: 20px;
 	height: 20px;
@@ -333,7 +335,7 @@ form{
 	float: left;
 }
 
-.gray{
+#gray{
 	background-color: gray;
 	width: 20px;
 	height: 20px;
@@ -342,7 +344,7 @@ form{
 
 }
 
-.white{
+#white{
 	background-color: white;
 	width: 20px;
 	height: 20px;
@@ -350,7 +352,7 @@ form{
 	float: left;
 }
 
-.maroon{
+#maroon{
 	background-color: maroon;
 	width: 20px;
 	height: 20px;
@@ -358,7 +360,7 @@ form{
 	float: left;
 }
 
-.red{
+#red{
 	background-color: red;
 	width: 20px;
 	height: 20px;
@@ -366,7 +368,7 @@ form{
 	float: left; 
 }
 
-.purple{
+#purple{
 	background-color: purple;
 	width: 20px;
 	height: 20px;
@@ -374,7 +376,7 @@ form{
 	float: left;
 }
 
-.fuchsia{
+#fuchsia{
 	background-color: fuchsia;
 	width: 20px;
 	height: 20px;
@@ -382,7 +384,7 @@ form{
 	float: left; 
 }
 
-.green{
+#green{
 	background-color: green;
 	width: 20px;
 	height: 20px;
@@ -390,7 +392,7 @@ form{
 	float: left;
 }
 
-.lime{
+#lime{
 	background-color: lime;
 	width: 20px;
 	height: 20px;
@@ -398,7 +400,7 @@ form{
 	float: left;
 }
 
-.olive{
+#olive{
 	background-color: olive;
 	width: 20px;
 	height: 20px;
@@ -406,7 +408,7 @@ form{
 	float: left;
 }
 
-.yellow{
+#yellow{
 	background-color: yellow;
 	width: 20px;
 	height: 20px;
@@ -414,7 +416,7 @@ form{
 	float: left;
 }
 
-.navy{
+#navy{
 	background-color: navy;
 	width: 20px;
 	height: 20px;
@@ -422,7 +424,7 @@ form{
 	float: left;
 }
 
-.blue{
+#blue{
 	background-color: blue;
 	width: 20px;
 	height: 20px;
@@ -430,7 +432,7 @@ form{
 	float: left;
 }
 
-.teal{
+#teal{
 	background-color: teal;
 	width: 20px;
 	height: 20px;
@@ -438,10 +440,38 @@ form{
 	float: left;
 }
 
-.aqua{
+#aqua{
 	background-color: aqua;
 	width: 20px;
 	height: 20px;
 	margin: 5px 5px 5px 5px;
 	float: left;
 }
+
+/* タブ */
+li.tab {
+	padding: 5px;
+	border-radius: 5px 5px 0px 0px;
+}
+li.tab-selected {
+	color: #666;
+	background-color: #dcdcdc;
+}
+li.tab-unsel {
+	color: #fff;
+	background-color: #888;
+}
+
+li.tab-selected a {
+	color: #666;
+}
+li.tab-unsel a {
+	color: #fff;
+}
+
+/*その場しのぎしてます*/
+#move_tab {
+	margin-left: 235px;
+	margin-top: -125px;
+}
+

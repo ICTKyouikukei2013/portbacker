@@ -5,7 +5,8 @@
   <script src="/static/js/jquery.js"></script>
   <script src="/static/js/bootstrap.min.js"></script>
   <link href="/static/css/base.css" rel="stylesheet">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="shortcut icon" href="/static/favicon.ico">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <title>E-portfolio</title>
 </head>
   
@@ -15,10 +16,12 @@
       <div id="usrname">
         {{username}}
         <input type="button" onclick="location.href='/logout'" value="設定" class="btn btn-inverse">
+      </div>
+      <div id="logoutbtncontainer">
         <div id="logoutbtn">
           <input type="button" onclick="location.href='/logout'" value="ログアウト" class="btn-mini btn-info">
         </div>
-      </div>   
+      </div>
       <div class="group">
         <input type="text" name="goal_text" style="width:150px;">
         <a href onclick="window.open('group.html', '_blank', 'width=300,height=600');">

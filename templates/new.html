@@ -1,87 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-<script type="text/javascript">
-$(function(){
-  var Top = document.getElementById('Top');
-   Top.style.backgroundColor = "#888";
-  var Portfolio = document.getElementById('Portfolio');
-    Portfolio.style.backgroundColor = "#dcdcdc";
-  var Artifact = document.getElementById('Artifact');
-    Artifact.style.backgroundColor = "#888";
-  var Personal = document.getElementById('Personal');
-    Personal.style.backgroundColor = "#888";
-  var Goal = document.getElementById('Goal');
-    Goal.style.backgroundColor = "#888";
-
-
-/*タブの移動*/
-/*その場しのぎしてます*/
-$("#move_tab").css("margin-left", "235px");
-$("#move_tab").css("margin-top", "-125px");
-
-/*タブの文字の色*/
-$("#topcolor").css("color", "#fff");
-$("#portcolor").css("color", "#666");
-$("#artcolor").css("color", "#fff");
-$("#perscolor").css("color", "#fff");
-$("#goalcolor").css("color", "#fff");
-
-/*mouseover*/
-  /*ポートフォリオ*/
-  $("li#Top").mouseover(function(){
-    $("#Top").css("backgroundColor","#c0c0c0");
-    $("#topcolor").css("color", "#666");
-  });
-  $("li#Top").mouseout(function(){
-    $("#Top").css("backgroundColor","#888");
-    $("#topcolor").css("color", "#fff");
-  });
-
-  /*成果物管理*/
-  $("li#Artifact").mouseover(function(){
-    $("#Artifact").css("backgroundColor","#c0c0c0");
-    $("#artcolor").css("color", "#666");
-  });
-  $("li#Artifact").mouseout(function(){
-    $("#Artifact").css("backgroundColor","#888");
-    $("#artcolor").css("color", "#fff");
-  });
-
-  /*個人日誌*/
-  $("li#Personal").mouseover(function(){
-    $("#Personal").css("backgroundColor","#c0c0c0");
-    $("#perscolor").css("color", "#666");
-  });
-  $("li#Personal").mouseout(function(){
-    $("#Personal").css("backgroundColor","#888");
-    $("#perscolor").css("color", "#fff");
-  });
-
-  /*ゴール*/
-  $("li#Goal").mouseover(function(){
-    $("#Goal").css("backgroundColor","#c0c0c0");
-    $("#goalcolor").css("color", "#666");
-  });
-  $("li#Goal").mouseout(function(){
-    $("#Goal").css("backgroundColor","#888");
-    $("#goalcolor").css("color", "#fff");
-  });
-
-  /*border- riadius*/
-  $("#Top").css("border-radius","5px 5px 0px 0px");
-  $("#Portfolio").css("border-radius","5px 5px 0px 0px");
-  $("#Artifact").css("border-radius","5px 5px 0px 0px");
-  $("#Personal").css("border-radius","5px 5px 0px 0px");
-  $("#Goal").css("border-radius","5px 5px 0px 0px");
- 
-  /*padding*/
-  $("#Top").css("padding","5px");
-  $("#Portfolio").css("padding","5px");
-  $("#Artifact").css("padding","5px");
-  $("#Personal").css("padding","5px");
-  $("#Goal").css("padding","5px");
-});
-</script>
   <style>
     .seikaimg {
        width: 100%;
@@ -114,13 +32,13 @@ $("#goalcolor").css("color", "#fff");
     
     #toolbar,
     textarea {
-      width: 850px;
+      width: 400px;
       padding: 5px;
     }
     
     textarea {
       height: 280px;
-      border: 2px solid green;
+      border: 2px solid gray;
       font-family: Verdana;
       font-size: 11px;
     }
@@ -206,21 +124,29 @@ $("#goalcolor").css("color", "#fff");
 
     }
   </style>
-   <script type="text/javascript" src="static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
-  <link rel="stylesheet" type="text/css" media="all" href="static/css/bootstrap-colorpalette.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="static/css/example.css" />
-  <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <link href="static/css/wysihtml5.css" rel="stylesheet" media="screen">
+  <script type="text/javascript">
+    $(function(){
+       $(".picker").css("border", "solid");
+       $(".picker").on("click", function(ev){
+         $(".picker").css("border", "solid");
+         $(this).css("border", "double #d4dcd6");
+      });
+    });
+  </script>
+   <script type="text/javascript" src="/static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" media="all" href="/static/css/bootstrap-colorpalette.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="/static/css/example.css" />
+  <link href="/static/css/wysihtml5.css" rel="stylesheet" media="screen">
   <div Class="style">
     <div id="tabnavi">
       <div Class="size">
         <div id="move_tab">
           <ul>
-            <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
-            <li id="Portfolio"><a id="portcolor" href="portfolio">ポートフォリオ</a></li>
-            <li id="Artifact"><a id="artcolor" href="artifact">成果物管理</a></li>
-            <li id="Personal"><a id="perscolor" href="person">個人日誌</a></li>
-           <li id="Goal"><a id="goalcolor" href="goal">ゴール設定</a></li>
+            <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+            <li class="tab tab-selected"><a href="portfolio">ポートフォリオ</a></li>
+            <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
+            <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
+            <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
           </ul>
         </div>
       </div>
@@ -233,52 +159,52 @@ $("#goalcolor").css("color", "#fff");
             
             <div class="bg">
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black">
-                <div class="black"></div>
+                <div id="black" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver">
-                <div class="silver"></div>
+                <div id="silver" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray">
-                <div class="gray"></div>
+                <div id="gray" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="white">
-                <div class="white"></div>
+                <div id="white" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon">
-                <div class="maroon"></div>
+                <div id="maroon" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">
-                <div class="red"></div>
+                <div id="red" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple">
-                <div class="purple"></div>
+                <div id="purple" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="fuchsia">
-                <div class="fuchsia"></div>
+                <div id="fuchsia" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">
-                <div class="green"></div>
+                <div id="green" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="lime">
-                <div class="lime"></div>
+                <div id="lime" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="olive">
-                <div class="olive"></div>
+                <div id="olive" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="yellow">
-                <div class="yellow"></div>
+                <div id="yellow" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="navy">
-                <div class="navy"></div>
+                <div id="navy" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">
-                <div class="blue"></div>
+                <div id="blue" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="teal">
-                <div class="teal"></div>
+                <div id="teal" class="picker"></div>
               </a>
               <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="aqua">
-                <div class="aqua"></div>
+                <div id="aqua" class="picker"></div>
               </a>
             </div>
 
@@ -361,7 +287,7 @@ function sendSave()
   });
   
   var log = document.getElementById("log");
-  
+  if(log != null){
   editor
     .on("load", function() {
       log.innerHTML += "<div>load</div>";
@@ -387,5 +313,6 @@ function sendSave()
     .on("redo:composer", function() {
       log.innerHTML += "<div>redo:composer</div>";
     });
+  }
 </script>
 {% endblock %}

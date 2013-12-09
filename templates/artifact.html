@@ -1,122 +1,44 @@
 {% extends "layout.html" %}
 {% block body %}
-<script type="text/javascript">
-$(function(){
-  var Top = document.getElementById('Top');
-   Top.style.backgroundColor = "#888";
-  var Portfolio = document.getElementById('Portfolio');
-    Portfolio.style.backgroundColor = "#888";
-  var Artifact = document.getElementById('Artifact');
-    Artifact.style.backgroundColor = "#dcdcdc";
-  var Personal = document.getElementById('Personal');
-    Personal.style.backgroundColor = "#888";
-  var Goal = document.getElementById('Goal');
-    Goal.style.backgroundColor = "#888";
-
-
-/*タブの移動*/
-/*その場しのぎしてます*/
-$("#move_tab").css("margin-left", "235px");
-$("#move_tab").css("margin-top", "-125px");
-
-/*タブの文字の色*/
-$("#topcolor").css("color", "#fff");
-$("#portcolor").css("color", "#fff");
-$("#artcolor").css("color", "#666");
-$("#perscolor").css("color", "#fff");
-$("#goalcolor").css("color", "#fff");
-
-/*mouseover*/
-  /*トップ*/
-  $("li#Top").mouseover(function(){
-    $("#Top").css("backgroundColor","#c0c0c0");
-    $("#topcolor").css("color", "#666");
-  });
-  $("li#Top").mouseout(function(){
-    $("#Top").css("backgroundColor","#888");
-    $("#topcolor").css("color", "#fff");
-  });
-
-  /*ポートフォリオ*/
-  $("li#Portfolio").mouseover(function(){
-    $("#Portfolio").css("backgroundColor","#c0c0c0");
-    $("#portcolor").css("color", "#666");
-  });
-  $("li#Portfolio").mouseout(function(){
-    $("#Portfolio").css("backgroundColor","#888");
-    $("#portcolor").css("color", "#fff");
-  });
-
-  /*個人日誌*/
-  $("li#Personal").mouseover(function(){
-    $("#Personal").css("backgroundColor","#c0c0c0");
-    $("#perscolor").css("color", "#666");
-  });
-  $("li#Personal").mouseout(function(){
-    $("#Personal").css("backgroundColor","#888");
-    $("#perscolor").css("color", "#fff");
-  });
-  
-  /*ゴール*/
-  $("li#Goal").mouseover(function(){
-    $("#Goal").css("backgroundColor","#c0c0c0");
-    $("#goalcolor").css("color", "#666");
-  });
-  $("li#Goal").mouseout(function(){
-    $("#Goal").css("backgroundColor","#888");
-    $("#goalcolor").css("color", "#fff");
-  });
-
-  /*border- riadius*/
-  $("#Top").css("border-radius","5px 5px 0px 0px");
-  $("#Portfolio").css("border-radius","5px 5px 0px 0px");
-  $("#Artifact").css("border-radius","5px 5px 0px 0px");
-  $("#Personal").css("border-radius","5px 5px 0px 0px");
-  $("#Goal").css("border-radius","5px 5px 0px 0px");
- 
-
-  /*padding*/
-  $("#Top").css("padding","5px");
-  $("#Portfolio").css("padding","5px");
-  $("#Artifact").css("padding","5px");
-  $("#Personal").css("padding","5px");
-  $("#Goal").css("padding","5px");
-});
-</script>
-
-  <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <div Class="style">
+  <div class="style">
     <div id="tabnavi">
-      <div Class="size">
+      <div class="size">
         <div id="move_tab">
           <ul>
-            <li id="Top"><a id="topcolor" href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
-            <li id="Portfolio"><a id="portcolor" href="portfolio">ポートフォリオ</a></li>
-            <li id="Artifact"><a id="artcolor" href="artifact">成果物管理</a></li>
-            <li id="Personal"><a id="perscolor" href="person">個人日誌</a></li>
-           <li id="Goal"><a id="goalcolor" href="goal">ゴール設定</a></li>
+            <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+            <li class="tab tab-unsel"><a href="portfolio">ポートフォリオ</a></li>
+            <li class="tab tab-selected"><a href="artifact">成果物管理</a></li>
+            <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
+            <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
+            <li class="tab tab-unsel"><a href="profile">ユーザー情報</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="box">
       <div class="headline">フォルダ作成<br>
-        <form action="" method=post enctype=multipart/form-data>
-        <p><input type="text" name=directoryname>
-	      <input type=submit value=作成 class="btn btn-secondry">
-      <h3>ファイルのアップロード</h3>
-      	<p><input type="file" name=file>
-	      <input type=submit value=Upload class="btn btn-secondry">
+        <form action="" method="post" enctype="multipart/form-data">
+          <p>
+            <input type="text" name="directoryname" />
+            <input type="submit" value="作成" class="btn btn-secondry" />
+          </p>
+          <h3>ファイルのアップロード</h3>
+          <p>
+            <input type="file" name="file" />
+            <input type="submit" value="Upload" class="btn btn-secondry" />
+          </p>
         </form>
-      {% for dirdisplay, dirurl in dir %}
+        {% for dirdisplay, dirurl in dir %}
         <br>
-        <i class="icon-folder-close"></i><a href={{"/artifact/"+dirpath+dirurl}}>{{dirdisplay}}<a>
-	    {% endfor %}
-      {% for filedisplay, fileurl in ls %}
+        <i class="icon-folder-close"></i>
+        <a href={{"/artifact/"+dirpath+dirurl}}>{{dirdisplay}}</a>
+        {% endfor %}
+        {% for filedisplay, fileurl in ls %}
         <br>
-        <i class="icon-file"></i><a href={{"/view_file/"+dirpath+fileurl}} target="_blank">{{filedisplay}}<a>
-      {% endfor %}
-    </div>
+        <i class="icon-file"></i>
+        <a href={{"/view_file/" + dirpath + fileurl}} target="_blank">{{filedisplay}}</a>
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock %}

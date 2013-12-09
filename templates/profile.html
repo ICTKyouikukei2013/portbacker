@@ -1,53 +1,87 @@
 {% extends "layout.html" %}
 {% block body %}
-  
-  <div class="box">
- 	    <div class="user">ユーザー情報</div>
- 	    <div class="border"></div>
-      <div class="probox">
- 	      <div class="userinfo">
-          <form method="post" action="/profile">
-     	    	学籍番号&emsp;<input type="text" name="number_text" style="width:100px;">
-     	      <br>
-     	 	    名前&emsp;<input type="text" name="name" style="width:100px;">
-            <br>
-     	 	    <!--
-            <br> 
-     	 	    パスワード&emsp;現在のパスワード
-     	 	    <br>
-            <input type="text" name="pass_text" style="width:100px;">
-            <br>
-            新しいパスワード
-            <br>
-            <input type="text" name="newpass_text" style="width:100px;">
-            <br>
-            再入力
-            <br>
-            <input type="text" name="pass_text" style="width:100px;">
-            -->
-            <SELECT name="grade">
-              <OPTION value="0">学年</OPTION>
-              <OPTION value="1">B1</OPTION>
-              <OPTION value="2">B2</OPTION>
-              <OPTION value="3">B3</OPTION>
-              <OPTION value="4">B4</OPTION>
-              <OPTION value="5">M1</OPTION>
-              <OPTION value="6">M2</OPTION>
-              <OPTION value="7">未配属</OPTION>
-            </SELECT>
-            <br>
-            <SELECT name="course">
-              <OPTION value="0">所属</OPTION>
-              <OPTION value="1">情報システムコース</OPTION>
-              <OPTION value="2">情報デザインコース</OPTION>
-              <OPTION value="3">複雑系知能コース</OPTION>
-              <OPTION value="4">複雑系コース</OPTION>
-              <OPTION value="5">未配属</OPTION>
-            </SELECT>
-            <br>
-            <input type='submit' name="submit">
-          </form>
- 	    	</div>
-  	   </div>
+<div class="style">
+  {% if show_tabs %}
+  <div id="tabnavi">
+    <div class="size">
+      <div id="move_tab">
+        <ul>
+          <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+          <li class="tab tab-unsel"><a href="portfolio">ポートフォリオ</a></li>
+          <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
+          <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
+          <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
+          <li class="tab tab-selected"><a href="profile">ユーザー情報</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
+  {% else %}
+  <div id="tabnavi">
+    <div class="size">
+      <div id="move_tab">
+        <ul>
+        <li>&nbsp;</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="box">
+    <div class="user"><h3>ユーザー情報編集</h3></div>
+    <div class="border"></div>
+    <div class="probox">
+      <div class="userinfo">
+        <form method="post" action="/profile">
+          ユーザーID（学籍番号）&emsp;<input type="text" readonly="readonly" name="number_text" style="width:100px;" value="{{uid}}" />
+          <br>
+          名前&emsp;<input type="text" name="name" style="width:100px;" value="{{name}}" required autofocus/>
+          <br>
+          <!--
+          <br> 
+          パスワード&emsp;現在のパスワード
+          <br>
+          <input type="text" name="pass_text" style="width:100px;">
+          <br>
+          新しいパスワード
+          <br>
+          <input type="text" name="newpass_text" style="width:100px;">
+          <br>
+          再入力
+          <br>
+          <input type="text" name="pass_text" style="width:100px;">
+          -->
+          学年&emsp;<SELECT name="grade" id="grade" required>
+            <OPTION></OPTION>
+            <OPTION value="1">B1</OPTION>
+            <OPTION value="2">B2</OPTION>
+            <OPTION value="3">B3</OPTION>
+            <OPTION value="4">B4</OPTION>
+            <OPTION value="5">M1</OPTION>
+            <OPTION value="6">M2</OPTION>
+            <OPTION value="7">未配属</OPTION>
+          </SELECT>
+          <br>
+          所属&emsp;<SELECT name="course" id="course" required>
+            <OPTION></OPTION>
+            <OPTION value="1">情報システムコース</OPTION>
+            <OPTION value="2">情報デザインコース</OPTION>
+            <OPTION value="3">複雑系知能コース</OPTION>
+            <OPTION value="4">複雑系コース</OPTION>
+            <OPTION value="5">未配属</OPTION>
+          </SELECT>
+          <br>
+          <input type='submit' name="submit" class="btn-small btn-info">
+          <input type="hidden" name="show_tabs" value="{{ show_tabs }}">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function() {
+  $('#grade').val({{grade_index}});
+  $('#course').val({{course_index}});
+});
+</script>
 {% endblock %}

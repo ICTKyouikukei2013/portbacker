@@ -2,7 +2,6 @@
 
 from pymongo import Connection
 
-
 class Group(object):
     def __init__(self, name, group_id):
         self.name = name

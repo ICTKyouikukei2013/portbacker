@@ -11,7 +11,9 @@ DOCUMENT_EXTENSIONS = frozenset(['txt', 'pdf', 'md'])
 IMAGE_EXTENSIONS = frozenset(['png', 'jpg', 'jpeg', 'gif'])
 ALLOWED_EXTENSIONS = DOCUMENT_EXTENSIONS.union(IMAGE_EXTENSIONS)
 GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', u'未所属']
+GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'未所属': 7}
 COURSE = [None, u'情報システムコース', u'情報デザインコース', u'複雑系知能コース', u'複雑系コース', u'未所属']
+COURSE_STR_TO_FORM_INDEX = {u'情報システムコース': 1, u'情報デザインコース': 2, u'複雑系知能コース': 3, u'複雑系コース': 4, u'未所属': 5}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -20,7 +22,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 def render_template_with_username(url,**keywordargs):
-    username = session.get('username')
+    username = session.get('displayname')
+    if not username:
+        username = session.get('username')
     return render_template(url,username=username,**keywordargs)
 
 def instance_of_ldap(username, password):
@@ -67,9 +71,15 @@ def path_from_sessionuser_root(*p):
     s.extend(p)
     return os.path.join(*s)
 
+def authentification(username, password):
+    return True
+    # return username == password
+
 @app.before_request
-def befor_request():
+def check_login_done():
     if 'static' in request.path.split('/'): # static files
+        return
+    if request.path == '/logout':
         return
     username = session.get('username')
     if username is not None:
@@ -89,7 +99,7 @@ def befor_request():
 
 @app.route('/login', methods=['GET'])
 def login_get():
-    if session.get('username') is not None:
+    if session.get('username') is not None and authentification(session.get('username'), session.get('password')):
         return redirect('/')
     return render_template('login.html')
 
@@ -102,16 +112,19 @@ def login_post():
     session['username'] = username
     if not os.path.isdir(os.path.join(UPLOAD_FOLDER, username)):
         os.mkdir(path_from_sessionuser_root())
-    if model.User.find(model.db, username) == None:
-        u = model.User(None, username, None, None, None)
+    u = model.User.find(model.db, username)
+    if u is None:
+        u = model.User(None, username, None, None, None)  # insert dummy user
         u.insert(model.db)
+    session['displayname'] = u.name if u.name else None
     return redirect('/')
 
 @app.route('/logout', methods=['GET'])
 def logout():
     # remove the username from the session if its there
     session.pop('username', None)
-    return redirect('/login')
+    session.pop('displayname', None)
+    return render_template("logout.html")
 
 @app.route('/uploaded_file', methods=['GET'])
 def uploaded_file():
@@ -130,8 +143,6 @@ def get_goal():
     for goal in goals:
         goal_items = model.GoalItem.get(model.db, username, goal.title)
         goal_texts.append([goal, goal_items])
-        for text in goal_items:
-            sys.stderr.write("%s\n" % text.change_data[-1])
     return render_template_with_username("goal.html", goal_texts= goal_texts)
 
 # goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
@@ -156,14 +167,14 @@ def remove_goal():
 def edit_goal_item():
     username = session['username']
     goal_title = request.form["goal_title"]
-    if request.form["edit_button"] == u"完了<->未完了":
-        for item in request.form.getlist("goal_item_title"):
-            itemc = model.GoalItem.find(model.db, username, goal_title, item)
-            itemc.change_data.append({"datetime": datetime.datetime.today(), "state": not itemc.change_data[-1]["state"]})
-            itemc.update(model.db)
+    if request.form["edit_button"] == u"未完了" or request.form["edit_button"] == u"完了":
+        item = request.form["goal_item_title"]
+        itemc = model.GoalItem.find(model.db, username, goal_title, item)
+        itemc.change_data.append({"datetime": datetime.datetime.today(), "state": not itemc.change_data[-1]["state"]})
+        itemc.update(model.db)
     elif request.form["edit_button"] == u"削除":
-        for item in request.form.getlist("goal_item_title"):
-            model.GoalItem.remove(model.db, username, goal_title, item)
+        item = request.form.getlist["goal_item_title"]
+        model.GoalItem.remove(model.db, username, goal_title, item)
     return redirect('/goal')
 
 @app.route('/goal_post_goal_item', methods=['POST'])
@@ -319,19 +330,49 @@ def preview():
     textarea = request.form['textarea']
     return render_template_with_username("preview.html", textarea=textarea)
 
+def render_profile_page_with_user_obj(uid, uobj):
+    course_index = COURSE_STR_TO_FORM_INDEX.get(uobj.course, 0)
+    grade_index = GRADE_STR_TO_FORM_INDEX.get(uobj.grade)
+    name = uobj.name
+    return render_template_with_username("profile.html", 
+            uid=uid, name=name, course_index=course_index, grade_index=grade_index,
+            show_tabs=1)
+
 @app.route('/profile', methods=['GET'])
 def profile():
-    u = model.User.find(model.db, session.get("username")) 
-    return render_template_with_username("profile.html", user=u)
+    uid = session.get("username")
+    uobj = model.User.find(model.db, uid)
+    if uobj and not (not uobj.name or not uobj.course or not uobj.grade):  # if user exists and not a dummy user
+        return render_profile_page_with_user_obj(uid, uobj)
+    else:
+        return render_template_with_username("profile.html", 
+                uid=uid, name='', course_index=0, grade_index=0,
+                show_tabs=0)
 
 @app.route('/profile', methods=['POST'])
 def setting_profile():
+    uid = session.get("username")
     name = request.form['name']
     grade = request.form['grade']
     course = request.form['course']
-    u = model.User(name, session.get('username'), None, COURSE[int(course)], GRADE[int(grade)])
-    u.update(model.db)
-    return redirect("/")
+    show_tabs = request.form['show_tabs']
+    try:
+        course = int(course)
+        grade = int(grade)
+        show_tabs = int(show_tabs)
+    except:
+        course = grade = show_tabs = 0
+    if not name or not grade or not course:
+        return render_template_with_username("profile.html", 
+                uid=uid, name=name, course_index=course, grade_index=grade,
+                show_tabs=show_tabs)
+    uobj = model.User(name, session.get('username'), None, COURSE[int(course)], GRADE[int(grade)])
+    uobj.update(model.db)
+    session['displayname'] = uobj.name if uobj.name else None
+    if show_tabs:
+        return render_profile_page_with_user_obj(uid, uobj)
+    else:
+        return redirect("/")
 
 @app.errorhandler(404)
 def page_not_found(error):

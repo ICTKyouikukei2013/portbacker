@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <script src="/static/js/jquery.js"></script>
   <script src="/static/js/bootstrap.min.js"></script>
   <link href="/static/css/base.css" rel="stylesheet">
   <link rel="shortcut icon" href="/static/favicon.ico">
@@ -13,15 +12,14 @@
   <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <div class="loginbox">
     <div id="loginlogo"><img src="/static/img/logo.png"></div>
-  <form method="post">
     <div id="login">
-      <table border="0">
-        <tr><td>ユーザ名:</td><td>&nbsp;&nbsp;</td><td><input type='text' name='username' pattern="^[0-9a-z]+" required></td></tr>
-        <tr><td>パスワード:</td><td>&nbsp;&nbsp;</td><td><input type='password' name='password' required></td></tr>
-      </table>
-      <div id="loginbtn"><p><input type='submit' value='ログイン' class="btn-small btn-info"></p></div>
+      <h3>ログアウトしました</h3><br/>
+      公共のコンピュータからアクセスしている場合には、<br/>
+      <b>webブラウザのキャッシュをクリア</b>してください
+      <br/>
+      <br/>
+      <button type="button" class="btn-small btn-info" onclick="location.href='/login';">ログインページ</button>
     </div>
-  </form>
 </div>
 </body>
 </html>
