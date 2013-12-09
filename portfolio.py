@@ -94,10 +94,55 @@ def get_goal():
     username = session['username']
     goals = model.Goal.get(model.db, username)
     goal_texts = []
+    change_data_array = []
+    graph_script = ""
     for goal in goals:
         goal_items = model.GoalItem.get(model.db, username, goal.title)
         goal_texts.append([goal, goal_items])
-    return render_template_with_username("goal.html", goal_texts= goal_texts)
+        for text in goal_items:
+            sys.stderr.write("%s\n" % text.change_data[-1])
+            change_data_array.append(text.change_data[0]['datetime'])
+        graph_script += create_graph(change_data_array, goal.title)
+    return render_template_with_username("goal.html", goal_texts= goal_texts, graph_script = graph_script)
+
+def create_graph(change_data_array, canvas_id):
+    prev_date = None
+    count = 0
+    vertex = {}
+
+    for change_data in change_data_array:
+        create_date = (datetime.datetime.strptime(change_data.strftime("%Y-%m-%d"), "%Y-%m-%d"))
+        count += 1
+        vertex.update({create_date: count})
+
+    print vertex
+
+    sdate = change_data_array[0]
+    sx = 0
+    sy = 120
+
+    draw_script = """
+    $( function () {
+      var canvas = document.getElementById('%s');
+      if ( ! canvas || ! canvas.getContext ) {
+        return false;
+      }
+      var ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(%d, %d);""" % ("1", sx, sy)
+
+    for date, goal_item_count in vertex.iteritems():
+        diff_days = date.toordinal() - datetime.date(sdate.year, sdate.month, sdate.day).toordinal()
+        print diff_days
+        draw_script += """
+      ctx.lineTo(%d, %d)""" % (sx + diff_days, sy - goal_item_count * 10)
+
+    draw_script += """
+      ctx.stroke();
+    });
+    """
+
+    return draw_script
 
 # goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal_post_goal', methods=['POST'])

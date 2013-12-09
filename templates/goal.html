@@ -68,11 +68,20 @@
                 </div>
               </div>
             </div>
-            {% endfor %}
+            <h2>{{goal_text[0].title}}</h2>
+            <canvas id="1" width="140" height="140"></canvas>
+            {% endfor %}            
             {% endif %}
           </div>
         </div>
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+{% autoescape false %}
+{{ graph_script }}
+{% endautoescape %}
+</script>
+
 {% endblock %}
