@@ -285,5 +285,6 @@ if __name__ == '__main__':
     add_artifact_functions(app)
 
     app.debug = True
-    app.run() 
+    # app.run(host='49.212.234.134')
+	app.run() 
 
