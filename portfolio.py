@@ -1,15 +1,13 @@
 # -*- coding:utf-8 -*-
 
-import urllib
-import sys, os, datetime, itertools
-from flask import Flask, session, request, redirect, url_for, render_template , send_from_directory, escape
+from portfolio_common import UPLOAD_FOLDER, IMAGE_EXTENSIONS
+from portfolio_common import render_template_with_username, path_from_sessionuser_root
+
+import os, datetime, itertools
+from flask import Flask, session, request, redirect, send_from_directory, render_template
 #gfrom werkzeug import secure_filename
 import model
 
-UPLOAD_FOLDER = u'./data'
-DOCUMENT_EXTENSIONS = frozenset(['txt', 'pdf', 'md'])
-IMAGE_EXTENSIONS = frozenset(['png', 'jpg', 'jpeg', 'gif'])
-ALLOWED_EXTENSIONS = DOCUMENT_EXTENSIONS.union(IMAGE_EXTENSIONS)
 GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', u'未所属', u'教員', u'職員']
 GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'未所属': 7, u'教員': 8, u'職員': 9}
 COURSE = [None, u'情報システムコース', u'情報デザインコース', u'複雑系知能コース', u'複雑系コース', u'未所属', None, None, u'教員', u'職員']
@@ -18,58 +16,14 @@ COURSE_STR_TO_FORM_INDEX = {u'情報システムコース': 1, u'情報デザイ
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# set the secret key.  keep this really secret:
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-def render_template_with_username(url,**keywordargs):
-    username = session.get('displayname')
-    if not username:
-        username = session.get('username')
-    return render_template(url,username=username,**keywordargs)
-
 def instance_of_ldap(username, password):
     return True
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def get_date(filename):
     stat = os.stat(path_from_sessionuser_root(filename))
     last_modified = stat.st_mtime
     dt = datetime.datetime.fromtimestamp(last_modified)
     return dt.strftime("%Y/%m/%d")
-
-def unquote(s):
-    if isinstance(s, unicode):
-        s = s.encode('utf-8')
-    return urllib.unquote(s).decode('utf-8')
-
-def quote(s):
-    if isinstance(s, unicode):
-        s = s.encode('utf-8')
-    return urllib.quote(s)
-
-def list_files_and_dirs(dirpath):
-    dirs_and_files = os.listdir(dirpath)
-    dirlist = []
-    filelist = []
-    for name in dirs_and_files:
-        (dirlist if os.path.isdir(os.path.join(dirpath, name)) else filelist) \
-        .append(name)
-    return filelist, dirlist
-
-def check_filename(filename):
-    unpermitted_chars = '&:;"' + "'"
-    if any((c in filename) for c in unpermitted_chars):
-        return False
-    if any((ord(c) < 0x20) for c in filename):  # including control chars?
-        return False
-    return True
-
-def path_from_sessionuser_root(*p):
-    s = [UPLOAD_FOLDER, session['username']]
-    s.extend(p)
-    return os.path.join(*s)
 
 def authentification(username, password):
     return True
@@ -223,59 +177,6 @@ def portfolio():
 
     return render_template_with_username("portfolio.html", zipped=zipped)
 
-@app.route('/artifact/<path:dirpath>', methods=['GET'])
-def artifact_dir(dirpath):
-    username = session['username']
-    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
-    return render_template_with_username("artifact.html", 
-            ls=[(n, quote(n)) for n in filelist],
-            dir=[(n, quote(n)) for n in dirlist],
-            dirpath=quote(dirpath) + "/")
-
-@app.route('/artifact/<path:dirpath>', methods=['POST'])
-def artifact_dir_post(dirpath):
-    makedir = unquote(request.form['directoryname'])
-    file = request.files['file']
-    if file:
-        if allowed_file(file.filename) and check_filename(file.filename):
-            file.save(path_from_sessionuser_root(dirpath, file.filename))
-        else:
-            sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
-    elif makedir:
-        os.mkdir(path_from_sessionuser_root(dirpath, makedir))
-
-    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root(dirpath))
-    return render_template_with_username("artifact.html", 
-            ls=[(n, quote(n)) for n in filelist],
-            dir=[(n, quote(n)) for n in dirlist],
-            dirpath=quote(dirpath) + "/")
-
-@app.route('/artifact', methods=['GET'])
-def artifact_get():
-    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root())
-    return render_template_with_username("artifact.html",
-            ls=[(n, quote(n)) for n in filelist],
-            dir=[(n, quote(n)) for n in dirlist],
-            dirpath="")
-
-@app.route('/artifact', methods=['POST'])
-def artifact_post():
-    makedir = unquote(request.form['directoryname'])
-    file = request.files['file']
-    if file:
-        if allowed_file(file.filename) and check_filename(file.filename):
-            file.save(path_from_sessionuser_root(file.filename))
-        else:
-            sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
-    elif makedir:
-        os.mkdir(path_from_sessionuser_root(makedir))
-
-    filelist, dirlist = list_files_and_dirs(path_from_sessionuser_root())
-    return render_template_with_username("artifact.html",
-            ls=[(n, quote(n)) for n in filelist],
-            dir=[(n, quote(n)) for n in dirlist],
-            dirpath="")
-
 @app.route('/person', methods=['POST'])
 def diary_post():
     return render_template_with_username("person.html");
@@ -376,6 +277,13 @@ def page_not_found(error):
     return render_template_with_username("page_not_found.html"), 404
 
 if __name__ == '__main__':
+    from portfolio_artifact import add_artifact_functions
+
+    # set the secret key.  keep this really secret:
+    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+    add_artifact_functions(app)
+
     app.debug = True
     app.run() 
-	
+
