@@ -21,7 +21,7 @@
         <div class="goal-set-input">
           <form method="post" action="/goal_post_goal">
             <h4>達成したい目標を設定</h4>
-            <input type="text" name="goal_title" style="width:250px; margin-top:10px; margin-right: 7px;" required>
+            <input type="text" name="goal_title" style="width:250px; margin-top:10px; margin-right: 7px;" placeholder="達成したい目標を設定してください" required>
             <input type="hidden" name="button_name" value="make">
             <input type="submit" name="goal" class="btn btn-primary" value="新規作成" id="make_goal">
           </form>
@@ -48,12 +48,7 @@
                 <div id="{{ goal_text[0].title  }}" class="accordion-body collapse">
                 <div class="accordion-inner">
                   <ul>
-                    <form method="post" action="/goal_post_goal_item">
-                      <input type="hidden" name="goal_title" value="{{ goal_text[0].title }}">
-                      <input type="hidden" name="button_name" value="make">
-                      <input type="text" name="goal_item_title" style="width:250px; margin-top:10px; margin-right: 7px;" required>
-                      <input type="submit" name="goal_item" class="btn btn-primary" value="新規作成">
-                    </form>
+                    
                     <form method="post" action="/goal_item">
                       <input type="hidden" name="goal_title" value="{{ goal_text[0].title }}">
                       {% for goalitem in goal_text[1] %}
@@ -64,6 +59,12 @@
                       {% endfor %}
                       <input type="submit" name="edit_button" class="btn btn-success" style="margin-top:10px;" value="完了<->未完了">
                       <input type="submit" name="edit_button" class="btn btn-danger" style="margin-top:10px;" value="削除">
+                    </form>
+                    <form method="post" action="/goal_post_goal_item">
+                      <input type="hidden" name="goal_title" value="{{ goal_text[0].title }}">
+                      <input type="hidden" name="button_name" value="make">
+                      <input type="text" name="goal_item_title" style="width:250px; margin-top:10px; margin-right: 7px;" placeholder="小ゴールを設定してください"　equired>
+                      <input type="submit" name="goal_item" class="btn btn-primary" value="新規作成">
                     </form>
                   </ul>
                 </div>
