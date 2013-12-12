@@ -122,6 +122,25 @@ var set_course_options = function(optionDefs) {
   });
 };
 
+var set_course_options_by_grade = function(grade) {
+  if (grade == "1") {
+    set_course_options(couseOptionForB1);
+    $('#course').val("0");
+  } else if (grade == "2") {
+    set_course_options(couseOptionForB2);
+    $('#course').val("0");
+  } else if (grade == "3" || grade == "4") {
+    set_course_options(couseOptionForB34);
+    $('#course').val("0");
+  } else if ("5" <= grade && grade <= "6") {
+    set_course_options(courseOptionForM12);
+    $('#course').val("0");
+  } else {
+    set_course_options(courseOptionForFacultyOrTeacher);
+    $('#course').val($('#user-type').val());
+  }
+};
+
 $(function() {
   $('#grade').val({{grade_index}});
   $('#course').val({{course_index}});
@@ -139,24 +158,10 @@ $(function() {
       $('#grade,#course').val("0");
   });
   
+  set_course_options_by_grade(g);
   $('#grade').on('change', function() {
     var g = $('#grade').val();
-    if (g == "1") {
-      set_course_options(couseOptionForB1);
-      $('#course').val("0");
-    } else if (g == "2") {
-      set_course_options(couseOptionForB2);
-      $('#course').val("0");
-    } else if (g == "3" || g == "4") {
-      set_course_options(couseOptionForB34);
-      $('#course').val("0");
-    } else if ("5" <= g && g <= "6") {
-      set_course_options(courseOptionForM12);
-      $('#course').val("0");
-    } else {
-      set_course_options(courseOptionForFacultyOrTeacher);
-      $('#course').val($('#user-type').val());
-    }
+    set_course_options_by_grade(g);
   });
 });
 </script>
