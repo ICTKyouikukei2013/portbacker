@@ -125,25 +125,19 @@ var set_course_options = function(optionDefs) {
 var set_course_options_by_grade = function(grade) {
   if (grade == "1") {
     set_course_options(couseOptionForB1);
-    $('#course').val("0");
   } else if (grade == "2") {
     set_course_options(couseOptionForB2);
-    $('#course').val("0");
   } else if (grade == "3" || grade == "4") {
     set_course_options(couseOptionForB34);
-    $('#course').val("0");
   } else if ("5" <= grade && grade <= "6") {
     set_course_options(courseOptionForM12);
-    $('#course').val("0");
   } else {
     set_course_options(courseOptionForFacultyOrTeacher);
-    $('#course').val($('#user-type').val());
   }
 };
 
 $(function() {
   $('#grade').val({{grade_index}});
-  $('#course').val({{course_index}});
   var g = $('#grade').val();
   var ut = (g == "8" || g == "9") ? g : "0";
   $('#user-type').val(ut);
@@ -162,7 +156,12 @@ $(function() {
   $('#grade').on('change', function() {
     var g = $('#grade').val();
     set_course_options_by_grade(g);
+    if ("1" <= g && g <= "6")
+      $('#course').val("0");
+    else
+      $('#course').val($('#user-type').val());
   });
+  $('#course').val({{course_index}});
 });
 </script>
 {% endblock %}
