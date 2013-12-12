@@ -67,21 +67,14 @@
             <OPTION value="4">B4</OPTION>
             <OPTION value="5">M1</OPTION>
             <OPTION value="6">M2</OPTION>
-            <OPTION value="7">未配属</OPTION>
             <option value="8" style="display:none"></option>
             <option value="9" style="display:none"></option>
           </SELECT>
           <br>
         </div>
         <div id="course-box"> 
-            所属&emsp;<SELECT name="course" id="course" required>
+            所属&emsp;<SELECT name="course" id="course" required placeholder="学年を選択してください">
             <OPTION style="display:none"></OPTION>
-            <OPTION value="1">情報システムコース</OPTION>
-            <OPTION value="2">情報デザインコース</OPTION>
-            <OPTION value="3">複雑系知能コース</OPTION>
-            <OPTION value="4">複雑系コース</OPTION>
-            <OPTION value="5">高度ICTコース</OPTION>
-            <OPTION value="6">未配属</OPTION>
             <option value="8" style="display:none"></option>
             <option value="9" style="display:none"></option>
             </SELECT>
@@ -95,42 +88,74 @@
   </div>
 </div>
 <script>
+var set_visibilities_of_grade_and_course = function (userType) {
+  $('#grade-box,#course-box').css('display', (userType == "8" || userType == "9") ? "none" : "block");
+};
+
+var couseOptionForB1 = [ ",none", "6,未配属", "8,none", "9,none" ];
+var couseOptionForB2 = [ 
+   ",none", "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
+   "4,複雑系コース",  "8,none", "9,none" 
+];
+var couseOptionForB34 = [ 
+   ",none", "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
+   "4,複雑系コース", "5,高度ICTコース",  "8,none", "9,none" 
+];
+var courseOptionForM12 = [
+   ",none", "1,情報アーキテクチャ領域", "2,メディアデザイン領域", "3,知能情報科学領域",
+   "4,複雑系情報科学領域", "5,高度ICT領域",  "8,none", "9,none" 
+];
+var courseOptionForFacultyOrTeacher = [
+   ",none", "8,none", "9,none"
+]
+
+var set_course_options = function(optionDefs) {
+  $('#course option').remove();
+  optionDefs.forEach(function (item) {
+    var f = item.split(",");
+    var value = f[0], text = f[1];
+    if (text == "none") {
+       $('#course').append($('<option>').html("").val(value).css("display", "none"));
+    } else {
+       $('#course').append($('<option>').html(text).val(value));
+    }
+  });
+};
+
 $(function() {
   $('#grade').val({{grade_index}});
   $('#course').val({{course_index}});
   var g = $('#grade').val();
-  var ut = "0";
-  if (g == "8" || g == "9")
-    ut = g;
+  var ut = (g == "8" || g == "9") ? g : "0";
   $('#user-type').val(ut);
-  if (ut == "8" || ut == "9") {
-    $('#grade-box,#course-box').css('display', "none");
-  } else {
-    $('#grade-box,#course-box').css('display', "block");
-  }
+  
+  set_visibilities_of_grade_and_course(ut);
   $('#user-type').on('change', function() {
     var ut = $('#user-type').val();
-    if (ut == "8" || ut == "9") {
-      $('#grade-box,#course-box').css('display', "none");
+    set_visibilities_of_grade_and_course(ut);
+    if (ut == "8" || ut == "9")
       $('#grade,#course').val(ut);
-    } else {
-      $('#grade-box,#course-box').css('display', "block");
+    else
       $('#grade,#course').val("0");
-      $("#course option").removeAttr("disabled");
-    }
   });
+  
   $('#grade').on('change', function() {
-    var ut = $('#user-type').val();
     var g = $('#grade').val();
-    $("#course option").removeAttr("disabled");
-    if (ut == "0") { // 学生
-      if (g == "1")	{ // B1
-  	    $("#course option").attr("disabled", "disabled").eq(6).removeAttr("disabled"); // 未配属のみ
-  	    $("#course").val(6);
-      } else {
-    	$("#course option").eq(6).attr("disabled", "disabled"); // 未配属以外
-  	    $("#course").val(0);
-      }
+    if (g == "1") {
+      set_course_options(couseOptionForB1);
+      $('#course').val("0");
+    } else if (g == "2") {
+      set_course_options(couseOptionForB2);
+      $('#course').val("0");
+    } else if (g == "3" || g == "4") {
+      set_course_options(couseOptionForB34);
+      $('#course').val("0");
+    } else if ("5" <= g && g <= "6") {
+      set_course_options(courseOptionForM12);
+      $('#course').val("0");
+    } else {
+      set_course_options(courseOptionForFacultyOrTeacher);
+      $('#course').val($('#user-type').val());
     }
   });
 });

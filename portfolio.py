@@ -8,8 +8,8 @@ from flask import Flask, session, request, redirect, send_from_directory, render
 #gfrom werkzeug import secure_filename
 import model
 
-GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', u'未所属', u'教員', u'職員']
-GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'未所属': 7, u'教員': 8, u'職員': 9}
+GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', u'教員', u'職員']
+GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'教員': 8, u'職員': 9}
 COURSE = [None, u'情報システムコース', u'情報デザインコース', u'複雑系知能コース', u'複雑系コース', u"高度ICTコース", u'未所属', None, u'教員', u'職員']
 COURSE_STR_TO_FORM_INDEX = {u'情報システムコース': 1, u'情報デザインコース': 2, u'複雑系知能コース': 3, u'複雑系コース': 4, u"高度ICTコース": 5, u'未所属': 6, u'教員': 8, u'職員': 9}
 
