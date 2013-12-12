@@ -52,7 +52,7 @@
           <input type="text" name="pass_text" style="width:100px;">
           -->
           ユーザー種別&emsp;<SELECT name="user-type" id="user-type" required>
-            <OPTION></OPTION>
+            <OPTION style="display:none"></OPTION>
             <OPTION value="0">学生</OPTION>
             <OPTION value="8">教員</OPTION>
             <OPTION value="9">職員</OPTION>
@@ -60,7 +60,7 @@
         <br>
         <div id="grade-box"> 
            学年&emsp;<SELECT name="grade" id="grade" required>
-            <OPTION></OPTION>
+            <OPTION style="display:none"></OPTION>
             <OPTION value="1">B1</OPTION>
             <OPTION value="2">B2</OPTION>
             <OPTION value="3">B3</OPTION>
@@ -75,12 +75,13 @@
         </div>
         <div id="course-box"> 
             所属&emsp;<SELECT name="course" id="course" required>
-            <OPTION></OPTION>
+            <OPTION style="display:none"></OPTION>
             <OPTION value="1">情報システムコース</OPTION>
             <OPTION value="2">情報デザインコース</OPTION>
             <OPTION value="3">複雑系知能コース</OPTION>
             <OPTION value="4">複雑系コース</OPTION>
-            <OPTION value="5">未配属</OPTION>
+            <OPTION value="5">高度ICTコース</OPTION>
+            <OPTION value="6">未配属</OPTION>
             <option value="8" style="display:none"></option>
             <option value="9" style="display:none"></option>
             </SELECT>
@@ -115,6 +116,21 @@ $(function() {
     } else {
       $('#grade-box,#course-box').css('display', "block");
       $('#grade,#course').val("0");
+      $("#course option").removeAttr("disabled");
+    }
+  });
+  $('#grade').on('change', function() {
+    var ut = $('#user-type').val();
+    var g = $('#grade').val();
+    $("#course option").removeAttr("disabled");
+    if (ut == "0") { // 学生
+      if (g == "1")	{ // B1
+  	    $("#course option").attr("disabled", "disabled").eq(6).removeAttr("disabled"); // 未配属のみ
+  	    $("#course").val(6);
+      } else {
+    	$("#course option").eq(6).attr("disabled", "disabled"); // 未配属以外
+  	    $("#course").val(0);
+      }
     }
   });
 });
