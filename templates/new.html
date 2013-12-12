@@ -1,318 +1,318 @@
-{% extends "layout.html" %}
-{% block body %}
-  <style>
-    .seikaimg {
-       width: 100%;
-       height: 100%;
-    }
-    
-    h2 {
-      margin-bottom: 0;
-    }
-    
-    small {
-      display: block;
-      margin-top: 40px;
-      font-size: 9px;
-    }
-    
-    small,
-    small a {
-      color: #666;
-    }
-    
-    a {
-      color: #000;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    
-    #toolbar [data-wysihtml5-action] {
-    }
-    
-    #toolbar,
-    textarea {
-      width: 400px;
-      padding: 5px;
-    }
-    
-    textarea {
-      height: 280px;
-      border: 2px solid gray;
-      font-family: Verdana;
-      font-size: 11px;
-    }
-    
-    textarea:focus {
-      color: black;
-      border: 2px solid black;
-    }
-    
-    .wysihtml5-command-active {
-      font-weight: bold;
-    }
-    
-    [data-wysihtml5-dialog] {
-      margin: 5px 0 0;
-      padding: 5px;
-      border: 1px solid #666;
-    }
-    
-    a[data-wysihtml5-command-value="black"] {
-      color: black;
-    }
-    
-    a[data-wysihtml5-command-value="silver"] {
-      color: silver;
-    }
-    
-    a[data-wysihtml5-command-value="gray"] {
-      color: gray;
-    }
+  {% extends "layout.html" %}
+  {% block body %}
+    <style>
+      .seikaimg {
+         width: 100%;
+         height: 100%;
+      }
+      
+      h2 {
+        margin-bottom: 0;
+      }
+      
+      small {
+        display: block;
+        margin-top: 40px;
+        font-size: 9px;
+      }
+      
+      small,
+      small a {
+        color: #666;
+      }
+      
+      a {
+        color: #000;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      
+      #toolbar [data-wysihtml5-action] {
+      }
+      
+      #toolbar,
+      textarea {
+        width: 400px;
+        padding: 5px;
+      }
+      
+      textarea {
+        height: 280px;
+        border: 2px solid gray;
+        font-family: Verdana;
+        font-size: 11px;
+      }
+      
+      textarea:focus {
+        color: black;
+        border: 2px solid black;
+      }
+      
+      .wysihtml5-command-active {
+        font-weight: bold;
+      }
+      
+      [data-wysihtml5-dialog] {
+        margin: 5px 0 0;
+        padding: 5px;
+        border: 1px solid #666;
+      }
+      
+      a[data-wysihtml5-command-value="black"] {
+        color: black;
+      }
+      
+      a[data-wysihtml5-command-value="silver"] {
+        color: silver;
+      }
+      
+      a[data-wysihtml5-command-value="gray"] {
+        color: gray;
+      }
 
-    a[data-wysihtml5-command-value="white"] {
-      color: white;
-    }
+      a[data-wysihtml5-command-value="white"] {
+        color: white;
+      }
 
-    a[data-wysihtml5-command-value="maroon"] {
-      color: maroon;
-    }
+      a[data-wysihtml5-command-value="maroon"] {
+        color: maroon;
+      }
 
-    a[data-wysihtml5-command-value="red"] {
-      color: red;
-    }
+      a[data-wysihtml5-command-value="red"] {
+        color: red;
+      }
 
-    a[data-wysihtml5-command-value="purple"] {
-      color: purple;
-    }
+      a[data-wysihtml5-command-value="purple"] {
+        color: purple;
+      }
 
-    a[data-wysihtml5-command-value="fuchisa"] {
-      color: fuchsia;
-    }
+      a[data-wysihtml5-command-value="fuchisa"] {
+        color: fuchsia;
+      }
 
-    a[data-wysihtml5-command-value="green"] {
-      color: green;
-    }
+      a[data-wysihtml5-command-value="green"] {
+        color: green;
+      }
 
-    a[data-wysihtml5-command-value="lime"] {
-      color: lime;
-    }
+      a[data-wysihtml5-command-value="lime"] {
+        color: lime;
+      }
 
-    a[data-wysihtml5-command-value="olive"] {
-      color: olive;
-    }
+      a[data-wysihtml5-command-value="olive"] {
+        color: olive;
+      }
 
-    a[data-wysihtml5-command-value="yellow"] {
-      color: yellow;
-    }
+      a[data-wysihtml5-command-value="yellow"] {
+        color: yellow;
+      }
 
-    a[data-wysihtml5-command-value="navy"] {
-      color: navy;
-    }
+      a[data-wysihtml5-command-value="navy"] {
+        color: navy;
+      }
 
-    a[data-wysihtml5-command-value="blue"] {
-      color: blue;
-    }
+      a[data-wysihtml5-command-value="blue"] {
+        color: blue;
+      }
 
-    a[data-wysihtml5-command-value="teal"] {
-      color: teal;
-    }
+      a[data-wysihtml5-command-value="teal"] {
+        color: teal;
+      }
 
-    a[data-wysihtml5-command-value="aqua"] {
-      color: aqua;
-    }
+      a[data-wysihtml5-command-value="aqua"] {
+        color: aqua;
+      }
 
-    }
-  </style>
-  <script type="text/javascript">
-    $(function(){
-       $(".picker").css("border", "solid");
-       $(".picker").on("click", function(ev){
+      }
+    </style>
+    <script type="text/javascript">
+      $(function(){
          $(".picker").css("border", "solid");
-         $(this).css("border", "double #d4dcd6");
+         $(".picker").on("click", function(ev){
+           $(".picker").css("border", "solid");
+           $(this).css("border", "double #d4dcd6");
+        });
       });
-    });
-  </script>
-   <script type="text/javascript" src="/static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
-  <link rel="stylesheet" type="text/css" media="all" href="/static/css/bootstrap-colorpalette.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="/static/css/example.css" />
-  <link href="/static/css/wysihtml5.css" rel="stylesheet" media="screen">
-  <div Class="style">
-    <div id="tabnavi">
-      <div Class="size">
-        <div id="move_tab">
-          <ul>
-            <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
-            <li class="tab tab-selected"><a href="portfolio">ポートフォリオ</a></li>
-            <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
-            <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
-            <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="box">
-      <div class="new_headline">
-        <h3>ポートフォリオ作成</h3><br>
-        <form id='form' name='form' method="post" action="new" target="">
-          <div id="toolbar" style="display: none;">
-            
-            <div class="bg">
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black">
-                <div id="black" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver">
-                <div id="silver" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray">
-                <div id="gray" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="white">
-                <div id="white" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon">
-                <div id="maroon" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">
-                <div id="red" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple">
-                <div id="purple" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="fuchsia">
-                <div id="fuchsia" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">
-                <div id="green" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="lime">
-                <div id="lime" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="olive">
-                <div id="olive" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="yellow">
-                <div id="yellow" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="navy">
-                <div id="navy" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">
-                <div id="blue" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="teal">
-                <div id="teal" class="picker"></div>
-              </a>
-              <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="aqua">
-                <div id="aqua" class="picker"></div>
-              </a>
-            </div>
-
-            <a data-wysihtml5-command="bold" title="CTRL+B">太字</a> |
-            <a data-wysihtml5-command="italic" title="CTRL+I">斜体</a>|
-            <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
-            <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
-            <a data-wysihtml5-command=" insertUnorderedList">箇条書き</a>||
-            <a data-wysihtml5-action="change_view">switch to html view</a>
-          
-         	  <div data-wysihtml5-dialog="createLink" style="display: none;">
-				<label>
-               		 Link:
-					<input data-wysihtml5-dialog-field="href" value="http://">
-				</label>
-				<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
-			</div>
-          
-          <div data-wysihtml5-dialog="insertImage" style="display: none;">
-            <label>
-              Image:
-              <input data-wysihtml5-dialog-field="src" value="http://">
-            </label>
-            <label>
-              Align:
-              <select data-wysihtml5-dialog-field="className">
-                <option value="">default</option>
-                <option value="wysiwyg-float-left">left</option>
-                <option value="wysiwyg-float-right">right</option>
-              </select>
-            </label>
-            <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+    </script>
+     <script type="text/javascript" src="/static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" media="all" href="/static/css/bootstrap-colorpalette.css">
+    <link href="/static/css/wysihtml5.css" rel="stylesheet" media="screen">
+    <div Class="style">
+      <div id="tabnavi">
+        <div Class="size">
+          <div id="move_tab">
+            <ul>
+              <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+              <li class="tab tab-selected"><a href="portfolio">ポートフォリオ</a></li>
+              <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
+              <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
+              <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
+            </ul>
           </div>
         </div>
+      </div>
+      <div class="box">
+        <div class="new_headline">
+          <h3>ポートフォリオ作成</h3><br>
+          <form id='form' name='form' method="post" action="new" target="">
+            <div id="toolbar" style="display: none;">
+              
+              <div class="bg">
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="black">
+                  <div id="black" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="silver">
+                  <div id="silver" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="gray">
+                  <div id="gray" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="white">
+                  <div id="white" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="maroon">
+                  <div id="maroon" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="red">
+                  <div id="red" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="purple">
+                  <div id="purple" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="fuchsia">
+                  <div id="fuchsia" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="green">
+                  <div id="green" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="lime">
+                  <div id="lime" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="olive">
+                  <div id="olive" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="yellow">
+                  <div id="yellow" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="navy">
+                  <div id="navy" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="blue">
+                  <div id="blue" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="teal">
+                  <div id="teal" class="picker"></div>
+                </a>
+                <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="aqua">
+                  <div id="aqua" class="picker"></div>
+                </a>
+              </div>
 
-        <textarea id="textarea" name="textarea"></textarea>
-        <small>powered by <a href="https://github.com/xing/wysihtml5" target="_blank">wysihtml5</a>.</small>
-        <div id="prebtn"><input type="submit" name="button" value="プレビュー" class="btn btn-secondry" style="width:100px; height:30px" onClick="sendPreview()"></div>
+              <a data-wysihtml5-command="bold" title="CTRL+B">太字</a> |
+              <a data-wysihtml5-command="italic" title="CTRL+I">斜体</a>|
+              <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h1">h1</a> |
+              <a data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">h2</a> |
+              <a data-wysihtml5-command=" insertUnorderedList">箇条書き</a>|
+              <a data-wysihtml5-command="foreColor">color</a> ||
+              <a data-wysihtml5-action="change_view">switch to html view</a>
+            
+           	  <div data-wysihtml5-dialog="createLink" style="display: none;">
+  				<label>
+                 		 Link:
+  					<input data-wysihtml5-dialog-field="href" value="http://">
+  				</label>
+  				<a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+  			</div>
+            
+            <div data-wysihtml5-dialog="insertImage" style="display: none;">
+              <label>
+                Image:
+                <input data-wysihtml5-dialog-field="src" value="http://">
+              </label>
+              <label>
+                Align:
+                <select data-wysihtml5-dialog-field="className">
+                  <option value="">default</option>
+                  <option value="wysiwyg-float-left">left</option>
+                  <option value="wysiwyg-float-right">right</option>
+                </select>
+              </label>
+              <a data-wysihtml5-dialog-action="save">OK</a>&nbsp;<a data-wysihtml5-dialog-action="cancel">Cancel</a>
+            </div>
+          </div>
 
-        公開範囲<br>
-        <input type="radio" name="q1" value="open"> 公開<br>
-        <input type="radio" name="q1" value="closed"> 非公開(下書きとして保存されます)<br>
-       
-        <br>
-        <input type="submit" name="button" value="保存" class="btn btn-primary" style="width:100px; height:30px" onClick="sendSave()">
-        <!-- <a href="portfolio"><input type="button" value="キャンセル" class="btn btn-secondry" style="width:100px; height:30px"></a> -->
+          <textarea id="textarea" name="textarea"></textarea>
+          <small>powered by <a href="https://github.com/xing/wysihtml5" target="_blank">wysihtml5</a>.</small>
+          <div id="prebtn"><input type="submit" name="button" value="プレビュー" class="btn btn-secondry" style="width:100px; height:30px" onClick="sendPreview()"></div>
 
-        <div class="portfolio_kanri">
-          {% for imgname in imglist %}
-            <img src="/view_file/{{imgname}}" class="seikaimg">
-          {% endfor %}
-          {% for art_name in artifact_list %}
-            <p><a href="/view_file/{{art_name}}" target = '_blank'>{{art_name}}</a></p>
-          {% endfor %}
-        </div>
-      </form>
+          公開範囲<br>
+          <input type="radio" name="q1" value="open"> 公開<br>
+          <input type="radio" name="q1" value="closed"> 非公開(下書きとして保存されます)<br>
+         
+          <br>
+          <input type="submit" name="button" value="保存" class="btn btn-primary" style="width:100px; height:30px" onClick="sendSave()">
+          <a href="portfolio"><input type="button" value="キャンセル" class="btn btn-secondry" style="width:100px; height:30px"></a>
+
+          <div class="portfolio_kanri">
+            {% for imgname in imglist %}
+              <img src="/view_file/{{imgname}}" class="seikaimg">
+            {% endfor %}
+            {% for art_name in artifact_list %}
+              <p><a href="/view_file/{{art_name}}" target = '_blank'>{{art_name}}</a></p>
+            {% endfor %}
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-  </div>
+    </div>
 
-<script language="JavaScript"><!--
-function sendPreview()
-{
-  document.getElementById('form').target = '_blank';
-  document.getElementById('form').action = 'preview';
-}
-function sendSave()
-{
-  document.getElementById('form').target = '';
-  document.getElementById('form').action = 'new';
-}
-// --></script>
-<script src="../static/js/parser_rules/advanced.js"></script>
-<script src="../static/js/dist/wysihtml5-0.3.0.js"></script>
-<script>
-  var editor = new wysihtml5.Editor("textarea", {
-    toolbar:      "toolbar",
-    stylesheets:  "../static/css/wysihtml5.css",
-    parserRules:  wysihtml5ParserRules
-  });
-  
-  var log = document.getElementById("log");
-  if(log != null){
-  editor
-    .on("load", function() {
-      log.innerHTML += "<div>load</div>";
-    })
-    .on("focus", function() {
-      log.innerHTML += "<div>focus</div>";
-    })
-    .on("blur", function() {
-      log.innerHTML += "<div>blur</div>";
-    })
-    .on("change", function() {
-      log.innerHTML += "<div>change</div>";
-    })
-    .on("paste", function() {
-      log.innerHTML += "<div>paste</div>";
-    })
-    .on("newword:composer", function() {
-      log.innerHTML += "<div>newword:composer</div>";
-    })
-    .on("undo:composer", function() {
-      log.innerHTML += "<div>undo:composer</div>";
-    })
-    .on("redo:composer", function() {
-      log.innerHTML += "<div>redo:composer</div>";
-    });
+  <script language="JavaScript"><!--
+  function sendPreview()
+  {
+    document.getElementById('form').target = '_blank';
+    document.getElementById('form').action = 'preview';
   }
-</script>
-{% endblock %}
+  function sendSave()
+  {
+    document.getElementById('form').target = '';
+    document.getElementById('form').action = 'new';
+  }
+  // --></script>
+  <script src="../static/js/parser_rules/advanced.js"></script>
+  <script src="../static/js/dist/wysihtml5-0.3.0.js"></script>
+  <script>
+    var editor = new wysihtml5.Editor("textarea", {
+      toolbar:      "toolbar",
+      stylesheets:  "../static/css/wysihtml5.css",
+      parserRules:  wysihtml5ParserRules
+    });
+    
+    var log = document.getElementById("log");
+    if(log != null){
+    editor
+      .on("load", function() {
+        log.innerHTML += "<div>load</div>";
+      })
+      .on("focus", function() {
+        log.innerHTML += "<div>focus</div>";
+      })
+      .on("blur", function() {
+        log.innerHTML += "<div>blur</div>";
+      })
+      .on("change", function() {
+        log.innerHTML += "<div>change</div>";
+      })
+      .on("paste", function() {
+        log.innerHTML += "<div>paste</div>";
+      })
+      .on("newword:composer", function() {
+        log.innerHTML += "<div>newword:composer</div>";
+      })
+      .on("undo:composer", function() {
+        log.innerHTML += "<div>undo:composer</div>";
+      })
+      .on("redo:composer", function() {
+        log.innerHTML += "<div>redo:composer</div>";
+      });
+    }
+  </script>
+  {% endblock %}
