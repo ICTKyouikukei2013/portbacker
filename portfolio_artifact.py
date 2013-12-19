@@ -2,7 +2,7 @@ import os
 import sys
 import urllib
 
-from flask import session, request
+from flask import session, request, redirect, render_template
 
 from portfolio_common import render_template_with_username, path_from_sessionuser_root
 from portfolio_common import ALLOWED_EXTENSIONS
@@ -38,6 +38,10 @@ def check_filename(filename):
     return True
 
 def add_artifact_functions(app):
+    @app.route('/artifact_upload_error')
+    def artifact_upload_error():
+        return render_template("upload_error.html")
+    
     @app.route('/artifact/<path:dirpath>', methods=['GET'])
     def artifact_dir(dirpath):
         username = session['username']
@@ -81,6 +85,7 @@ def add_artifact_functions(app):
             if allowed_file(file.filename) and check_filename(file.filename):
                 file.save(path_from_sessionuser_root(file.filename))
             else:
+                return redirect("/artifact_upload_error")
                 sys.stderr.write("log> upload failed (unallowed name): %s\n" % repr(file.filename))
         elif makedir:
             os.mkdir(path_from_sessionuser_root(makedir))
