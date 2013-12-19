@@ -51,32 +51,20 @@
           <br>
           <input type="text" name="pass_text" style="width:100px;">
           -->
-          ユーザー種別&emsp;<SELECT name="user-type" id="user-type" required>
-            <OPTION style="display:none"></OPTION>
-            <OPTION value="0">学生</OPTION>
-            <OPTION value="8">教員</OPTION>
-            <OPTION value="9">職員</OPTION>
-          </SELECT>
+          <fieldset data-role="controlgroup">
+            ユーザー種別&emsp;
+            <input type="radio" name="user-type" value="0">学生&emsp;
+            <input type="radio" name="user-type" value="8">教員&emsp;
+            <input type="radio" name="user-type" value="9">職員&emsp;
+          </fieldset>
         <br>
         <div id="grade-box"> 
            学年&emsp;<SELECT name="grade" id="grade" required>
-            <OPTION style="display:none"></OPTION>
-            <OPTION value="1">B1</OPTION>
-            <OPTION value="2">B2</OPTION>
-            <OPTION value="3">B3</OPTION>
-            <OPTION value="4">B4</OPTION>
-            <OPTION value="5">M1</OPTION>
-            <OPTION value="6">M2</OPTION>
-            <option value="8" style="display:none"></option>
-            <option value="9" style="display:none"></option>
           </SELECT>
           <br>
         </div>
         <div id="course-box"> 
-            所属&emsp;<SELECT name="course" id="course" required placeholder="学年を選択してください">
-            <OPTION style="display:none"></OPTION>
-            <option value="8" style="display:none"></option>
-            <option value="9" style="display:none"></option>
+            所属&emsp;<SELECT name="course" id="course" required>
             </SELECT>
             <br>
          </div>
@@ -92,38 +80,65 @@ var set_visibilities_of_grade_and_course = function (userType) {
   $('#grade-box,#course-box').css('display', (userType == "8" || userType == "9") ? "none" : "block");
 };
 
-var couseOptionForB1 = [ ",none", "6,未配属", "8,none", "9,none" ];
-var couseOptionForB2 = [ 
-   ",none", "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
-   "4,複雑系コース",  "8,none", "9,none" 
-];
-var couseOptionForB34 = [ 
-   ",none", "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
-   "4,複雑系コース", "5,高度ICTコース",  "8,none", "9,none" 
-];
-var courseOptionForM12 = [
-   ",none", "1,情報アーキテクチャ領域", "2,メディアデザイン領域", "3,知能情報科学領域",
-   "4,複雑系情報科学領域", "5,高度ICT領域",  "8,none", "9,none" 
-];
-var courseOptionForFacultyOrTeacher = [
-   ",none", "8,none", "9,none"
-]
+var gradeOptionForStudent = [ "1,B1", "2,B2", "3,B3", "4,B4", "5,M1", "6,M2" ];
+var gradeOptionForFacultyOrTeacher = [ "8,教員", "9,職員" ];
 
-var set_course_options = function(optionDefs) {
-  $('#course option').remove();
-  optionDefs.forEach(function (item) {
-    var f = item.split(",");
-    var value = f[0], text = f[1];
-    if (text == "none") {
-       $('#course').append($('<option>').html("").val(value).css("display", "none"));
-    } else {
-       $('#course').append($('<option>').html(text).val(value));
-    }
-  });
+var set_grade_options_by_user_type = function(userType) {
+  var set_grade_options = function(optionDefs) {
+    $('#grade option').remove();
+    optionDefs.forEach(function (item) {
+      var f = item.split(",");
+      var value = f[0], text = f[1];
+      if (text == "none") {
+         $('#grade').append($('<option>').html("").val(value).css("display", "none"));
+      } else {
+         $('#grade').append($('<option>').html(text).val(value));
+      }
+    });
+  };
+
+  if (userType == "8" || userType == "9") {
+    set_grade_options(gradeOptionForFacultyOrTeacher);
+  } else {
+    set_grade_options(gradeOptionForStudent);
+  }
 };
 
+var couseOptionForB1 = [ "6,未配属" ];
+var couseOptionForB2 = [ 
+   "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
+   "4,複雑系コース"
+];
+var couseOptionForB34 = [ 
+   "1,情報システムコース", "2,情報デザインコース", "3,複雑系知能コース",
+   "4,複雑系コース", "5,高度ICTコース"
+];
+var courseOptionForM12 = [
+   "1,情報アーキテクチャ領域", "2,メディアデザイン領域", "3,知能情報科学領域",
+   "4,複雑系情報科学領域", "5,高度ICT領域"
+];
+var couseOptionForGradeUnknownStudent = [ 
+   ",(学年を選択してください)"
+];
+var courseOptionForFacultyOrTeacher = [ "8,教員", "9,職員" ];
+
 var set_course_options_by_grade = function(grade) {
-  if (grade == "1") {
+  var set_course_options = function(optionDefs) {
+    $('#course option').remove();
+    optionDefs.forEach(function (item) {
+      var f = item.split(",");
+      var value = f[0], text = f[1];
+      if (text == "none") {
+         $('#course').append($('<option>').html("").val(value).css("display", "none"));
+      } else {
+         $('#course').append($('<option>').html(text).val(value));
+      }
+    });
+  };
+
+  if (grade == "0") {
+    set_course_options(couseOptionForGradeUnknownStudent);
+  } else if (grade == "1") {
     set_course_options(couseOptionForB1);
   } else if (grade == "2") {
     set_course_options(couseOptionForB2);
@@ -137,29 +152,35 @@ var set_course_options_by_grade = function(grade) {
 };
 
 $(function() {
-  $('#grade').val({{grade_index}});
-  var g = $('#grade').val();
+  var g = {{grade_index}};
   var ut = (g == "8" || g == "9") ? g : "0";
-  $('#user-type').val(ut);
-  
   set_visibilities_of_grade_and_course(ut);
-  $('#user-type').on('change', function() {
-    var ut = $('#user-type').val();
-    set_visibilities_of_grade_and_course(ut);
-    if (ut == "8" || ut == "9")
-      $('#grade,#course').val(ut);
-    else
-      $('#grade,#course').val("0");
-  });
+  set_grade_options_by_user_type(ut);
   
+  $('#grade').val(g);
+  $('input[name="user-type"]').val([ut]);
+  
+  $('input[name="user-type"]:radio').bind('change', function(ev, ui) {
+    var ut = $(this).val();
+    set_grade_options_by_user_type(ut);
+    set_visibilities_of_grade_and_course(ut);
+    if (ut == "8" || ut == "9") {
+      $('#grade,#course').val(ut);
+      set_course_options_by_grade(ut);
+    } else {
+      $('#grade,#course').val("0");
+      set_course_options_by_grade("0");
+    }
+  });
   set_course_options_by_grade(g);
   $('#grade').on('change', function() {
     var g = $('#grade').val();
+    var ut = $('input[name="user-type"]:checked').val();
     set_course_options_by_grade(g);
     if ("1" <= g && g <= "6")
       $('#course').val("0");
     else
-      $('#course').val($('#user-type').val());
+      $('#course').val(ut);
   });
   $('#course').val({{course_index}});
 });
