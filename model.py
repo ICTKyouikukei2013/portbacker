@@ -122,7 +122,7 @@ class Goal(object):
             "title": self.title})
         docs = list(docs)
         if docs:
-            raise GoalTitleDuplicated
+            raise GoalTitleDuplicated  # TODO add testcase for this exception
 
         col.insert({
             "student_id": self.student_id,
@@ -133,7 +133,7 @@ class Goal(object):
         self.serial = serial
 
     @classmethod
-    def find(clz, db, student_id, serial):  # TODO API changed
+    def find(clz, db, student_id, serial):
         col = db.portfolio_goals
         docs = col.find({"student_id": student_id, "serial": serial})
         docs = list(docs)
@@ -154,7 +154,7 @@ class Goal(object):
         return [Goal(doc["student_id"], doc["title"], doc["serial"]) for doc in docs] 
 
     @classmethod
-    def remove(clz, db, student_id, serial):  # TODO API changed
+    def remove(clz, db, student_id, serial):
         col = db.portfolio_goals
         col.remove({"student_id": student_id, "serial": serial})
 
@@ -165,7 +165,7 @@ class GoalItemTitleDuplicated(ValueError):
     pass
 
 class GoalItem(object):
-    def __init__(self, student_id, goal_serial, title, change_data, visibility, serial=None):  # TODO API changed
+    def __init__(self, student_id, goal_serial, title, change_data, visibility, serial=None):
         self.student_id = student_id
         self.goal_serial = goal_serial
         self.title = title
@@ -185,7 +185,7 @@ class GoalItem(object):
             "title": self.title})
         docs = list(docs)
         if docs:
-            raise GoalItemTitleDuplicated
+            raise GoalItemTitleDuplicated  # TODO add testcase for this exception
 
         col.insert({
             "student_id": self.student_id,
@@ -211,7 +211,7 @@ class GoalItem(object):
             "serial": self.serial})
 
     @classmethod 
-    def find(clz, db, student_id, serial):  # TODO API changed
+    def find(clz, db, student_id, serial):
         col = db.portfolio_goal_items
         docs = col.find({
             "student_id": student_id, 
@@ -232,7 +232,7 @@ class GoalItem(object):
         return [GoalItem(doc["student_id"], doc["goal_serial"], doc["title"], doc["change_data"], doc["visibility"], doc["serial"]) for doc in docs]
 
     @classmethod
-    def remove(clz, db, student_id, serial):  # TODO API changed
+    def remove(clz, db, student_id, serial):
         col = db.portfolio_goal_items
         col.remove({"student_id": student_id, "serial": serial})
 
@@ -244,14 +244,14 @@ class ItemLogInsertedTwice(ValueError):
     pass
 
 class ItemLog(object):
-    def __init__(self, student_id, goalitem_serial, creation_date, text, serial=None):  # TODO API changed
+    def __init__(self, student_id, goalitem_serial, creation_date, text, serial=None):
         self.student_id = student_id
         self.goalitem_serial = goalitem_serial
         self.creation_date = creation_date 
         self.text = text 
         self.serial = serial
 
-    def insert(self, db):  # TODO API changed
+    def insert(self, db):
         if self.serial is not None:
             raise ItemLogInsertedTwice
         serial = gen_serial_number(self.student_id, db)
@@ -267,7 +267,7 @@ class ItemLog(object):
         self.serial = serial
 
     @classmethod
-    def find(clz, db, student_id, serial):  # TODO API changed
+    def find(clz, db, student_id, serial):
         col = db.portfolio_item_logs
         docs = col.find({
             "student_id" : student_id,
@@ -289,7 +289,7 @@ class ItemLog(object):
             return [ItemLog(doc["student_id"], doc["goalitem_serial"], doc["creation_date"], doc["text"], doc["serial"]) for doc in docs] 
 
     @classmethod
-    def remove(clz, db, student_id, serial):  # TODO API changed
+    def remove(clz, db, student_id, serial):
         col = db.portfolio_item_logs
         col.remove({"student_id": student_id, "serial": serial})
 
