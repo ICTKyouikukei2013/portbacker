@@ -102,6 +102,9 @@ class User(object):
 class GoalInsertedTwice(ValueError):
     pass
 
+class GoalTitleDuplicated(ValueError):
+    pass
+
 class Goal(object):
     def __init__(self, student_id, title, serial=None):
         self.student_id = student_id
@@ -113,6 +116,14 @@ class Goal(object):
             raise GoalInsertedTwice
         serial = gen_serial_number(self.student_id, db)
         col = db.portfolio_goals
+
+        docs = col.find({
+            "student_id": self.student_id,
+            "title": self.title})
+        docs = list(docs)
+        if docs:
+            raise GoalTitleDuplicated
+
         col.insert({
             "student_id": self.student_id,
             "title": self.title,
@@ -150,6 +161,9 @@ class Goal(object):
 class GoalItemInsertedTwice(ValueError):
     pass
 
+class GoalItemTitleDuplicated(ValueError):
+    pass
+
 class GoalItem(object):
     def __init__(self, student_id, goal_serial, title, change_data, visibility, serial=None):  # TODO API changed
         self.student_id = student_id
@@ -164,6 +178,15 @@ class GoalItem(object):
             raise GoalItemInsertedTwice
         serial = gen_serial_number(self.student_id, db)
         col = db.portfolio_goal_items
+
+        docs = col.find({
+            "student_id": self.student_id,
+            "goal_serial": self.goal_serial,
+            "title": self.title})
+        docs = list(docs)
+        if docs:
+            raise GoalItemTitleDuplicated
+
         col.insert({
             "student_id": self.student_id,
             "goal_serial": self.goal_serial,
