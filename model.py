@@ -122,7 +122,7 @@ class Goal(object):
             "title": self.title})
         docs = list(docs)
         if docs:
-            raise GoalTitleDuplicated  # TODO add testcase for this exception
+            raise GoalTitleDuplicated
 
         col.insert({
             "student_id": self.student_id,
@@ -185,7 +185,7 @@ class GoalItem(object):
             "title": self.title})
         docs = list(docs)
         if docs:
-            raise GoalItemTitleDuplicated  # TODO add testcase for this exception
+            raise GoalItemTitleDuplicated
 
         col.insert({
             "student_id": self.student_id,
