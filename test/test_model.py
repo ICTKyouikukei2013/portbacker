@@ -181,6 +181,18 @@ class GoalItemTest(unittest.TestCase):
         with self.assertRaises(model.GoalItemInsertedTwice):
             i1.insert(db)
 
+    def test_update(self):
+        goal_serial = 1
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
+        i1.insert(db)
+        docs = model.GoalItem.get(db, "b1012100", goal_serial)
+        doc = docs[0]
+        i2 = model.GoalItem.find(db, "b1012100", doc.serial)
+        i2.update(db)
+        docs2 = model.GoalItem.get(db, "b1012100", goal_serial)
+        self.assertTrue(len(docs2) == 1)
 
     def test_find(self):
         goal_serial1 = 1
@@ -227,6 +239,8 @@ class GoalItemTest(unittest.TestCase):
         r1 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
         r1.insert(db)
         self.assertTrue(r1.serial is not None)
+        act = model.GoalItem.find(db, "b1012100", r1.serial)
+        self.assertTrue(act is not None)
         model.GoalItem.remove(db, "b1012100", r1.serial)
         act = model.GoalItem.find(db, "b1012100", r1.serial)
         self.assertTrue(act == None)
