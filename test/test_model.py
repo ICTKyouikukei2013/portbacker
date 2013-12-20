@@ -98,6 +98,16 @@ class GoalTest(unittest.TestCase):
         with self.assertRaises(model.GoalInsertedTwice):
             t2.insert(db)
 
+    def test_insert_title_duplication(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        t1 = model.Goal("b1012100", "test title")
+        t1.insert(db)
+        self.assertTrue(t1.serial is not None)
+        t2 = model.Goal("b1012100", "test title")
+        with self.assertRaises(model.GoalTitleDuplicated):
+            t2.insert(db)
+
     def test_find(self):
         db = Connection('localhost', 27017).testdata
         model.Goal.delete_all(db)
@@ -180,6 +190,18 @@ class GoalItemTest(unittest.TestCase):
         self.assertTrue(i1.serial is not None)
         with self.assertRaises(model.GoalItemInsertedTwice):
             i1.insert(db)
+
+
+    def test_insert_title_duplication(self):
+        goal_serial = 1
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
+        i1.insert(db)
+        self.assertTrue(i1.serial is not None)
+        i2 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
+        with self.assertRaises(model.GoalItemTitleDuplicated):
+            i2.insert(db)
 
 
     def test_find(self):
