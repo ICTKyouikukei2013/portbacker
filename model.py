@@ -200,7 +200,7 @@ class GoalItem(object):
 
     def update(self, db):
         assert self.serial  # has been inserted?
-        GoalItem.remove(db, self.student_id, self.goal_serial)
+        GoalItem.remove(db, self.student_id, self.serial)
         col = db.portfolio_goal_items
         col.insert({
             "student_id": self.student_id,
