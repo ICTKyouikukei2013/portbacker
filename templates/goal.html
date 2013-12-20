@@ -1,5 +1,6 @@
 ﻿{% extends "layout.html" %}
 {% block body %}
+  <script type="text/javascript" src="/static/js/chgbtn.js" charset="utf-8"></script>
   <div class="style">
     <div id="tabnavi">
       <div class="size">
@@ -8,7 +9,7 @@
             <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
             <li class="tab tab-unsel"><a href="portfolio">ポートフォリオ</a></li>
             <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
-            <li class="tab tab-unsel"><a href="person">個人日誌</a></li>
+            <li class="tab tab-unsel"><a href="personallog">個人日誌</a></li>
             <li class="tab tab-selected"><a href="goal">ゴール設定</a></li>
           </ul>
         </div>
@@ -20,7 +21,7 @@
         <div class="goal-set-input">
           <form method="post" action="/goal_post_goal">
             <h4>達成したい目標を設定</h4>
-            <input type="text" name="goal_title" style="width:305px; margin-top:10px; margin-right: 7px;" required>
+            <input type="text" name="goal_title" style="width:305px; margin-top:10px; margin-right: 7px;" placeholder="長期的なゴールを入力してください"　required>
             <input type="hidden" name="button_name" value="make">
             <input type="submit" name="goal" class="btn btn-primary" value="新規作成" id="make_goal">
           </form>
@@ -33,13 +34,13 @@
               <div class="accordion-heading">
                 <div class="goal_box">
                   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ goal_text[0].title }}">
-                    <div class="sankaku">▶</div>{{ goal_text[0].title }}
+                    <img src="/static/img/sankaku.png" width="10px">{{ goal_text[0].title }}
                   </a>
                 </div>
                 <div style="display: inline-block;">
                   <form method="post" action="/remove_goal" style="vertical-align:middle;">
                     <input type="hidden" name="button_name" value="remove">
-                    <input type="hidden" name="goal_title" value="{{ goal_text[0].title  }}">
+                    <input type="hidden" name="goal_serial" value="{{ goal_text[0].serail }}">
                     <input type="submit" name="remove" class="btn btn-danger btn-small" style="heigth: 100%;" value="削除">
                   </form>
                 </div>
@@ -48,20 +49,20 @@
                 <div class="accordion-inner">
                   <ul>
                     <form method="post" action="/goal_post_goal_item">
-                      <input type="hidden" name="goal_title" value="{{ goal_text[0].title }}">
+                      <input type="hidden" name="goal_serial" value="{{ goal_text[0].serial }}">
                       <input type="hidden" name="button_name" value="make">
-                      <input type="text" name="goal_item_title" style="width:275px; margin-top:10px; margin-right: 7px;" required>
+                      <input type="text" name="goal_item_title" style="width:275px; margin-top:10px; margin-right: 7px;" placeholder="短期的なゴールを入力してください"　required>
                       <input type="submit" name="goal_item" class="btn btn-primary btn-small" value="新規作成">
                     </form>
                     {% for goalitem in goal_text[1] %}
                     <form method="post" action="/goal_item">
-                      <input type="hidden" name="goal_title" value="{{ goal_text[0].title }}">
+                      <input type="hidden" name="goal_serial" value="{{ goal_text[0].serial }}">
                       <div {% if goalitem.change_data[-1]["state"] %} class="goal_item_done" {% endif %} style="display: inline-block; width: 270px;">
-                        <input type="hidden" name="goal_item_title" value="{{ goalitem.title }}">
+                        <input type="hidden" name="goalitem_serial" value="{{ goalitem.serial }}">
                         {{ goalitem.title }}
                       </div>
                       <input type="submit" name="edit_button" style="margin-top:10px; display: inline-block; width: 50px" {% if goalitem.change_data[-1]["state"] %} value="未完了" class="btn btn btn-primary btn-mini" {% else %} value="完了" class="btn btn btn-success btn-mini"{% endif %}>
-                      <input type="submit" name="edit_button" class="btn btn-danger btn-mini" style="margin-top:10px; display: inline-block;" value="削除">
+                      <input type="submit" name="edit_button" class="btn btn-danger btn-mini" style="margin-top:10px; display: inline-block; width: 50px" value="削除">
                     </form>
                     {% endfor %}
                   </ul>

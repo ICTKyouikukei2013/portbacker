@@ -1,0 +1,94 @@
+    {% extends "layout.html" %}
+    {% block body %}
+      <script type="text/javascript">
+      $("#date").mouseover(function(){
+        $("#date").css("color","#000");
+      });
+      $("#date").mouseout(function(){
+        $("#date").css("color", "#888");
+      });
+
+      $("#goal").mouseover(function(){
+        $("#goal").css("color","#000");
+      });
+      $("#goal").mouseout(function(){
+        $("#goal").css("color", "#888");
+      });
+    </script>
+    <script type="text/javascript" src="/static/js/chgbtn.js" charset="utf-8"></script>
+      <div class="style">
+        <div id="tabnavi">
+          <div class="size">
+            <div id="move_tab">
+              <ul>
+                <li class="tab tab-unsel"><a href="/">&nbsp;&nbsp;&nbsp;トップ&nbsp;&nbsp;&nbsp;</a></li>
+                <li class="tab tab-unsel"><a href="portfolio">ポートフォリオ</a></li>
+                <li class="tab tab-unsel"><a href="artifact">成果物管理</a></li>
+                <li class="tab tab-selected"><a href="personallog>個人日誌</a></li>
+                <li class="tab tab-unsel"><a href="goal">ゴール設定</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="diary">
+            <h4>■個人日誌</h4>
+            <form method="post" action="">
+              <div class="input_diary">
+                <textarea name="item_log_text" required></textarea>
+                <h5>ゴールを選択</h5>
+                <div class="accordion" id="accordion2">
+                  {% if goal_texts != None%}
+                  {% for goal_text in goal_texts %}
+                  <div class="accordion-group">
+                    <div class="accordion-heading">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ goal_text[0].title }}">
+                        <img src="/static/img/sankaku.png" width="10px">{{ goal_text[0].title }}
+                      </a>
+                    </div>
+                    <div id="{{ goal_text[0].title }}" class="accordion-body collapse">
+                      <div class="accordion-inner">
+                        <ul>
+                          {% for goalitem_text in goal_text[1] %}
+                          <li><input type="radio" name="goal_item_title" value="{{ goalitem_text.title }}" required>{{ goalitem_text.title }}</li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                  {% endif %}
+                </div>
+                <div align="right">
+                <input type="submit" value="入力" class="btn btn-primary" style="margin-left: 0px;">
+              </div>
+              </div>
+              
+            </form>
+            </div>
+          <div class="twitt">
+            <h4>つぶやき</h4>
+    <!--つぶやき-->
+            <div class="twibox">
+              <div class="sort">
+              ぷるだうんめにゅー（でふぉが全部、項目にゴール別）
+              </div>
+               <div class="twitt-box">
+               <div class="date">10月10日</div>
+               <div class="content">
+                 イラストレーターでトップページのペーパープロトタイプを作ってみた。
+                </div>
+              </div>
+              <div class="twitt-box">
+                <div class="date">10月9日</div>
+                <div class="content">
+                  Githubに登録した。全部英語だったので英語の勉強もしないといけない。
+                </div>
+              </div>
+            </div>
+    <!---->
+          </div>
+        </div>
+      </div>
+      </div>
+    {% endblock %}

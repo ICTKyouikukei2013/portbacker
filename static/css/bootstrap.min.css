@@ -183,7 +183,7 @@ small{
 	padding-left: 270px;
 }
 
-/* person,htmlで使ってます */
+/* personallog.htmlで使ってます */
 .diary{
     float: left;
     width: 30%;
@@ -213,12 +213,6 @@ small{
 .input_diary .accordion-inner{
     border: 0px;
     padding: 0 0 0 0;
-}
-
-.sankaku{
-    transform-origin: middle;
-    transform-origin: center;
-    display: inline-block;
 }
 
 .twitt{
@@ -307,146 +301,7 @@ form{
 	font-size: 12px;
 }
 
-.bg{
-  background-color: #ccc;
-  width: 160px;
-  height: 160px;
-  position: absolute;
-  margin-left: 450px;
-}
 
-.picker{
-	border: solid;
-}
-
-#black{
-	background-color: black;
-	width: 20px;
-	height: 20px;
-	margin: 10px 5px 5px 10px; 	
-	float: left;
-}
-
-#silver{
-	background-color: silver;
-	width: 20px;
-	height: 20px;
-	margin: 10px 5px 5px 5px;
-	float: left;
-}
-
-#gray{
-	background-color: gray;
-	width: 20px;
-	height: 20px;
-	margin: 10px 5px 5px 5px;
-	float: left;
-
-}
-
-#white{
-	background-color: white;
-	width: 20px;
-	height: 20px;
-	margin: 10px 5px 5px 5px;
-	float: left;
-}
-
-#maroon{
-	background-color: maroon;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 10px;
-	float: left;
-}
-
-#red{
-	background-color: red;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left; 
-}
-
-#purple{
-	background-color: purple;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#fuchsia{
-	background-color: fuchsia;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left; 
-}
-
-#green{
-	background-color: green;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 10px;
-	float: left;
-}
-
-#lime{
-	background-color: lime;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#olive{
-	background-color: olive;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#yellow{
-	background-color: yellow;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#navy{
-	background-color: navy;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 10px;
-	float: left;
-}
-
-#blue{
-	background-color: blue;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#teal{
-	background-color: teal;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
-
-#aqua{
-	background-color: aqua;
-	width: 20px;
-	height: 20px;
-	margin: 5px 5px 5px 5px;
-	float: left;
-}
 
 /* タブ */
 li.tab {
@@ -479,3 +334,11 @@ li.tab-special {
 	margin-top: -125px;
 }
 
+.accordion-toggle{
+	color: black;
+}
+
+.accordion-toggle:hover{
+	text-decoration: none;
+	color: gray;
+}

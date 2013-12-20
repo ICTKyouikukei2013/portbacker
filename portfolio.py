@@ -8,10 +8,10 @@ from flask import Flask, session, request, redirect, send_from_directory, render
 #gfrom werkzeug import secure_filename
 import model
 
-GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', u'未所属', u'教員', u'職員']
-GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'未所属': 7, u'教員': 8, u'職員': 9}
-COURSE = [None, u'情報システムコース', u'情報デザインコース', u'複雑系知能コース', u'複雑系コース', u'未所属', None, None, u'教員', u'職員']
-COURSE_STR_TO_FORM_INDEX = {u'情報システムコース': 1, u'情報デザインコース': 2, u'複雑系知能コース': 3, u'複雑系コース': 4, u'未所属': 5, u'教員': 8, u'職員': 9}
+GRADE = [None, 'B1', 'B2', 'B3', 'B4', 'M1', 'M2', None, u'教員', u'職員']
+GRADE_STR_TO_FORM_INDEX = {'B1': 1, 'B2': 2, 'B3': 3, 'B4': 4, 'M1': 5, 'M2': 6, u'教員': 8, u'職員': 9}
+COURSE = [None, u'情報システムコース', u'情報デザインコース', u'複雑系知能コース', u'複雑系コース', u"高度ICTコース", u'未所属', None, u'教員', u'職員']
+COURSE_STR_TO_FORM_INDEX = {u'情報システムコース': 1, u'情報デザインコース': 2, u'複雑系知能コース': 3, u'複雑系コース': 4, u"高度ICTコース": 5, u'未所属': 6, u'教員': 8, u'職員': 9}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -88,7 +88,10 @@ def uploaded_file():
 def index_page():
     return render_template_with_username("top.html")
 
-# goal.htmlにリンク
+@app.route('/goal_duplicated_error')
+def goal_duplicated_error():
+    return render_template("goal_duplicated_error.html")
+
 @app.route('/goal', methods=['GET'])
 def get_goal():
     username = session['username']
@@ -97,7 +100,7 @@ def get_goal():
     change_data_array = []
     graph_script = ""
     for goal in goals:
-        goal_items = model.GoalItem.get(model.db, username, goal.title)
+        goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
         for text in goal_items:
             sys.stderr.write("%s\n" % text.change_data[-1])
@@ -144,36 +147,43 @@ def create_graph(change_data_array, canvas_id):
 
     return draw_script
 
-# goal_textの内容を受け取ってgoal.htmlに渡す 菅野：テキストは渡さないでgoal.htmlからdbにアクセスできるようにしました
 @app.route('/goal_post_goal', methods=['POST'])
 def post_goal():
     username = session['username']
     if request.form["button_name"] == "make":
         goal_title = request.form['goal_title']
         g = model.Goal(username, goal_title)
-        g.insert(model.db)
+        try:
+            g.insert(model.db)
+        except model.GoalInsertedTwice:
+            pass
+        except model.GoalTitleDuplicated:
+            return redirect('/goal_duplicated_error')
     return redirect('/goal')
 
 @app.route('/remove_goal', methods=['POST'])
 def remove_goal():
     username = session['username']
     if request.form["button_name"] == "remove":
-        goal_title = request.form["goal_title"]
-        model.Goal.remove(model.db, username, goal_title)
+        goal_serial = request.form["goal_serial"]
+        model.Goal.remove(model.db, username, goal_serial)
     return redirect('/goal')
 
 @app.route('/goal_item', methods=['POST'])
 def edit_goal_item():
     username = session['username']
-    goal_title = request.form["goal_title"]
     if request.form["edit_button"] == u"未完了" or request.form["edit_button"] == u"完了":
-        item = request.form["goal_item_title"]
-        itemc = model.GoalItem.find(model.db, username, goal_title, item)
+        goalitem_serial = request.form["goalitem_serial"]
+        assert goalitem_serial
+        goalitem_serial = int(goalitem_serial)
+        itemc = model.GoalItem.find(model.db, username, goalitem_serial)
         itemc.change_data.append({"datetime": datetime.datetime.today(), "state": not itemc.change_data[-1]["state"]})
         itemc.update(model.db)
     elif request.form["edit_button"] == u"削除":
-        item = request.form.getlist["goal_item_title"]
-        model.GoalItem.remove(model.db, username, goal_title, item)
+        goalitem_serial = request.form["goalitem_serial"]
+        assert goalitem_serial
+        goalitem_serial = int(goalitem_serial)
+        model.GoalItem.remove(model.db, username, goalitem_serial)
     return redirect('/goal')
 
 @app.route('/goal_post_goal_item', methods=['POST'])
@@ -181,14 +191,32 @@ def post_goal_item():
     username = session['username']
     if request.form["button_name"] == "make":
         goal_item_title = request.form["goal_item_title"]
-        goal_title = request.form['goal_title']
+        goal_serial = request.form['goal_serial']
+        assert goal_serial
+        goal_serial = int(goal_serial)
         change_data = [{"datetime": datetime.datetime.today(), "state": False}]
-        gi = model.GoalItem(username, goal_title, goal_item_title, change_data, True)
-        gi.insert(model.db)
+        gi = model.GoalItem(username, goal_serial, goal_item_title, change_data, True)
+        try:
+            gi.insert(model.db)
+        except model.GoalItemInsertedTwice:
+            pass
+        except model.GoalItemTitleDuplicated:
+            return redirect('/goalitem_duplicated_error')
     return redirect('/goal')
 
-@app.route('/personallog_post', methods=['POST'])
+@app.route('/personallog', methods=['GET'])
+def personallog_get():
+    username = session['username']
+    goals = model.Goal.get(model.db, username)
+    goal_texts = []
+    for goal in goals:
+        goal_items = model.GoalItem.get(model.db, username, goal.serial)
+        goal_texts.append([goal, goal_items])
+    return render_template_with_username("/personallog.html", goal_texts= goal_texts)
+
+@app.route('/personallog', methods=['POST'])
 def personallog_post():
+    sys.exit("NOT-YET implemented!!!!")
     username = session['username']
     if request.form["button"] == u"追加":
         personallog_text = request.form['personallog_text']
@@ -221,20 +249,6 @@ def portfolio():
     zipped = zip(datelist, portlists)
 
     return render_template_with_username("portfolio.html", zipped=zipped)
-
-@app.route('/person', methods=['POST'])
-def diary_post():
-    return render_template_with_username("person.html");
-
-@app.route('/person', methods=['GET'])
-def diary():
-    username = session['username']
-    goals = model.Goal.get(model.db, username)
-    goal_texts = []
-    for goal in goals:
-        goal_items = model.GoalItem.get(model.db, username, goal.title)
-        goal_texts.append([goal, goal_items])
-    return render_template_with_username("/person.html", goal_texts= goal_texts)
 
 @app.route('/view_file/<path:filename>', methods=['GET'])
 def view_file(filename):
@@ -295,6 +309,8 @@ def profile():
                 uid=uid, name='', course_index=0, grade_index=0,
                 show_tabs=0)
 
+import sys
+
 @app.route('/profile', methods=['POST'])
 def setting_profile():
     uid = session.get("username")
@@ -312,6 +328,7 @@ def setting_profile():
         return render_template_with_username("profile.html", 
                 uid=uid, name=name, course_index=course, grade_index=grade,
                 show_tabs=show_tabs)
+    sys.stderr.write("course = %s, grade = %s\n" % (repr(course), repr(grade)))
     uobj = model.User(name, session.get('username'), None, COURSE[int(course)], GRADE[int(grade)])
     uobj.update(model.db)
     session['displayname'] = uobj.name if uobj.name else None
@@ -330,5 +347,6 @@ if __name__ == '__main__':
     add_artifact_functions(app)
 
     app.debug = True
+    # app.run(host='49.212.234.134')
     app.run() 
 
