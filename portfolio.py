@@ -97,10 +97,85 @@ def get_goal():
     username = session['username']
     goals = model.Goal.get(model.db, username)
     goal_texts = []
+    graph_script = ""
     for goal in goals:
+        change_data_array = []
         goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
-    return render_template_with_username("goal.html", goal_texts= goal_texts)
+        if not len(goal_items) == 0:
+            for goal_item in goal_items:
+                sys.stderr.write("%s\n" % goal_item.change_data[-1])
+            graph_script += create_graph(goal_items, goal.serial)
+    return render_template_with_username("goal.html", goal_texts= goal_texts, graph_script = graph_script)
+
+def create_graph(goal_items, canvas_id):
+    count = 0
+    total_graph_vertex = {}
+
+    change_data_array = [goal_item.change_data[0]['datetime'] for goal_item in goal_items]
+    change_data_array.sort()
+
+    for change_data in change_data_array:
+        create_date = (datetime.datetime.strptime(change_data.strftime("%Y-%m-%d"), "%Y-%m-%d"))
+        count += 1
+        total_graph_vertex.update({create_date: count})
+
+    change_graph_vertex = {}
+    for goal_item in goal_items:
+        for change_data in goal_item.change_data:
+            date = (datetime.datetime.strptime(change_data['datetime'].strftime("%Y-%m-%d"), "%Y-%m-%d"))
+            if change_data['state']:
+                try:
+                    change_graph_vertex.update({date: change_graph_vertex[date]+1})
+                except KeyError:
+                    change_graph_vertex.update({date: 1})
+
+
+    print total_graph_vertex
+    print "aaaaaaaa"
+
+    print change_graph_vertex
+    print "aaaaaaaa"
+
+    sdate = change_data_array[0]
+    sx = 0
+    sy = 120
+
+    draw_script = """
+    $( function () {
+      var canvas = document.getElementById('%s');
+      if ( ! canvas || ! canvas.getContext ) {
+        return false;
+      }
+      var ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.moveTo(%d, %d);""" % (canvas_id, sx, sy)
+
+    for date, goal_item_count in sorted(total_graph_vertex.items()):
+        diff_days = date.toordinal() - datetime.date(sdate.year, sdate.month, sdate.day).toordinal()
+        print diff_days
+        draw_script += """
+      ctx.lineTo(%d, %d)""" % (sx + diff_days, sy - goal_item_count * 10)
+
+    draw_script += """
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgb(0, 255, 0)';
+      ctx.moveTo(%d, %d);""" % (sx, sy)
+
+    for date, done_count in sorted(change_graph_vertex.items(), reverse=True):
+        diff_days = date.toordinal() - datetime.date(sdate.year, sdate.month, sdate.day).toordinal()
+        print diff_days
+        draw_script += """
+      ctx.lineTo(%d, %d)""" % (sx + diff_days, sy - done_count * 10)
+
+    draw_script += """
+      ctx.stroke();
+    });
+    """
+
+    return draw_script
 
 @app.route('/goal_post_goal', methods=['POST'])
 def post_goal():

@@ -69,11 +69,20 @@
                 </div>
               </div>
             </div>
-            {% endfor %}
+            <!-- グラフ描画エリア -->
+            <canvas id="{{goal_text[0].serial}}" width="140" height="140"></canvas>
+            {% endfor %}            
             {% endif %}
           </div>
         </div>
       </div>
     </div>
   </div>
+
+<script type="text/javascript">
+{% autoescape false %}
+{{ graph_script }}
+{% endautoescape %}
+</script>
+
 {% endblock %}

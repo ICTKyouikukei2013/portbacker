@@ -2,7 +2,9 @@
 {% block body %}
 <div class="style">
   <div class="box">
-    {{textarea}}
+	{% autoescape false %}
+    	{{textarea}}
+    {% endautoescape %}
   </div>
 </div>
 {% endblock %}
