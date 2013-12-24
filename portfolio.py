@@ -99,12 +99,11 @@ def get_goal():
     goal_texts = []
     graph_script = ""
     for goal in goals:
-        change_data_array = []
         goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
         if not len(goal_items) == 0:
-            for goal_item in goal_items:
-                sys.stderr.write("%s\n" % goal_item.change_data[-1])
+            #for goal_item in goal_items:
+            #    sys.stderr.write("%s\n" % goal_item.change_data[-1])
             graph_script += create_graph(goal_items, goal.serial)
     return render_template_with_username("goal.html", goal_texts= goal_texts, graph_script = graph_script)
 

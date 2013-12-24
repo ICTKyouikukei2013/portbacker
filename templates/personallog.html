@@ -42,11 +42,11 @@
                   {% for goal_text in goal_texts %}
                   <div class="accordion-group">
                     <div class="accordion-heading">
-                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ goal_text[0].title }}">
+                      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#goal-{{ goal_text[0].serial }}">
                         <img src="/static/img/sankaku.png" width="10px">{{ goal_text[0].title }}
                       </a>
                     </div>
-                    <div id="{{ goal_text[0].title }}" class="accordion-body collapse">
+                    <div id="goal-{{ goal_text[0].serial }}" class="accordion-body collapse">
                       <div class="accordion-inner">
                         <ul>
                           {% for goalitem_text in goal_text[1] %}
