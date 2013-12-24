@@ -326,7 +326,7 @@ class ItemLogTest(unittest.TestCase):
         i1 = model.ItemLog("b1012100", goalitem_serial, "2013/11/11", "hogehoge")
         i1.insert(db)
         act = model.ItemLog.get(db, "b1012101")
-        self.assertTrue(act == None)
+        self.assertTrue(act == [])
 
     def test_remove(self):
         goalitem_serial = 1
