@@ -277,16 +277,21 @@ class ItemLog(object):
             return None
         doc = docs[0]
         return ItemLog(doc["student_id"], doc["goalitem_serial"], doc["creation_date"], doc["text"], doc["serial"])
+    
+    def get_goalitem_title(self, db):
+        col = db.portfolio_goal_items
+        docs = col.find({
+            "student_id": self.student_id, 
+            "serial": self.goalitem_serial})
+        docs = list(docs)
+        return docs[0]["title"] if docs else ""
 
     @classmethod
     def get(clz, db, student_id):
         col = db.portfolio_item_logs
         docs = col.find({"student_id": student_id})
         docs = list(docs)
-        if len(docs) == 0:
-            return None
-        else:
-            return [ItemLog(doc["student_id"], doc["goalitem_serial"], doc["creation_date"], doc["text"], doc["serial"]) for doc in docs] 
+        return [ItemLog(doc["student_id"], doc["goalitem_serial"], doc["creation_date"], doc["text"], doc["serial"]) for doc in docs] 
 
     @classmethod
     def remove(clz, db, student_id, serial):
