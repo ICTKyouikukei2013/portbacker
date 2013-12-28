@@ -14,7 +14,7 @@ $(function() {
         var $idLast = $(idLast);
         if ($idLast.length > 0) {
             $idLast.addClass("in");
-            $("a.accordion-toggle[href='#" + idLast + "'] > img").css("transform", "rotate(90deg)");
+            $("a.accordion-toggle[href='" + idLast + "'] > img").css("transform", "rotate(90deg)");
         }
     }
 
@@ -24,8 +24,7 @@ $(function() {
 
         // close all accordion items
         $(".accordion-toggle").each(function() {
-            var j = $(this).attr('id');
-            $("#" + j + " " + "img").css("transform", "rotate(0)");
+        	$(this).children("img").css("transform", "rotate(0)");
         });
 
         if (! $("#" + bodyId).hasClass("in")) { // the accordion item is not opened ?
