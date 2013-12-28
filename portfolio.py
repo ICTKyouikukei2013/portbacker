@@ -195,6 +195,8 @@ def remove_goal():
     username = session['username']
     if request.form["button_name"] == "remove":
         goal_serial = request.form["goal_serial"]
+        assert goal_serial
+        goal_serial = int(goal_serial)
         model.Goal.remove(model.db, username, goal_serial)
     return redirect('/goal')
 
