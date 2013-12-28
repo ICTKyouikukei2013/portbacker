@@ -376,13 +376,14 @@ def setting_profile():
 def page_not_found(error):
     return render_template_with_username("page_not_found.html"), 404
 
+from portfolio_artifact import add_artifact_functions
+
+# set the secret key.  keep this really secret:
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+add_artifact_functions(app)
+
 if __name__ == '__main__':
-    from portfolio_artifact import add_artifact_functions
-
-    # set the secret key.  keep this really secret:
-    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-    add_artifact_functions(app)
 
     app.debug = True
     # app.run(host='49.212.234.134')
