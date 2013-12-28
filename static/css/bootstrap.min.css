@@ -227,12 +227,23 @@ small{
 	width: 620px;
 	height: 600px;
 	margin-top: 10px;
+	position: relative;
 }
 
 .twibox .sort{
 	font-size: 15px; 
 	font-weight: bold;
 	margin-left: 10px;
+	position: absolute;
+	top: 0;
+	height:2em;
+}
+
+.twitt-box-container {
+	position: absolute;
+	top: 2em; /* same as height of .twibox .sort */
+	bottom: 0;
+	overflow:auto;
 }
 
 .twitt-box{

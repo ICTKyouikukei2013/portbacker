@@ -75,12 +75,14 @@
               <div class="sort">
               ぷるだうんめにゅー（でふぉが全部、項目にゴール別）
               </div>
+              <div class="twitt-box-container">
               {% for title, logitem in logitem_texts %}
               <div class="twitt-box">
                 <div class="date">{{ logitem.creation_date.strftime("%Y-%m-%d %H:%M:%S") }}</div>
                 <div class="content">{{ logitem.text }} #{{ title }}</div>
               </div>
               {% endfor %}
+              </div>
             </div>
     <!---->
           </div>
