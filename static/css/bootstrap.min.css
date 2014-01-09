@@ -19,7 +19,8 @@
 .box{
 	background-color: #dcdcdc;
 	width: 940px;
-	height: 640px;
+	min-height: 600px;
+	height: 100%;
 	margin-top: -5px;
 	/*そのばしのぎです*/
 	float: right;	
@@ -153,7 +154,7 @@ small{
 
 
 #prebtn{
-	margin-top: -20px;
+	margin-top: 20px;
 	margin-left: 315px;
 }
 
@@ -225,7 +226,8 @@ small{
 
 .twibox{
 	width: 620px;
-	height: 600px;
+	min-height: 600px;
+	height: 100%;
 	margin-top: 10px;
 	position: relative;
 }

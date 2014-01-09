@@ -98,6 +98,10 @@
     float: left; 
 }
 
+a #fuchsia{
+    color: fuchsia;
+}
+
 #green{
     background-color: green;
     width: 20px;
