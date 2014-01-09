@@ -98,6 +98,16 @@ class GoalTest(unittest.TestCase):
         with self.assertRaises(model.GoalInsertedTwice):
             t2.insert(db)
 
+    def test_insert_title_duplication(self):
+        db = Connection('localhost', 27017).testdata
+        model.Goal.delete_all(db)
+        t1 = model.Goal("b1012100", "test title")
+        t1.insert(db)
+        self.assertTrue(t1.serial is not None)
+        t2 = model.Goal("b1012100", "test title")
+        with self.assertRaises(model.GoalTitleDuplicated):
+            t2.insert(db)
+
     def test_find(self):
         db = Connection('localhost', 27017).testdata
         model.Goal.delete_all(db)
@@ -193,6 +203,18 @@ class GoalItemTest(unittest.TestCase):
         i2.update(db)
         docs2 = model.GoalItem.get(db, "b1012100", goal_serial)
         self.assertTrue(len(docs2) == 1)
+
+    def test_insert_title_duplication(self):
+        goal_serial = 1
+        db = Connection('localhost', 27017).testdata
+        model.GoalItem.delete_all(db)
+        i1 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
+        i1.insert(db)
+        self.assertTrue(i1.serial is not None)
+        i2 = model.GoalItem("b1012100", goal_serial, "test title", "testdata", False)
+        with self.assertRaises(model.GoalItemTitleDuplicated):
+            i2.insert(db)
+
 
     def test_find(self):
         goal_serial1 = 1
@@ -304,7 +326,7 @@ class ItemLogTest(unittest.TestCase):
         i1 = model.ItemLog("b1012100", goalitem_serial, "2013/11/11", "hogehoge")
         i1.insert(db)
         act = model.ItemLog.get(db, "b1012101")
-        self.assertTrue(act == None)
+        self.assertTrue(act == [])
 
     def test_remove(self):
         goalitem_serial = 1
