@@ -33,19 +33,19 @@
             <div class="accordion-group">
               <div class="accordion-heading">
                 <div class="goal_box">
-                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ goal_text[0].title }}">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#goal-{{ goal_text[0].serial }}">
                     <img src="/static/img/sankaku.png" width="10px">{{ goal_text[0].title }}
                   </a>
                 </div>
                 <div style="display: inline-block;">
                   <form method="post" action="/remove_goal" style="vertical-align:middle;">
                     <input type="hidden" name="button_name" value="remove">
-                    <input type="hidden" name="goal_serial" value="{{ goal_text[0].serail }}">
+                    <input type="hidden" name="goal_serial" value="{{ goal_text[0].serial }}">
                     <input type="submit" name="remove" class="btn btn-danger btn-small" style="heigth: 100%;" value="削除">
                   </form>
                 </div>
               </div>
-                <div id="{{ goal_text[0].title  }}" class="accordion-body collapse">
+                <div id="goal-{{ goal_text[0].serial  }}" class="accordion-body collapse">
                 <div class="accordion-inner">
                   <ul>
                     <form method="post" action="/goal_post_goal_item">

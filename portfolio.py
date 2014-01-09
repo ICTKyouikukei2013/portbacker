@@ -99,7 +99,6 @@ def get_goal():
     goal_texts = []
     graph_script = ""
     for goal in goals:
-        change_data_array = []
         goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
         if not len(goal_items) == 0:
@@ -230,6 +229,8 @@ def remove_goal():
     username = session['username']
     if request.form["button_name"] == "remove":
         goal_serial = request.form["goal_serial"]
+        assert goal_serial
+        goal_serial = int(goal_serial)
         model.Goal.remove(model.db, username, goal_serial)
     return redirect('/goal')
 
@@ -256,8 +257,10 @@ def post_goal_item():
     if request.form["button_name"] == "make":
         goal_item_title = request.form["goal_item_title"]
         goal_serial = request.form['goal_serial']
-        assert goal_serial
-        goal_serial = int(goal_serial)
+        try:
+            goal_serial = int(goal_serial)
+        except:
+            return redirect('/goal')
         change_data = [{"datetime": datetime.datetime.today(), "state": False}]
         gi = model.GoalItem(username, goal_serial, goal_item_title, change_data, True)
         try:
@@ -276,23 +279,28 @@ def personallog_get():
     for goal in goals:
         goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
-    return render_template_with_username("/personallog.html", goal_texts= goal_texts)
+    logitem_texts = []
+    for item in model.ItemLog.get(model.db, username):
+        logitem_texts.append((item.get_goalitem_title(model.db), item))
+    return render_template_with_username("/personallog.html", goal_texts= goal_texts, logitem_texts=logitem_texts)
 
 @app.route('/personallog', methods=['POST'])
 def personallog_post():
-    sys.exit("NOT-YET implemented!!!!")
     username = session['username']
-    if request.form["button"] == u"追加":
+    if request.form["button"] == u"入力":
         personallog_text = request.form['personallog_text']
-        if personallog_text != "":
-            model.insert_log_text(username, personallog_text)
+        try:
+            goalitem_serial = int(request.form["goal_item_serial"])
+        except:
+            return redirect('/personallog')
+        if personallog_text:
+            item_log = model.ItemLog(username, goalitem_serial, datetime.datetime.today(), personallog_text)
+            item_log.insert(model.db)
     elif request.form["button"] == u"削除":
+        sys.exit("NOT-YET implemented!!!!")
         rmlog = request.form['rmgoal']
-        model.remove_log_text(username, rmlog)
-    goal_texts = model.get_goal_texts(username)
-    log_texts = model.get_log_texts(username)
-    return render_template_with_username("goal.html", 
-            goal_texts=goal_texts, log_texts=log_texts)
+        sys.stderr.write("goalitem_serial=%s\n" % request.form["goal_item_serial"])
+    return redirect('/personallog')
 
 @app.route('/portfolio', methods=['GET'])
 def portfolio():
