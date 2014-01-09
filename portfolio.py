@@ -103,14 +103,12 @@ def get_goal():
         goal_items = model.GoalItem.get(model.db, username, goal.serial)
         goal_texts.append([goal, goal_items])
         if not len(goal_items) == 0:
-            for goal_item in goal_items:
-                sys.stderr.write("%s\n" % goal_item.change_data[-1])
             graph_script += create_graph(goal_items, goal.serial)
     return render_template_with_username("goal.html", goal_texts= goal_texts, graph_script = graph_script)
 
 def create_graph(goal_items, canvas_id):
-    count = 0
     total_graph_vertex = {}
+    count = 0
 
     change_data_array = [goal_item.change_data[0]['datetime'] for goal_item in goal_items]
     change_data_array.sort()
@@ -118,28 +116,46 @@ def create_graph(goal_items, canvas_id):
     for change_data in change_data_array:
         create_date = (datetime.datetime.strptime(change_data.strftime("%Y-%m-%d"), "%Y-%m-%d"))
         count += 1
-        total_graph_vertex.update({create_date: count})
+        total_graph_vertex.update({create_date.toordinal(): count})
+
 
     change_graph_vertex = {}
+    goalitem_list = []
     for goal_item in goal_items:
-        for change_data in goal_item.change_data:
+        for i, change_data in enumerate(goal_item.change_data):
             date = (datetime.datetime.strptime(change_data['datetime'].strftime("%Y-%m-%d"), "%Y-%m-%d"))
-            if change_data['state']:
+            if i > 0:
+                goalitem_list.append({'state':change_data['state'], 'datetime':date.toordinal()})
+    goalitem_list = sorted(goalitem_list, key=lambda goalitem: goalitem['datetime'])
+
+    pre_date = 0
+    for goalitem in goalitem_list:
+        if pre_date == goalitem['datetime'] or pre_date == 0:
+            if goalitem['state']:
                 try:
-                    change_graph_vertex.update({date: change_graph_vertex[date]+1})
+                    change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[goalitem['datetime']]+1})
                 except KeyError:
-                    change_graph_vertex.update({date: 1})
+                    change_graph_vertex.update({goalitem['datetime']: 1})
+            else:
+                try:
+                    change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[goalitem['datetime']]-1})
+                except KeyError:
+                    change_graph_vertex.update({goalitem['datetime']: 0})
+        else:
+            if goalitem['state']:
+                    change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[pre_date]+1})
+            else:
+                    change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[pre_date]-1})
+        pre_date = goalitem['datetime']
 
 
-    print total_graph_vertex
-    print "aaaaaaaa"
+    sdate = goalitem_list[0]['datetime']
+    ndate = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d"), "%Y-%m-%d").toordinal()
+    diff_date = ndate - sdate
+    goal_item_len = len(goal_items)
+    width = 200
+    height = 150
 
-    print change_graph_vertex
-    print "aaaaaaaa"
-
-    sdate = change_data_array[0]
-    sx = 0
-    sy = 120
 
     draw_script = """
     $( function () {
@@ -149,26 +165,44 @@ def create_graph(goal_items, canvas_id):
       }
       var ctx = canvas.getContext('2d');
       ctx.beginPath();
-      ctx.moveTo(%d, %d);""" % (canvas_id, sx, sy)
+      ctx.moveTo(%d, %d);""" % (canvas_id, 0, height)
 
     for date, goal_item_count in sorted(total_graph_vertex.items()):
-        diff_days = date.toordinal() - datetime.date(sdate.year, sdate.month, sdate.day).toordinal()
-        print diff_days
+        diff_days = date - sdate
+        try:
+            x = width * float(diff_days) / diff_date
+        except ZeroDivisionError:
+            x = width * float(diff_days) / 1
+        
+        try:
+            y = height * float(goal_item_count) / goal_item_len
+        except ZeroDivisionError:
+            y = height * float(goal_item_count) / 1
+
         draw_script += """
-      ctx.lineTo(%d, %d)""" % (sx + diff_days, sy - goal_item_count * 10)
+      ctx.lineTo(%d, %d)""" % (x, height - y)
 
     draw_script += """
       ctx.stroke();
 
       ctx.beginPath();
       ctx.strokeStyle = 'rgb(0, 255, 0)';
-      ctx.moveTo(%d, %d);""" % (sx, sy)
+      ctx.moveTo(%d, %d);""" % (0, height)
 
-    for date, done_count in sorted(change_graph_vertex.items(), reverse=True):
-        diff_days = date.toordinal() - datetime.date(sdate.year, sdate.month, sdate.day).toordinal()
-        print diff_days
+    for date, done_count in sorted(change_graph_vertex.items()):
+        diff_days = date - sdate
+        try:
+            x = width * float(diff_days) / diff_date
+        except ZeroDivisionError:
+            x = width * float(diff_days) / 1
+        
+        try:
+            y = height * float(done_count) / goal_item_len
+        except ZeroDivisionError:
+            y = height * float(done_count) / 1
+
         draw_script += """
-      ctx.lineTo(%d, %d)""" % (sx + diff_days, sy - done_count * 10)
+      ctx.lineTo(%d, %d)""" % (x, height - y)
 
     draw_script += """
       ctx.stroke();
