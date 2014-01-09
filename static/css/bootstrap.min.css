@@ -169,11 +169,12 @@ small{
 }
 
 #loginlogo{
-	/*ロゴのサイズによって変更予定*/
-	position: relative;
-	top: 40px;
-	left: 40px;
+	width: 150px;
+	height: 150px;
+	padding: 50px 0 0 150px;
+	margin-bottom: -50px;
 }
+
 #login{
 	position: relative;
 	top: 150px;
