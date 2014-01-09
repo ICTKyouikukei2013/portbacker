@@ -19,7 +19,8 @@
 .box{
 	background-color: #dcdcdc;
 	width: 940px;
-	height: 640px;
+	min-height: 550px;
+	height: 100%;
 	margin-top: -5px;
 	/*そのばしのぎです*/
 	float: right;	
@@ -222,10 +223,10 @@ small{
     padding-right: 10px;
     background-color: #dcdcdc;
 }
-
 .twibox{
 	width: 620px;
-	height: 600px;
+	min-height: 550px;
+	height: 100%;
 	margin-top: 10px;
 	position: relative;
 }
