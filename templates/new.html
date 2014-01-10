@@ -19,6 +19,7 @@
       small,
       small a {
         color: #666;
+        margin-top: -10px;
       }
       
       a {
@@ -33,7 +34,6 @@
       #toolbar,
       textarea {
         width: 400px;
-        padding: 5px;
       }
       
       textarea {
@@ -146,6 +146,11 @@
             pushcolor = true;
           }
         });
+        //カラーピッカー右下部にある閉じるボタン
+        $(".close").click(function(){
+          $(".bg").css("visibility", "hidden");
+          pushcolor = true;
+        });
       });
     </script>
      <script type="text/javascript" src="/static/js/bootstrap-colorpalette.js" charset="utf-8"></script>
@@ -220,6 +225,7 @@
                 <a data-wysihtml5-command="foreColor" data-wysihtml5-command-value="aqua">
                   <div id="aqua" class="picker"></div>
                 </a>
+                <div class="demoSpan1"></div>
               </div>
 
               <a data-wysihtml5-command="bold" title="CTRL+B">太字</a> |
