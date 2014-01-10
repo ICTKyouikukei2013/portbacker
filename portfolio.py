@@ -148,13 +148,15 @@ def create_graph(goal_items, canvas_id):
         pre_date = goalitem['datetime']
 
 
+    if not goalitem_list:
+        return ""
+    
     sdate = goalitem_list[0]['datetime']
     ndate = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d"), "%Y-%m-%d").toordinal()
     diff_date = ndate - sdate
     goal_item_len = len(goal_items)
     width = 200
     height = 150
-
 
     draw_script = """
     $( function () {
