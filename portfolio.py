@@ -164,9 +164,22 @@ def create_graph(goal_items, canvas_id):
       if ( ! canvas || ! canvas.getContext ) {
         return false;
       }
-      var ctx = canvas.getContext('2d');
+      var ctx = canvas.getContext('2d')
+      ;
+      ctx.fillStyle = "rgb(255, 255, 255)";
+      ctx.fillRect(0, 0, %d, %d);
+
       ctx.beginPath();
-      ctx.moveTo(%d, %d);""" % (canvas_id, 0, height)
+      ctx.lineWidth = 8;
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, %d);
+      ctx.lineTo(%d, %d);
+
+      ctx.stroke();
+      
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      ctx.moveTo(%d, %d);""" % (canvas_id, width, height, height, width, height, 0, height)
 
     for date, goal_item_count in sorted(total_graph_vertex.items()):
         diff_days = date - sdate
