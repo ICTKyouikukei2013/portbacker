@@ -155,7 +155,7 @@ def create_graph(goal_items, canvas_id):
     ndate = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d"), "%Y-%m-%d").toordinal()
     diff_date = ndate - sdate
     goal_item_len = len(goal_items)
-    width = 200
+    width = 300
     height = 150
 
     draw_script = """

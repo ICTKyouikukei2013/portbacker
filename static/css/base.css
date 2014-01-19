@@ -53,3 +53,11 @@ body {
 	line-height:1.5;
 	font-size:12px;
 }
+
+/* ------- class ------- */
+
+.goal-graph{
+    position:absolute;
+    top:320px;
+    left:820px;
+}

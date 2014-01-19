@@ -16,6 +16,7 @@ $(function() {
             $idLast.addClass("in");
             $("a.accordion-toggle[href='" + idLast + "'] > img").css("transform", "rotate(90deg)");
         }
+        showGraphById(last.substr(5));
     }
 
     $('.accordion-toggle').on("click", function() {
@@ -32,7 +33,25 @@ $(function() {
             $(this).children("img").css("transform", "rotate(90deg)");
             var bodyId = $(this).attr("href").substr(1);
             $.cookie('goal-id-open', bodyId);
+            showGraphById(bodyId.substr(5));
+        } else {
+            hideGraph();
         }
+
     });
+
+    function showGraphById(id){
+        hideGraph();
+        $(".goal-graph").each(function(){
+            if(id == $(this).attr("id")){
+                $(this).show(800);
+            }
+        });
+    }
+
+    function hideGraph(){
+        $(".goal-graph").hide(800);
+    }
+
 });
 
