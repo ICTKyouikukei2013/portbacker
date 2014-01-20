@@ -44,13 +44,13 @@ $(function() {
         hideGraph();
         $(".goal-graph").each(function(){
             if(id == $(this).attr("id")){
-                $(this).show(800);
+                $(this).show(300);
             }
         });
     }
 
     function hideGraph(){
-        $(".goal-graph").hide(800);
+        $(".goal-graph").hide(300);
     }
 
 });

@@ -106,13 +106,13 @@ def get_goal():
     return render_template_with_username("goal.html", goal_texts= goal_texts, graph_script = graph_script)
 
 def create_graph(goal_items, canvas_id):
-    total_graph_vertex = {}
+    total_graph_vertex = {} # 累積ゴールのグラフの頂点
     count = 0
 
-    change_data_array = [goal_item.change_data[0]['datetime'] for goal_item in goal_items]
+    change_data_array = [goal_item.change_data[0]['datetime'] for goal_item in goal_items] # 小ゴールの作成日のリスト
     change_data_array.sort()
 
-    for change_data in change_data_array:
+    for change_data in change_data_array: # 作成日とゴール数をひもづける
         create_date = (datetime.datetime.strptime(change_data.strftime("%Y-%m-%d"), "%Y-%m-%d"))
         count += 1
         total_graph_vertex.update({create_date.toordinal(): count})
@@ -120,27 +120,27 @@ def create_graph(goal_items, canvas_id):
 
     change_graph_vertex = {}
     goalitem_list = []
-    for goal_item in goal_items:
+    for goal_item in goal_items: # 小ゴールの変更履歴をリストに追加 
         for i, change_data in enumerate(goal_item.change_data):
-            date = (datetime.datetime.strptime(change_data['datetime'].strftime("%Y-%m-%d"), "%Y-%m-%d"))
+            d = (datetime.datetime.strptime(change_data['datetime'].strftime("%Y-%m-%d"), "%Y-%m-%d"))
             if i > 0:
-                goalitem_list.append({'state':change_data['state'], 'datetime':date.toordinal()})
+                goalitem_list.append({'state':change_data['state'], 'datetime':d.toordinal()})
     goalitem_list = sorted(goalitem_list, key=lambda goalitem: goalitem['datetime'])
 
     pre_date = 0
     for goalitem in goalitem_list:
-        if pre_date == goalitem['datetime'] or pre_date == 0:
-            if goalitem['state']:
+        if pre_date == goalitem['datetime'] or pre_date == 0: 
+            if goalitem['state']: # 変更履歴が達成いるなら
                 try:
                     change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[goalitem['datetime']]+1})
                 except KeyError:
                     change_graph_vertex.update({goalitem['datetime']: 1})
-            else:
+            else: # 変更履歴が未達成なら
                 try:
                     change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[goalitem['datetime']]-1})
                 except KeyError:
                     change_graph_vertex.update({goalitem['datetime']: 0})
-        else:
+        else: # 次の日付けの変更履歴
             if goalitem['state']:
                     change_graph_vertex.update({goalitem['datetime']: change_graph_vertex[pre_date]+1})
             else:
@@ -151,37 +151,40 @@ def create_graph(goal_items, canvas_id):
     if not goalitem_list:
         return ""
     
-    sdate = goalitem_list[0]['datetime']
-    ndate = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d"), "%Y-%m-%d").toordinal()
+    sdate = goalitem_list[0]['datetime'] # 最初に小ゴールを作成した日  
+    ndate = datetime.datetime.strptime(datetime.datetime.today().strftime("%Y-%m-%d"), "%Y-%m-%d").toordinal() # 今の日付
     diff_date = ndate - sdate
-    goal_item_len = len(goal_items)
-    width = 300
+    goal_item_len = len(goal_items) # 小ゴールの数
+    width = 300 # goal.htmlのcanvasタグの属性の値
     height = 150
 
     draw_script = """
     $( function () {
+      var width = $("canvas").attr("width");  
+      var height = $("canvas").attr("height");
+        
       var canvas = document.getElementById('%s');
       if ( ! canvas || ! canvas.getContext ) {
         return false;
       }
-      var ctx = canvas.getContext('2d')
-      ;
+      var ctx = canvas.getContext('2d');
+
       ctx.fillStyle = "rgb(255, 255, 255)";
-      ctx.fillRect(0, 0, %d, %d);
+      ctx.fillRect(0, 0, width, height);
 
       ctx.beginPath();
       ctx.lineWidth = 8;
       ctx.moveTo(0, 0);
-      ctx.lineTo(0, %d);
-      ctx.lineTo(%d, %d);
+      ctx.lineTo(0, height);
+      ctx.lineTo(width, height);
 
       ctx.stroke();
       
       ctx.beginPath();
       ctx.lineWidth = 2;
-      ctx.moveTo(%d, %d);""" % (canvas_id, width, height, height, width, height, 0, height)
+      ctx.moveTo(0, height);""" % (canvas_id)
 
-    for date, goal_item_count in sorted(total_graph_vertex.items()):
+    for date, goal_item_count in sorted(total_graph_vertex.items()): # canvasサイズにあわせた累積小ゴールのグラフ描画
         diff_days = date - sdate
         try:
             x = width * float(diff_days) / diff_date
@@ -194,16 +197,17 @@ def create_graph(goal_items, canvas_id):
             y = height * float(goal_item_count) / 1
 
         draw_script += """
-      ctx.lineTo(%d, %d)""" % (x, height - y)
+      ctx.lineTo(%d, %d)
+      ctx.stroke();""" % (x, height - y)
 
     draw_script += """
-      ctx.stroke();
 
       ctx.beginPath();
+      ctx.lineWidth = 5;
       ctx.strokeStyle = 'rgb(0, 255, 0)';
-      ctx.moveTo(%d, %d);""" % (0, height)
+      ctx.moveTo(0, height);"""
 
-    for date, done_count in sorted(change_graph_vertex.items()):
+    for date, done_count in sorted(change_graph_vertex.items()): # canvasサイズにあわせた変更履歴のグラフ描画
         diff_days = date - sdate
         try:
             x = width * float(diff_days) / diff_date
@@ -220,8 +224,29 @@ def create_graph(goal_items, canvas_id):
 
     draw_script += """
       ctx.stroke();
+
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgb(50, 50, 50)';"""
+
+    for digy in range(0, goal_item_len): # 軸の描画
+        try:
+            y = height * float(digy) / goal_item_len
+        except ZeroDivisionError:
+            y = height * float(digy) / 1
+        draw_script += """
+      ctx.moveTo(0, %d);
+      ctx.lineTo(width, %d);""" % (y, y)
+
+
+    draw_script += """
+      ctx.stroke();
+
+      ctx.fillStyle = "rgb(0, 0, 0)";
+      ctx.fillText("%s", 5, height - 5);
+      ctx.fillText("%s", width - 65, height - 5);
     });
-    """
+    """% (datetime.date.fromordinal(sdate), datetime.date.fromordinal(ndate))
 
     return draw_script
 

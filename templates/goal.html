@@ -69,10 +69,16 @@
                 </div>
               </div>
             </div>
-            <!-- グラフ描画エリア -->
-            <canvas class="goal-graph" id="{{goal_text[0].serial}}" width="300" height="150"></canvas>
             {% endfor %}            
             {% endif %}
+            <!-- グラフ描画エリア -->
+            <div class="graph-area">
+              {% if goal_texts != None %}
+              {% for goal_text in goal_texts %}
+                <canvas class="goal-graph" id="{{goal_text[0].serial}}" width="300" height="150"></canvas>
+              {% endfor %}            
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
