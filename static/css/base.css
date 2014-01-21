@@ -57,10 +57,9 @@ body {
 /* ------- class ------- */
 
 .goal-graph{
-    position: relative;
-    top:-250px;
-    left:480px;
 }
 
-.goal-graph{
+.graph-area{
+    float: left;
+    top: 150px;
 }
