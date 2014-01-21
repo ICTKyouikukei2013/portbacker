@@ -92,6 +92,10 @@ def index_page():
 def goal_duplicated_error():
     return render_template("goal_duplicated_error.html")
 
+@app.route('/goalitem_duplicated_error')
+def goalitem_duplicated_error():
+    return render_template("goalitem_duplicated_error.html")
+
 @app.route('/goal', methods=['GET'])
 def get_goal():
     username = session['username']
