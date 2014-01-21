@@ -57,7 +57,10 @@ body {
 /* ------- class ------- */
 
 .goal-graph{
-    position:absolute;
-    top:320px;
-    left:820px;
+    position: relative;
+    top:-250px;
+    left:480px;
+}
+
+.goal-graph{
 }
