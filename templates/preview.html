@@ -1,10 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type="text/javascript" src="/static/js/jquery.balloon.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/static/js/insert_selection.js" charset="utf-8"></script>
 <div class="style">
   <div class="box">
-	{% autoescape false %}
-    	{{textarea}}
-    {% endautoescape %}
+	  {% autoescape false %}
+	   	{{textarea}}
+	  {% endautoescape %}
+	<div>
+      <textarea name="comment" style="width:200px; height:80px"></textarea><br>
+	  <input type="button" class="btn" id="popup" value="コメント">
+	</div>
   </div>
 </div>
 {% endblock %}
