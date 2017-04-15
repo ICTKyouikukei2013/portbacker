@@ -350,6 +350,25 @@ class ItemLogTest(unittest.TestCase):
         self.assertTrue(act != None)
 
 
+class GroupTest(unittest.TestCase):
+	def test_init(self):
+		u = model.Group("ichiren1", "高度ICT演習教育系")
+
+	def test_insert(self):
+		db = Connection('localhost', 27017).testdata
+		model.User.delete_all(db)
+		u = model.Group("ichiren1","高度ICT演習教育系")
+		u.insert(db)
+	
+	def test_find(self):
+		db = Connection('localhost', 27017).testdata
+		model.User.delete_all(db)
+		u = model.Group("ichiren1", "高度ICT演習教育系")
+		u.insert(db)
+		act = model.Group.find(db, "高度ICT演習教育系")
+		self.assertTrue(act != None)
+		
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
