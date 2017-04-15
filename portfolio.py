@@ -399,7 +399,7 @@ def new_post():
     with open(os.path.join(path_from_sessionuser_root(), "portfolio%d.html" % i), "wb") as f:
         text = request.form["textarea"].encode('utf-8')
         f.write(text)
-    return portfolio()
+    return redirect(url_for("portfolio"))
 
 @app.route('/preview', methods=['POST'])
 def preview():
